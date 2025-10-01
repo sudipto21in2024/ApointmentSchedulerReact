@@ -1,0 +1,29 @@
+# Service Maps Setup
+
+This file provides notes on how to set up service maps in Elastic APM.
+
+**Service Maps:**
+
+Service maps are a visual representation of the dependencies between services in your application. They help you understand the flow of requests and identify performance bottlenecks.
+
+**Configuration Steps:**
+
+1.  **Ensure Application Instrumentation is Enabled:**
+    *   Service maps rely on data collected by the APM agents. Make sure the application instrumentation is properly configured (see `apm/application-instrumentation.txt`).
+2.  **Verify Data is Being Collected:**
+    *   Check the APM Server UI to ensure that data is being collected from your services.
+3.  **Service Map Generation:**
+    *   APM Server automatically generates service maps based on the collected data. There is usually no additional configuration required.
+4.  **Access Service Maps:**
+    *   Navigate to the Service Maps section in the APM Server UI.
+    *   Select a service to view its dependencies and the overall service map.
+
+**Technical Notes:**
+
+*   Service maps are automatically generated based on the relationships observed in the collected trace data.
+*   The quality of the service map depends on the completeness and accuracy of the application instrumentation.
+*   Ensure that context propagation is properly configured to accurately track requests across services.
+
+**Security Considerations:**
+
+*   Implement access control for the APM Server UI to prevent unauthorized access to service map data.

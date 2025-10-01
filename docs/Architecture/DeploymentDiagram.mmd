@@ -1,0 +1,263 @@
+# Deployment Diagram: Multi-Tenant Appointment Booking System
+
+## 1. Deployment Overview
+
+This document describes the deployment architecture for the Multi-Tenant Appointment Booking System, showing how the various components are arranged across different environments and infrastructure layers.
+
+## 2. Deployment Environments
+
+### 2.1 Development Environment
+- Used for active development and testing
+- Isolated from production systems
+- Continuous integration and deployment pipeline
+- Limited resource allocation
+
+### 2.2 Staging Environment
+- Pre-production environment for final testing
+- Mirrors production configuration
+- Used for user acceptance testing (UAT)
+- Access controlled to authorized personnel
+
+### 2.3 Production Environment
+- Live system serving end users
+- High availability and fault tolerance
+- Production-grade monitoring and alerting
+- Strict access controls and security measures
+
+## 3. Infrastructure Architecture
+
+### 3.1 Network Architecture
+
+```
+Internet
+    |
+[Firewall/Load Balancer]
+    |
+[Public Subnet]
+    |     |     |
+[API Gateway] [Web Apps] [Reverse Proxy]
+    |              |
+[Private Subnet]  [Private Subnet]
+    |                 |
+[App Services]    [Kubernetes Cluster]
+    |                 |
+[Database Subnet] [Cache Subnet]
+    |                 |
+[SQL Server]     [Redis Cache]
+```
+
+### 3.2 Component Deployment
+
+#### 3.2.1 Frontend Components
+- **Angular Web Applications**: Deployed as containerized applications
+- **Static Assets**: Hosted on CDN for global distribution
+- **Service Workers**: Enable PWA functionality
+- **Browser-based Authentication**: JWT tokens managed in browser storage
+
+#### 3.2.2 Backend Components
+- **Microservices**: Deployed as Docker containers in Kubernetes clusters
+- **API Gateway**: Centralized entry point for all API requests
+- **Message Broker**: RabbitMQ for inter-service communication
+- **Caching Layer**: Redis for session management and caching
+
+#### 3.2.3 Data Storage
+- **Primary Database**: SQL Server with tenant isolation
+- **Search Index**: Elasticsearch cluster for service discovery
+- **Caching**: Redis cluster for distributed caching
+- **Logging**: Centralized logging with ELK stack
+
+#### 3.2.4 Monitoring and Operations
+- **Application Insights**: Azure monitoring and telemetry
+- **Prometheus**: Metrics collection and monitoring
+- **Grafana**: Dashboard visualization and alerting
+- **Centralized Logging**: ELK stack for log aggregation
+
+## 4. Containerized Deployment
+
+### 4.1 Docker Containers
+
+Each microservice is containerized using Docker with the following structure:
+
+```
+Service Name: UserService
+├── Dockerfile
+├── appsettings.json
+├── *.dll files
+└── /config
+    └── appsettings.Production.json
+```
+
+### 4.2 Kubernetes Deployment
+
+#### 4.2.1 Kubernetes Objects
+- **Deployments**: Manage replica sets for services
+- **Services**: Expose applications internally and externally
+- **Ingress**: Route external traffic to services
+- **ConfigMaps**: Store configuration data
+- **Secrets**: Manage sensitive information
+- **PersistentVolumes**: Handle data persistence
+
+#### 4.2.2 Deployment Strategy
+- **Rolling Updates**: Zero-downtime deployments
+- **Blue-Green Deployment**: Alternate environment strategy
+- **Canary Releases**: Gradual feature rollouts
+- **Rollback Procedures**: Automated rollback on failures
+
+## 5. Database Deployment
+
+### 5.1 SQL Server Architecture
+
+#### 5.1.1 Tenant Isolation
+- **Single Database per Tenant**: For small tenants
+- **Shared Database with Schema Isolation**: For larger tenants
+- **Separate Database per Tenant**: For high-security requirements
+
+#### 5.1.2 High Availability
+- **Always On Availability Groups**: For database redundancy
+- **Read Replicas**: For reporting and analytics
+- **Backup and Restore**: Automated backup strategies
+- **Disaster Recovery**: Geo-redundant storage
+
+### 5.2 Elasticsearch Deployment
+
+#### 5.2.1 Cluster Configuration
+- **Master Nodes**: Handle cluster coordination
+- **Data Nodes**: Store and index data
+- **Ingest Nodes**: Process data before indexing
+- **Coordinating Nodes**: Route requests and aggregate results
+
+#### 5.2.2 Scaling Strategy
+- **Horizontal Scaling**: Add more nodes as needed
+- **Sharding**: Distribute indices across multiple nodes
+- **Replication**: Maintain copies for availability
+- **Index Lifecycle Management**: Automated index management
+
+## 6. Caching Strategy
+
+### 6.1 Redis Architecture
+
+#### 6.1.1 Cache Layers
+- **Distributed Cache**: Redis cluster for session management
+- **Application Cache**: Local cache for frequently accessed data
+- **CDN Cache**: Edge caching for static assets
+
+#### 6.1.2 High Availability
+- **Redis Sentinel**: Automatic failover management
+- **Redis Cluster**: Data sharding and distribution
+- **Backup and Restore**: Automated backup procedures
+- **Monitoring**: Real-time cache performance metrics
+
+## 7. Load Balancing and Scaling
+
+### 7.1 Horizontal Scaling
+
+#### 7.1.1 Auto Scaling
+- **CPU Utilization**: Scale based on processor load
+- **Memory Usage**: Scale based on memory consumption
+- **Request Rate**: Scale based on incoming requests
+- **Custom Metrics**: Scale based on business metrics
+
+#### 7.1.2 Load Distribution
+- **Round Robin**: Even distribution of requests
+- **Least Connections**: Distribute to least busy servers
+- **IP Hash**: Consistent routing based on client IP
+- **Weighted Distribution**: Configurable weights for servers
+
+### 7.2 Traffic Management
+
+#### 7.2.1 API Gateway
+- **Rate Limiting**: Control request volume per user/service
+- **Authentication**: Centralized authentication handling
+- **Caching**: API response caching
+- **Monitoring**: Request tracking and analytics
+
+#### 7.2.2 Circuit Breaker
+- **Failure Detection**: Detect service failures
+- **Fallback Handling**: Graceful degradation
+- **Health Checks**: Monitor service status
+- **Timeout Management**: Prevent cascading failures
+
+## 8. Security Deployment
+
+### 8.1 Network Security
+- **VPC/Subnets**: Network segmentation
+- **Firewalls**: Network access control
+- **WAF**: Web application firewall
+- **DDoS Protection**: Mitigation of distributed denial-of-service attacks
+
+### 8.2 Identity and Access Management
+- **Azure AD**: Enterprise identity management
+- **API Keys**: Service-to-service authentication
+- **JWT Tokens**: Stateless authentication
+- **OAuth2**: Third-party authentication
+
+### 8.3 Data Protection
+- **Encryption at Rest**: Database and storage encryption
+- **Encryption in Transit**: TLS/SSL for all communications
+- **Key Management**: Secure key storage and rotation
+- **Compliance Monitoring**: Audit and compliance checks
+
+## 9. Monitoring and Observability
+
+### 9.1 Infrastructure Monitoring
+- **Azure Monitor**: Cloud infrastructure monitoring
+- **Prometheus**: Time-series metrics collection
+- **Grafana**: Dashboard and visualization
+- **Alerting**: Automated notification system
+
+### 9.2 Application Monitoring
+- **Application Insights**: Application performance monitoring
+- **Distributed Tracing**: Request flow tracking
+- **Log Analytics**: Centralized log analysis
+- **Health Checks**: Service health monitoring
+
+### 9.3 Business Monitoring
+- **Analytics Dashboards**: Business metrics visualization
+- **User Behavior Tracking**: Customer journey analysis
+- **Performance Metrics**: System performance indicators
+- **Revenue Tracking**: Financial performance monitoring
+
+## 10. Deployment Pipeline
+
+### 10.1 CI/CD Process
+1. **Source Code**: Commit to Git repository
+2. **Build**: Automated compilation and packaging
+3. **Test**: Unit, integration, and end-to-end testing
+4. **Security Scan**: Vulnerability and compliance checks
+5. **Deploy**: Deployment to staging environment
+6. **Validation**: Automated testing in staging
+7. **Deploy**: Deployment to production
+8. **Monitor**: Post-deployment monitoring and validation
+
+### 10.2 Deployment Strategies
+- **Blue-Green Deployment**: Zero-downtime deployments
+- **Canary Release**: Gradual feature rollout
+- **Rolling Updates**: Sequential service updates
+- **A/B Testing**: Feature comparison in production
+
+## 11. Backup and Disaster Recovery
+
+### 11.1 Data Backup
+- **Automated Backups**: Regular scheduled backups
+- **Incremental Backups**: Efficient backup strategies
+- **Snapshot Management**: Point-in-time recovery
+- **Backup Verification**: Regular restore testing
+
+### 11.2 Disaster Recovery
+- **Geo-Redundancy**: Multi-region deployment
+- **Recovery Time Objective (RTO)**: Target recovery time
+- **Recovery Point Objective (RPO)**: Maximum data loss tolerance
+- **Business Continuity**: Planned outage procedures
+
+## 12. Environment Comparison
+
+| Aspect | Development | Staging | Production |
+|--------|-------------|---------|------------|
+| Scale | Small | Medium | Large |
+| Data | Sample | Production-like | Live |
+| Access | Team members | Authorized users | Public |
+| Monitoring | Basic | Comprehensive | Full |
+| Security | Standard | Enhanced | Maximum |
+| Resources | Limited | Moderate | Unlimited |
+
+This deployment diagram provides a comprehensive view of how the Multi-Tenant Appointment Booking System will be deployed, scaled, and secured across different environments to ensure high availability, performance, and security.

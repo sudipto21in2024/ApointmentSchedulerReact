@@ -1,0 +1,61 @@
+# Exemplars Configuration
+
+This file provides notes on how to configure exemplars to link metrics to traces.
+
+**Exemplars:**
+
+Exemplars are a feature in Prometheus that allows you to link metrics to traces. This enables you to quickly jump from a metric in Prometheus to the corresponding trace in Jaeger.
+
+**Configuration Steps:**
+
+1.  **Enable Exemplars in Prometheus:**
+    *   Enable exemplars in the Prometheus configuration file (`prometheus.yml`).
+    *   Add the `enable_feature: exemplars` flag to the `global` section.
+2.  **Instrument Application to Add Trace ID to Metrics:**
+    *   Modify the application code to add the trace ID as a label to the Prometheus metrics.
+    *   The method for adding the trace ID depends on the Prometheus client library you are using.
+3.  **Configure Grafana to Display Exemplars:**
+    *   Configure Grafana to display exemplars in the Prometheus data source.
+    *   Enable the "Exemplars" feature in the Prometheus data source settings.
+
+**Example Prometheus Configuration (prometheus.yml):**
+
+```yaml
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+  enable_feature: exemplars
+```
+
+**Example Implementation (Java):**
+
+```java
+import io.prometheus.client.Counter;
+import io.opentelemetry.api.trace.Span;
+
+public class MetricsUtils {
+
+    static final Counter successfulTransactions = Counter.build()
+            .name("successful_transactions_total")
+            .help("Total number of successful transactions.")
+            .labelNames("trace_id")
+            .register();
+
+    public static void recordTransaction() {
+        Span currentSpan = Span.current();
+        String traceId = currentSpan.getSpanContext().getTraceId();
+        successfulTransactions.labels(traceId).inc();
+    }
+}
+```
+
+**Technical Notes:**
+
+*   Ensure that the Prometheus version supports exemplars (v2.26 or later).
+*   The trace ID label name should be consistent across all services.
+*   Consider using a dedicated Prometheus client library that supports exemplars.
+
+**Security Considerations:**
+
+*   Ensure that trace IDs do not contain sensitive information.
+*   Implement access control for Prometheus and Grafana to prevent unauthorized access to metric and trace data.

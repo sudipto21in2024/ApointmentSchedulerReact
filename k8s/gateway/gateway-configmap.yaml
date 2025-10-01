@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-ocelot-config
+data:
+  ocelot.json: |
+    {
+      "ReRoutes": [
+        {
+          "DownstreamPathTemplate": "/api/{everything}",
+          "DownstreamScheme": "http",
+          "ServiceName": "UserService",
+          "UpstreamPathTemplate": "/userservice/api/{everything}",
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+        },
+        {
+          "DownstreamPathTemplate": "/api/{everything}",
+          "DownstreamScheme": "http",
+          "ServiceName": "BookingService",
+          "UpstreamPathTemplate": "/bookingservice/api/{everything}",
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+        },
+        {
+          "DownstreamPathTemplate": "/api/{everything}",
+          "DownstreamScheme": "http",
+          "ServiceName": "ServiceManagementService",
+          "UpstreamPathTemplate": "/servicemanagementservice/api/{everything}",
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+        },
+        {
+          "DownstreamPathTemplate": "/api/{everything}",
+          "DownstreamScheme": "http",
+          "ServiceName": "PaymentService",
+          "UpstreamPathTemplate": "/paymentservice/api/{everything}",
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+        },
+        {
+          "DownstreamPathTemplate": "/api/{everything}",
+          "DownstreamScheme": "http",
+          "ServiceName": "NotificationService",
+          "UpstreamPathTemplate": "/notificationservice/api/{everything}",
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+        },
+        {
+          "DownstreamPathTemplate": "/api/{everything}",
+          "DownstreamScheme": "http",
+          "ServiceName": "ReportingService",
+          "UpstreamPathTemplate": "/reportingservice/api/{everything}",
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+        },
+        {
+          "DownstreamPathTemplate": "/api/{everything}",
+          "DownstreamScheme": "http",
+          "ServiceName": "SlotManagementService",
+          "UpstreamPathTemplate": "/slotmanagementservice/api/{everything}",
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+        }
+      ],
+      "GlobalConfiguration": {
+        "ServiceDiscoveryProvider": {
+          "Host": "consul",
+          "Port": 8500,
+          "Type": "Consul"
+        }
+      }
+    }
+  appsettings.json: |
+    {
+      "Logging": {
+        "LogLevel": {
+          "Default": "Information",
+          "Microsoft.AspNetCore": "Warning"
+        }
+      },
+      "AllowedHosts": "*"
+    }

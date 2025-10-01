@@ -1,0 +1,905 @@
+---
+openapi: 3.0.3
+info:
+  title: Service Management API
+  description: API for managing services and service categories
+  version: 1.0.0
+
+servers:
+  - url: https://api.appointmentsystem.com/v1
+    description: Production server
+
+paths:
+  /services:
+    get:
+      summary: Get all services
+      description: Retrieve a paginated list of services with optional filtering
+      tags:
+        - Services
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sort
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            default: createdAt
+        - name: order
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: categoryId
+          in: query
+          description: Filter by category ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: providerId
+          in: query
+          description: Filter by provider ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: isActive
+          in: query
+          description: Filter by active status
+          required: false
+          schema:
+            type: boolean
+        - name: isFeatured
+          in: query
+          description: Filter by featured status
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved services
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceListResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Create a new service
+      description: Create a new service offering
+      tags:
+        - Services
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateServiceRequest'
+      responses:
+        '201':
+          description: Service created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '409':
+          description: Service already exists
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /services/{id}:
+    get:
+      summary: Get service by ID
+      description: Retrieve detailed information about a specific service
+      tags:
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: Service ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Service not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update service
+      description: Update information for an existing service
+      tags:
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: Service ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateServiceRequest'
+      responses:
+        '200':
+          description: Service updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Service not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete service
+      description: Remove a service (soft delete)
+      tags:
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: Service ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Service deleted successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Service not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /services/{id}/approve:
+    put:
+      summary: Approve a service listing
+      description: Allows a Tenant Admin to approve a pending service listing, making it visible to customers.
+      tags:
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: Service ID to approve
+          required: true
+          schema:
+            type: string
+            format: uuid
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Service approved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Service approved successfully
+        '400':
+          description: Bad request (e.g., service not in pending status)
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden (only Tenant Admins can approve services)
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Service not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /services/{id}/reject:
+    put:
+      summary: Reject a service listing
+      description: Allows a Tenant Admin to reject a pending service listing, keeping it inactive.
+      tags:
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: Service ID to reject
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: Optional reason for rejection
+                  example: Does not meet quality standards.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Service rejected successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Service rejected successfully
+        '400':
+          description: Bad request (e.g., service not in pending status)
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden (only Tenant Admins can reject services)
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Service not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /categories:
+    get:
+      summary: Get all service categories
+      description: Retrieve a list of service categories
+      tags:
+        - Categories
+      parameters:
+        - name: isActive
+          in: query
+          description: Filter by active status
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryListResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Create a new category
+      description: Create a new service category
+      tags:
+        - Categories
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryRequest'
+      responses:
+        '201':
+          description: Category created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /categories/{id}:
+    get:
+      summary: Get category by ID
+      description: Retrieve detailed information about a specific category
+      tags:
+        - Categories
+      parameters:
+        - name: id
+          in: path
+          description: Category ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update category
+      description: Update information for an existing category
+      tags:
+        - Categories
+      parameters:
+        - name: id
+          in: path
+          description: Category ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCategoryRequest'
+      responses:
+        '200':
+          description: Category updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete category
+      description: Remove a category (soft delete)
+      tags:
+        - Categories
+      parameters:
+        - name: id
+          in: path
+          description: Category ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Category deleted successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Service:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - categoryId
+        - providerId
+        - tenantId
+        - duration
+        - price
+        - currency
+        - isActive
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the service
+        name:
+          type: string
+          description: Service name
+        description:
+          type: string
+          description: Detailed service description
+        categoryId:
+          type: string
+          format: uuid
+          description: Reference to service category
+        providerId:
+          type: string
+          format: uuid
+          description: Reference to service provider (User)
+        tenantId:
+          type: string
+          format: uuid
+          description: Reference to tenant
+        duration:
+          type: integer
+          description: Service duration in minutes
+        price:
+          type: number
+          format: decimal
+          description: Service price
+        currency:
+          type: string
+          description: Currency code
+        isActive:
+          type: boolean
+          description: Service status
+        createdAt:
+          type: string
+          format: date-time
+          description: Service creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last service update timestamp
+        isFeatured:
+          type: boolean
+          description: Featured service flag
+        maxBookingsPerDay:
+          type: integer
+          description: Maximum bookings per day
+        availabilityExceptions:
+          type: array
+          items:
+            type: object
+            properties:
+              startDate:
+                type: string
+                format: date
+              endDate:
+                type: string
+                format: date
+              startTime:
+                type: string
+                format: time
+              endTime:
+                type: string
+                format: time
+
+    CreateServiceRequest:
+      type: object
+      required:
+        - name
+        - description
+        - categoryId
+        - providerId
+        - tenantId
+        - duration
+        - price
+        - currency
+      properties:
+        name:
+          type: string
+          description: Service name
+        description:
+          type: string
+          description: Detailed service description
+        categoryId:
+          type: string
+          format: uuid
+          description: Reference to service category
+        providerId:
+          type: string
+          format: uuid
+          description: Reference to service provider (User)
+        tenantId:
+          type: string
+          format: uuid
+          description: Reference to tenant
+        duration:
+          type: integer
+          description: Service duration in minutes
+        price:
+          type: number
+          format: decimal
+          description: Service price
+        currency:
+          type: string
+          description: Currency code
+        isActive:
+          type: boolean
+          description: Service status
+        isFeatured:
+          type: boolean
+          description: Featured service flag
+        maxBookingsPerDay:
+          type: integer
+          description: Maximum bookings per day
+
+    UpdateServiceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Service name
+        description:
+          type: string
+          description: Detailed service description
+        categoryId:
+          type: string
+          format: uuid
+          description: Reference to service category
+        duration:
+          type: integer
+          description: Service duration in minutes
+        price:
+          type: number
+          format: decimal
+          description: Service price
+        currency:
+          type: string
+          description: Currency code
+        isActive:
+          type: boolean
+          description: Service status
+        isFeatured:
+          type: boolean
+          description: Featured service flag
+        maxBookingsPerDay:
+          type: integer
+          description: Maximum bookings per day
+
+    ServiceResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Service'
+
+    ServiceListResponse:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+        meta:
+          $ref: '../common/pagination.yaml#/components/schemas/Pagination'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            first:
+              type: string
+            last:
+              type: string
+            prev:
+              type: string
+            next:
+              type: string
+
+    ServiceCategory:
+      type: object
+      required:
+        - id
+        - name
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the category
+        name:
+          type: string
+          description: Category name
+        description:
+          type: string
+          description: Category description
+        parentCategoryId:
+          type: string
+          format: uuid
+          description: Reference to parent category (for hierarchy)
+        iconUrl:
+          type: string
+          description: Category icon/image URL
+        sortOrder:
+          type: integer
+          description: Display order
+        isActive:
+          type: boolean
+          description: Category status
+        createdAt:
+          type: string
+          format: date-time
+          description: Category creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last category update timestamp
+
+    CreateCategoryRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Category name
+        description:
+          type: string
+          description: Category description
+        parentCategoryId:
+          type: string
+          format: uuid
+          description: Reference to parent category (for hierarchy)
+        iconUrl:
+          type: string
+          description: Category icon/image URL
+        sortOrder:
+          type: integer
+          description: Display order
+        isActive:
+          type: boolean
+          description: Category status
+
+    UpdateCategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Category name
+        description:
+          type: string
+          description: Category description
+        parentCategoryId:
+          type: string
+          format: uuid
+          description: Reference to parent category (for hierarchy)
+        iconUrl:
+          type: string
+          description: Category icon/image URL
+        sortOrder:
+          type: integer
+          description: Display order
+        isActive:
+          type: boolean
+          description: Category status
+
+    CategoryResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ServiceCategory'
+
+    CategoryListResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceCategory'
+
+    ErrorResponse:
+      $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

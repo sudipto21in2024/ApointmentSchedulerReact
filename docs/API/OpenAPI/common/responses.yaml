@@ -1,0 +1,46 @@
+---
+openapi: 3.0.3
+info:
+  title: Common Response Definitions
+  version: 1.0.0
+
+components:
+  schemas:
+    StandardResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          description: The response data
+        meta:
+          type: object
+          properties:
+            pagination:
+              $ref: '#/components/schemas/Pagination'
+            timestamp:
+              type: string
+              format: date-time
+              description: Response timestamp
+            version:
+              type: string
+              description: API version
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              description: Self link
+            first:
+              type: string
+              description: First page link
+            last:
+              type: string
+              description: Last page link
+            prev:
+              type: string
+              description: Previous page link
+            next:
+              type: string
+              description: Next page link

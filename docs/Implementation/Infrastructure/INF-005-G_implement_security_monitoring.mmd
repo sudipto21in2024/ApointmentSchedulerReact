@@ -1,0 +1,20 @@
+graph LR
+    A[Analyze Task INF-005-G] --> B(Implement Security Event Monitoring);
+    B --> C{Configure systems to generate security events};
+    C --> D(Implement Audit Log Collection);
+    D --> E{Configure systems to generate audit logs};
+    E --> F(Setup Compliance Dashboards);
+    F --> G{Create dashboards/compliance-dashboards.json};
+    G --> H(Implement Access Control for Observability Tools);
+    H --> I{Configure RBAC for Elasticsearch, Kibana, Grafana, etc.};
+    I --> J(Test Security Monitoring);
+    J --> K{Verify security events are being collected};
+    K --> L{Verify audit logs are being collected};
+    L --> M{Verify compliance dashboards are displaying data};
+    M --> N{Verify access control is working};
+    N --> O(Document Setup);
+    O --> P{Document Security Event Monitoring configuration};
+    P --> Q{Document Audit Log Collection configuration};
+    Q --> R{Document Compliance Dashboards};
+    R --> S{Document Access Control configuration};
+    S --> T(Complete Task INF-005-G);

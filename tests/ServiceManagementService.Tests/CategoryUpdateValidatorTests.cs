@@ -1,0 +1,98 @@
+using Xunit;
+using Moq;
+using Microsoft.Extensions.Logging;
+using ServiceManagementService.Validators;
+using Shared.Data;
+using Shared.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using Shared.DTOs;
+using ServiceManagementService.Services;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Security.Claims;
+
+namespace ServiceManagementService.Tests
+{
+    public class CategoryUpdateValidatorTests : IDisposable
+    {
+        private readonly ApplicationDbContext _dbContext;
+        private readonly ServiceValidator _validator;
+        private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
+        private readonly Guid _testTenantId;
+
+        public CategoryUpdateValidatorTests()
+        {
+            // Create a test tenant ID that will be used consistently
+            _testTenantId = Guid.NewGuid();
+            
+            // Create a mock IHttpContextAccessor with a tenant ID claim
+            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            var mockHttpContext = new DefaultHttpContext();
+            
+            // Create a claims identity with a tenant ID claim
+            var claims = new List<Claim>
+            {
+                new Claim("TenantId", _testTenantId.ToString())
+            };
+            var claimsIdentity = new ClaimsIdentity(claims);
+            mockHttpContext.User = new ClaimsPrincipal(claimsIdentity);
+            
+            _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(mockHttpContext);
+
+            // Create DbContextOptions
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            // Create actual context with mocked IHttpContextAccessor
+            _dbContext = new ApplicationDbContext(options, _mockHttpContextAccessor.Object);
+            
+            _validator = new ServiceValidator(_dbContext);
+        }
+
+        public void Dispose()
+        {
+            _dbContext.Database.EnsureDeleted();
+            _dbContext.Dispose();
+        }
+
+        [Fact]
+        public async Task ValidateUpdateCategoryRequestAsync_ValidRequest_ReturnsValidResult()
+        {
+            // Arrange
+            var tenantId = _testTenantId;
+            var parentCategoryId = Guid.NewGuid();
+
+            // Add a parent category to the database
+            var parentCategory = new ServiceCategory
+            {
+                Id = parentCategoryId,
+                Name = "Parent Category",
+                TenantId = tenantId,
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+            _dbContext.ServiceCategories.Add(parentCategory);
+            await _dbContext.SaveChangesAsync();
+
+            var request = new UpdateCategoryRequest
+            {
+                Name = "Updated Category",
+                Description = "Updated Description",
+                ParentCategoryId = parentCategoryId, // Use the valid parentCategoryId
+                IconUrl = "http://example.com/updated-icon.png",
+                SortOrder = 2,
+                IsActive = false
+            };
+
+            // Act
+            var result = await _validator.ValidateUpdateCategoryRequestAsync(request, tenantId);
+
+            // Assert
+            Assert.True(result.IsValid);
+            Assert.Empty(result.Errors);
+        }
+    }
+}

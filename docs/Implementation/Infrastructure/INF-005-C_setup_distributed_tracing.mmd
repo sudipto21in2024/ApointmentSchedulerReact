@@ -1,0 +1,17 @@
+graph LR
+    A[Analyze Task INF-005-C] --> B(Configure Jaeger Backend);
+    B --> C{Verify Jaeger service in docker-compose.yml};
+    C --> D(Configure OpenTelemetry Collector);
+    D --> E{Configure otel-collector-config.yml};
+    E --> F(Implement Trace Sampling Strategies);
+    F --> G{Create tracing/trace-sampling-notes.txt};
+    G --> H(Integrate Grafana);
+    H --> I{Create tracing/grafana-integration-notes.txt};
+    I --> J(Implement Application Instrumentation);
+    J --> K{Add OpenTelemetry SDK to application code};
+    K --> L(Test Distributed Tracing);
+    L --> M{Verify traces are being collected and displayed in Jaeger and Grafana};
+    M --> N(Document Setup);
+    N --> O{Document Jaeger configuration};
+    O --> P{Document OpenTelemetry configuration};
+    P --> Q(Complete Task INF-005-C);

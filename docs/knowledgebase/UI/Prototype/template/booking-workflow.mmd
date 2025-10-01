@@ -1,0 +1,102 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#2563EB", "secondaryColor": "#1D4ED8", "lineColor": "#6B7280"}}}%%
+graph TD
+    %% Application Root
+    AppRoot[Container: fluid=true, padding="0"]
+
+    %% Global Navigation (Header)
+    AppRoot --> GlobalNavWrapper[Box:]
+    GlobalNavWrapper --> GlobalNav[Navbar: brand="AppointmentScheduler", items=["Dashboard", "Services", "Bookings", "Profile"]]
+
+    %% Main Content Wrapper
+    AppRoot --> MainContentWrapper[Flex: direction="row", align="start", gap="0"]
+    MainContentWrapper --> SidebarNav[Sidebar: items=["Dashboard", "Services", "Bookings", "Customers", "Settings", "Help", "Logout"]]
+    MainContentWrapper --> PrimaryContentArea[Container: maxWidth="800px", padding="24px"]
+
+    %% Booking Form Section
+    PrimaryContentArea --> BookingFormSection[Flex: direction="column", span=7]
+    BookingFormSection --> BookingHeading[Heading: level=1, text="Book Appointment"]
+    BookingFormSection --> ServiceTimeSection[FormSection: title="Select Service and Time"]
+    ServiceTimeSection --> ServiceSelect[FormField: select, name="service", label="Service", options=["Haircut - $25 (30 min)", "Beard Trim - $15 (15 min)"], placeholder="Choose a service"]
+    ServiceTimeSection --> DateField[FormField: date, name="date", label="Date", min="today"]
+    ServiceTimeSection --> TimeField[FormField: time, name="time", label="Time", format="12h", step=900]
+    ServiceTimeSection --> NotesField[FormField: textarea, name="notes", label="Special Requests", placeholder="Any specific requests or notes?"]
+    
+    BookingFormSection --> YourInfoSection[FormSection: title="Your Information"]
+    YourInfoSection --> NameRow[FormRow: columns=2, gap="16px"]
+    NameRow --> FirstNameCol[FormColumn: span=1]
+    FirstNameCol --> FirstNameField[FormField: text, name="firstName", label="First Name", placeholder="John", required=true]
+    NameRow --> LastNameCol[FormColumn: span=1]
+    LastNameCol --> LastNameField[FormField: text, name="lastName", label="Last Name", placeholder="Doe", required=true]
+    YourInfoSection --> EmailField[FormField: email, name="email", label="Email", placeholder="you@example.com", required=true]
+    YourInfoSection --> PhoneField[FormField: tel, name="phone", label="Phone", placeholder="(123) 456-7890", required=true]
+    
+    %% Booking Summary Section (now part of PrimaryContentArea)
+    PrimaryContentArea --> BookingSummarySection[Card: variant="elevated"]
+    BookingSummarySection --> SummaryHeading[Heading: level=3, text="Booking Summary"]
+    BookingSummarySection --> SummaryDivider1[Divider:]
+    BookingSummarySection --> SummaryStack[Stack: spacing="12px"]
+    SummaryStack --> ServiceNameText[Text: content="Haircut"]
+    SummaryStack --> DateTimeText[Text: content="Sep 12, 2025 at 2:0 PM"]
+    SummaryStack --> LocationText[Text: content="John's Barber Shop"]
+    BookingSummarySection --> SummaryDivider2[Divider:]
+    BookingSummarySection --> ServiceFeeFlex[Flex: direction="row", justify="space-between"]
+    ServiceFeeFlex --> ServiceFeeLabel[Text: content="Service Fee"]
+    ServiceFeeFlex --> ServiceFeeValue[Text: content="$25.00"]
+    BookingSummarySection --> BookingFeeFlex[Flex: direction="row", justify="space-between"]
+    BookingFeeFlex --> BookingFeeLabel[Text: content="Booking Fee"]
+    BookingFeeFlex --> BookingFeeValue[Text: content="$2.50"]
+    BookingSummarySection --> SummaryDivider3[Divider:]
+    BookingSummarySection --> TotalFlex[Flex: direction="row", justify="space-between"]
+    TotalFlex --> TotalLabel[Text: content="Total"]
+    TotalFlex --> TotalValue[Text: content="$27.50"]
+    BookingSummarySection --> ConfirmButton[Button: variant="primary", block=true, text="Confirm Booking"]
+    
+    %% Global Footer
+    AppRoot --> GlobalFooter[Box: padding="24px", background="#F3F4F6"]
+    GlobalFooter --> FooterText[Text: content="© 2025 AppointmentScheduler. All rights reserved.", align="center"]
+
+    %% Styling for new components
+    style AppRoot fill:#F3F4F6,stroke:none
+    style GlobalNavWrapper fill:#FFFFFF,stroke:none
+    style GlobalNav fill:#FFFFFF,stroke:none,border-bottom:1px solid #E5E7EB
+    style MainContentWrapper fill:none,stroke:none
+    style SidebarNav fill:#FFFFFF,stroke:none,width:200px,border-right:1px solid #E5E7EB
+    style GlobalFooter fill:#F3F4F6,stroke:none
+    style FooterText fill:#6B7280,stroke:none,font-size:12px
+
+    %% Styling for existing components, adjusted to new structure
+    style PrimaryContentArea fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style BookingFormSection fill:#FFFFFF,stroke:none
+    style BookingHeading fill:#11827,stroke:none
+    style ServiceTimeSection fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style ServiceSelect fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style DateField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style TimeField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style NotesField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style YourInfoSection fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style NameRow fill:#FFFFFF,stroke:none
+    style FirstNameCol fill:#FFFFFF,stroke:none
+    style FirstNameField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style LastNameCol fill:#FFFFFF,stroke:none
+    style LastNameField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style EmailField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style PhoneField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style BookingSummarySection fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style SummaryHeading fill:#111827,stroke:none
+    style SummaryDivider1 fill:#FFFFFF,stroke:none
+    style SummaryStack fill:#FFFFFF,stroke:none
+    style ServiceNameText fill:#FFFFFF,stroke:none
+    style DateTimeText fill:#FFFFFF,stroke:none
+    style LocationText fill:#FFFFFF,stroke:none
+    style SummaryDivider2 fill:#FFFFFF,stroke:none
+    style ServiceFeeFlex fill:#FFFFFF,stroke:none
+    style ServiceFeeLabel fill:#FFFFFF,stroke:none
+    style ServiceFeeValue fill:#FFFFFF,stroke:none
+    style BookingFeeFlex fill:#FFFFFF,stroke:none
+    style BookingFeeLabel fill:#FFFFFF,stroke:none
+    style BookingFeeValue fill:#FFFFFF,stroke:none
+    style SummaryDivider3 fill:#FFFFFF,stroke:none
+    style TotalFlex fill:#FFFFFF,stroke:none
+    style TotalLabel fill:#FFFFFF,stroke:none,color:#111827,font-weight:600
+    style TotalValue fill:#FFFFFF,stroke:none,color:#11827,font-weight:600
+    style ConfirmButton fill:#2563EB,stroke:#2563EB,stroke-width:1px,color:#FFFFFF

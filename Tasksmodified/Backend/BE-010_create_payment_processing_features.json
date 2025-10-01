@@ -1,0 +1,172 @@
+{
+  "task_id": "BE-010",
+  "title": "Create Payment Processing Features",
+ "description": "Implement payment processing functionality including transaction handling, refund management, and subscription billing",
+  "priority": "HIGH",
+  "complexity": 5,
+  "effort_estimate": {
+    "hours": 40,
+    "story_points": 13
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to pay for my booking so I can confirm my appointment",
+      "As a service provider, I want to receive payments for my services so I can run my business",
+      "As a customer, I want to get refunds when cancelling bookings so I'm not overcharged",
+      "As an administrator, I want to manage subscription billing so I can generate revenue"
+    ],
+    "business_rules": [
+      "Payment processing must integrate with secure payment gateways",
+      "Refund processing must follow configurable policies",
+      "Subscription billing must be automated with recurring charges",
+      "Payment status must be tracked and audited",
+      "All payment data must be encrypted and secured"
+    ],
+    "edge_cases": [
+      "Handling failed payment transactions",
+      "Managing partial refunds",
+      "Handling subscription plan changes",
+      "Managing chargebacks and disputes",
+      "Handling currency conversions"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-005"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Database Schema",
+      "Payment Gateway Integration",
+      "Booking Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "Payment processing API integrates with payment gateways",
+    "Refund processing API handles partial and full refunds",
+    "Subscription billing API manages recurring charges",
+    "Payment status tracking is accurate and auditable",
+    "All payment data is encrypted and secured",
+    "Error handling works correctly for failed transactions"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "Payment Gateway Integration",
+    "Security Best Practices"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/PaymentService/Controllers/PaymentController.cs",
+      "backend/services/PaymentService/Services/IPaymentService.cs",
+      "backend/services/PaymentService/Services/PaymentService.cs",
+      "backend/services/PaymentService/Validators/IPaymentValidator.cs",
+      "backend/services/PaymentService/Validators/PaymentValidator.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Entities/DatabaseSchema.mmd",
+      "docs/API/OpenAPI/payment-openapi.yaml"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Payment"
+    ],
+    "related": [
+      "Booking",
+      "User",
+      "Subscription"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/payments/process",
+        "description": "Process a payment"
+      },
+      {
+        "method": "POST",
+        "path": "/payments/refund",
+        "description": "Process a refund"
+      },
+      {
+        "method": "GET",
+        "path": "/payments/{id}",
+        "description": "Get payment details"
+      },
+      {
+        "method": "POST",
+        "path": "/subscriptions/create",
+        "description": "Create a subscription"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/payment-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "PaymentService.ProcessPaymentAsync integrates with payment gateways",
+      "PaymentService.ProcessRefundAsync handles refunds correctly",
+      "PaymentService.CreateSubscriptionAsync manages recurring charges",
+      "PaymentValidator validates payment requests",
+      "PaymentValidator validates refund requests"
+    ],
+    "integration_tests": [
+      "Payment API processes payments through gateways",
+      "Payment API handles refund requests",
+      "Payment API manages subscription billing",
+      "Payment API tracks payment status accurately",
+      "Payment API handles failed transactions"
+    ],
+    "e2e_tests": [
+      "Complete payment processing workflow",
+      "Refund processing workflow",
+      "Subscription creation and management",
+      "Error handling for failed payments",
+      "Security of payment data"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-005"
+    ],
+    "blocking_reason": "Payment processing depends on booking implementation",
+    "can_start_date": "After BE-005 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement secure integration with payment gateways like Stripe or PayPal. Follow PCI DSS compliance requirements. Implement proper error handling and retry mechanisms for failed transactions. Use encryption for sensitive payment data.",
+    "design_references": "docs/BusinessRequirements/BRD.mmd",
+    "security_considerations": "Ensure PCI DSS compliance. Encrypt all sensitive payment data. Implement proper authentication and authorization. Validate all input data to prevent injection attacks. Use HTTPS for all payment-related communications."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/PaymentService/Controllers/PaymentController.cs",
+      "backend/services/PaymentService/Services/IPaymentService.cs",
+      "backend/services/PaymentService/Services/PaymentService.cs",
+      "backend/services/PaymentService/Validators/IPaymentValidator.cs",
+      "backend/services/PaymentService/Validators/PaymentValidator.cs"
+    ]
+  },
+  "subtasks": []
+}

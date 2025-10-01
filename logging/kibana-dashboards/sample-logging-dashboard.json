@@ -1,0 +1,31 @@
+{
+  "title": "Sample Logging Dashboard",
+  "description": "A basic Kibana dashboard to visualize application logs.",
+  "panels": [
+    {
+      "title": "Total Log Count",
+      "type": "metric",
+      "query": "*"
+    },
+    {
+      "title": "Error Log Count",
+      "type": "metric",
+      "query": "level:error"
+    },
+    {
+      "title": "Warning Log Count",
+      "type": "metric",
+      "query": "level:warn"
+    },
+    {
+      "title": "Recent Logs",
+      "type": "table",
+      "columns": ["timestamp", "level", "message"],
+      "sort": { "field": "timestamp", "direction": "desc" }
+    }
+  ],
+  "time_range": {
+    "from": "now-15m",
+    "to": "now"
+  }
+}

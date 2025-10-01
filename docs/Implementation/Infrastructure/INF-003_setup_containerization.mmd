@@ -1,0 +1,29 @@
+graph LR
+    A[Analyze Task INF-003] --> B(Create Dockerfile.base);
+    B --> C{Create UserService Dockerfile};
+    C --> D{Create BookingService Dockerfile};
+    D --> E{Create ServiceManagementService Dockerfile};
+    E --> F{Create PaymentService Dockerfile};
+    F --> G{Create NotificationService Dockerfile};
+    G --> H{Create ReportingService Dockerfile};
+    H --> I{Configure docker-compose.yml};
+    I --> J{Create k8s/deployment.yaml};
+    J --> K{Create k8s/service.yaml};
+    K --> L{Create k8s/ingress.yaml};
+    L --> M{Configure Health Checks};
+    M --> N(Complete Task INF-003);
+
+subgraph Implementation Details
+    B --> B1(Created Dockerfile.base);
+    C --> C1(Created UserService Dockerfile);
+    D --> D1(Created BookingService Dockerfile);
+    E --> E1(Created ServiceManagementService Dockerfile);
+    F --> F1(Created PaymentService Dockerfile);
+    G --> G1(Created NotificationService Dockerfile);
+    H --> H1(Created ReportingService Dockerfile);
+    I --> I1(Configured docker-compose.yml with services and SQL initialization.  Also configured sqlserver to depend on initialization script);
+    J --> J1(Created k8s/deployment.yaml with health checks);
+    K --> K1(Created k8s/service.yaml);
+    L --> L1(Created k8s/ingress.yaml);
+	
+end

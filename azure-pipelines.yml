@@ -1,0 +1,177 @@
+# Azure DevOps Pipeline for AppointmentScheduler
+# Supports multi-stage deployment: Build -> Test -> Deploy
+
+trigger:
+  branches:
+    include:
+      - main
+      - master
+      - develop
+
+pr:
+  branches:
+    include:
+      - main
+      - master
+      - develop
+
+variables:
+  - name: 'solution'
+    value: 'backend/AppointmentBooking.sln'
+  - name: 'buildConfiguration'
+    value: 'Release'
+  - name: 'dockerRegistry'
+    value: 'appointmentscheduler.azurecr.io'
+  - name: 'imageTag'
+    value: '$(Build.BuildId)'
+
+stages:
+  # Build Stage
+  - stage: Build
+    displayName: 'Build and Test'
+    jobs:
+      - job: BuildBackend
+        displayName: 'Build .NET Backend'
+        pool:
+          vmImage: 'ubuntu-latest'
+
+        steps:
+          # Checkout code
+          - checkout: self
+
+          # Setup .NET
+          - task: UseDotNet@2
+            displayName: 'Install .NET 8.0'
+            inputs:
+              version: '8.0.x'
+
+          # Restore NuGet packages
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore NuGet packages'
+            inputs:
+              command: 'restore'
+              projects: '$(solution)'
+
+          # Build solution
+          - task: DotNetCoreCLI@2
+            displayName: 'Build solution'
+            inputs:
+              command: 'build'
+              projects: '$(solution)'
+              arguments: '--configuration $(buildConfiguration) --no-restore'
+
+          # Run unit tests
+          - task: DotNetCoreCLI@2
+            displayName: 'Run unit tests'
+            inputs:
+              command: 'test'
+              projects: '$(solution)'
+              arguments: '--configuration $(buildConfiguration) --no-build --verbosity normal'
+              testRunTitle: 'Backend Unit Tests'
+
+          # Publish test results
+          - task: PublishTestResults@2
+            displayName: 'Publish test results'
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFiles: '**/*.trx'
+              testRunTitle: 'Backend Tests'
+
+          # Build and push Docker images using bash script
+          - task: Bash@3
+            displayName: 'Build and push Docker images'
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Login to Azure Container Registry
+                echo "Logging into Azure Container Registry..."
+                az acr login --name appointmentscheduler
+
+                # Build and push all service images
+                services=(
+                  "gateway:backend/Gateway/Dockerfile"
+                  "userservice:backend/services/UserService/Dockerfile"
+                  "bookingservice:backend/services/BookingService/Dockerfile"
+                  "paymentservice:backend/services/PaymentService/Dockerfile"
+                  "notificationservice:backend/services/NotificationService/Dockerfile"
+                  "reportingservice:backend/services/ReportingService/Dockerfile"
+                  "servicemanagementservice:backend/services/ServiceManagementService/Dockerfile"
+                  "slotmanagementservice:backend/services/SlotManagementService/Dockerfile"
+                  "configurationservice:backend/services/ConfigurationService/Dockerfile"
+                  "tenantmanagementservice:backend/services/TenantManagementService/Dockerfile"
+                  "authenticationservice:backend/services/AuthenticationService/Dockerfile"
+                )
+
+                for service in "${services[@]}"; do
+                  name=$(echo $service | cut -d: -f1)
+                  dockerfile=$(echo $service | cut -d: -f2)
+
+                  echo "Building $name..."
+                  docker build -f $dockerfile -t appointmentscheduler.azurecr.io/appointmentscheduler/$name:$(Build.BuildId) .
+
+                  echo "Pushing $name..."
+                  docker push appointmentscheduler.azurecr.io/appointmentscheduler/$name:$(Build.BuildId)
+
+                  # Also tag as latest for development
+                  docker tag appointmentscheduler.azurecr.io/appointmentscheduler/$name:$(Build.BuildId) appointmentscheduler.azurecr.io/appointmentscheduler/$name:latest
+                  docker push appointmentscheduler.azurecr.io/appointmentscheduler/$name:latest
+                done
+
+                echo "All Docker images built and pushed successfully"
+
+  # Deploy to Development (Optional - can be enabled when AKS is set up)
+  - stage: DeployDev
+    displayName: 'Deploy to Development'
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+    jobs:
+      - job: DeployDev
+        displayName: 'Deploy to Dev Environment'
+        steps:
+          - checkout: none
+          - task: Bash@3
+            displayName: 'Deploy to Development'
+            inputs:
+              targetType: 'inline'
+              script: |
+                echo "Development deployment would go here"
+                echo "Images are available at: appointmentscheduler.azurecr.io/appointmentscheduler/*:$(Build.BuildId)"
+                # Add kubectl or helm deployment commands here when AKS is configured
+
+  # Deploy to Staging (Optional - can be enabled when AKS is set up)
+  - stage: DeployStaging
+    displayName: 'Deploy to Staging'
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - job: DeployStaging
+        displayName: 'Deploy to Staging Environment'
+        steps:
+          - checkout: none
+          - task: Bash@3
+            displayName: 'Deploy to Staging'
+            inputs:
+              targetType: 'inline'
+              script: |
+                echo "Staging deployment would go here"
+                echo "Images are available at: appointmentscheduler.azurecr.io/appointmentscheduler/*:$(Build.BuildId)"
+                # Add kubectl or helm deployment commands here when AKS is configured
+
+  # Deploy to Production (Optional - can be enabled when AKS is configured)
+  - stage: DeployProd
+    displayName: 'Deploy to Production'
+    dependsOn: DeployStaging
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - job: DeployProd
+        displayName: 'Deploy to Production Environment'
+        steps:
+          - checkout: none
+          - task: Bash@3
+            displayName: 'Deploy to Production'
+            inputs:
+              targetType: 'inline'
+              script: |
+                echo "Production deployment would go here"
+                echo "Images are available at: appointmentscheduler.azurecr.io/appointmentscheduler/*:$(Build.BuildId)"
+                # Add kubectl or helm deployment commands here when AKS is configured

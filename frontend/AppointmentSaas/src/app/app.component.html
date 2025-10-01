@@ -1,0 +1,169 @@
+<!-- Multi-Tenant Appointment Booking System - Component Demo -->
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">
+        🚀 Component Library Demo
+      </h1>
+      <p class="text-lg text-gray-600">
+        Multi-Tenant Appointment Booking System - Phase 1 Components
+      </p>
+    </div>
+
+    <!-- Component Showcase -->
+    <div class="space-y-12">
+      <!-- Card Component Demo -->
+      <section>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Card Components</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <app-card [config]="{ variant: 'elevated', padding: 'lg' }">
+            <div class="text-center">
+              <h3 class="text-lg font-medium text-gray-900 mb-2">Elevated Card</h3>
+              <p class="text-gray-600">With shadow and hover effects</p>
+            </div>
+          </app-card>
+
+          <app-card [config]="{ variant: 'outlined', padding: 'lg' }">
+            <div class="text-center">
+              <h3 class="text-lg font-medium text-gray-900 mb-2">Outlined Card</h3>
+              <p class="text-gray-600">With border styling</p>
+            </div>
+          </app-card>
+
+          <app-card [config]="{ variant: 'filled', padding: 'lg' }">
+            <div class="text-center">
+              <h3 class="text-lg font-medium text-gray-900 mb-2">Filled Card</h3>
+              <p class="text-gray-600">With background color</p>
+            </div>
+          </app-card>
+        </div>
+      </section>
+
+      <!-- Button Component Demo -->
+      <section>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Button Components</h2>
+        <div class="space-y-6">
+          <!-- Button Sizes -->
+          <div>
+            <h3 class="text-lg font-medium text-gray-700 mb-4">Button Sizes</h3>
+            <div class="flex flex-wrap gap-4 items-center">
+              <app-button [config]="{ size: 'sm' }">Small</app-button>
+              <app-button [config]="{ size: 'md' }">Medium</app-button>
+              <app-button [config]="{ size: 'lg' }">Large</app-button>
+            </div>
+          </div>
+
+          <!-- Button Variants -->
+          <div>
+            <h3 class="text-lg font-medium text-gray-700 mb-4">Button Variants</h3>
+            <div class="flex flex-wrap gap-4 items-center">
+              <app-button [config]="{ variant: 'primary' }">Primary</app-button>
+              <app-button [config]="{ variant: 'secondary' }">Secondary</app-button>
+              <app-button [config]="{ variant: 'outline' }">Outline</app-button>
+              <app-button [config]="{ variant: 'ghost' }">Ghost</app-button>
+              <app-button [config]="{ variant: 'link' }">Link</app-button>
+            </div>
+          </div>
+
+          <!-- Button States -->
+          <div>
+            <h3 class="text-lg font-medium text-gray-700 mb-4">Button States</h3>
+            <div class="flex flex-wrap gap-4 items-center">
+              <app-button [config]="{ loading: true }">Loading</app-button>
+              <app-button [config]="{ disabled: true }">Disabled</app-button>
+              <app-button [config]="{ block: true }">Block Button</app-button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Input Component Demo -->
+      <section>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Input Components</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Default Input</label>
+            <app-input
+              [config]="{ type: 'text', placeholder: 'Enter text here...' }"
+              [(value)]="inputValue"
+              (valueChange)="onInputChange($event)">
+            </app-input>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Email Input</label>
+            <app-input
+              [config]="{ type: 'email', placeholder: 'Enter email...' }"
+              [(value)]="emailValue">
+            </app-input>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Disabled Input</label>
+            <app-input
+              [config]="{ type: 'text', placeholder: 'Disabled input', disabled: true }"
+              [(value)]="disabledValue">
+            </app-input>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Error Input</label>
+            <app-input
+              [config]="{ type: 'text', placeholder: 'Input with error' }"
+              [error]="true"
+              [(value)]="errorValue">
+            </app-input>
+            <app-validation-message
+              [message]="'This field is required'"
+              [type]="'error'">
+            </app-validation-message>
+          </div>
+        </div>
+      </section>
+
+      <!-- Modal Component Demo -->
+      <section>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Modal Component</h2>
+        <div class="flex flex-wrap gap-4">
+          <app-button [config]="{ variant: 'primary' }" (click)="openModal('sm')">Open Small Modal</app-button>
+          <app-button [config]="{ variant: 'secondary' }" (click)="openModal('md')">Open Medium Modal</app-button>
+          <app-button [config]="{ variant: 'outline' }" (click)="openModal('lg')">Open Large Modal</app-button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-16 text-center text-gray-500">
+      <p>Built with Angular 20 & Tailwind CSS</p>
+      <p class="mt-2">Component Library - Phase 1 Implementation</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Demo -->
+<app-modal
+  [visible]="modalVisible"
+  [title]="modalTitle"
+  [config]="{ size: modalSize, centered: true }"
+  [showFooter]="true"
+  (visibleChange)="onModalClose()"
+>
+  <div class="py-4">
+    <p class="text-gray-600 mb-4">
+      This is a demo modal showcasing the ModalComponent with size:
+      <strong>{{ modalSize.toUpperCase() }}</strong>
+    </p>
+    <p class="text-sm text-gray-500">
+      The modal includes proper accessibility features, keyboard navigation, and responsive design.
+    </p>
+  </div>
+
+  <ng-container slot="footer">
+    <app-button [config]="{ variant: 'outline' }" (click)="closeModal()">Cancel</app-button>
+    <app-button [config]="{ variant: 'primary' }" (click)="closeModal()">Confirm</app-button>
+  </ng-container>
+</app-modal>
+
+<router-outlet />

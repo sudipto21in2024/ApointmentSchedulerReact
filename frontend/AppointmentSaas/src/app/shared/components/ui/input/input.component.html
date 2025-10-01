@@ -1,0 +1,19 @@
+<div class="input-wrapper">
+  <input
+    #input
+    [type]="config.type || 'text'"
+    [value]="value"
+    [placeholder]="config.placeholder || ''"
+    [disabled]="config.disabled"
+    [readOnly]="config.readonly"
+    [required]="config.required"
+    [autocomplete]="config.autocomplete"
+    [maxlength]="config.maxlength"
+    [minlength]="config.minlength"
+    [pattern]="config.pattern"
+    [class]="getInputClasses()"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+  />
+</div>

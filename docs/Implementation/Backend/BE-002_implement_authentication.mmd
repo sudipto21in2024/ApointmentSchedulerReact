@@ -1,0 +1,45 @@
+graph LR
+    A[Analyze Task BE-002] --> B(Design Authentication Flow);
+    B --> C{Implement User Model and Roles};
+    C --> D{Implement AuthService};
+    D --> E{Implement JwtService};
+    E --> F{Implement TokenService};
+    F --> G{Implement AuthorizationService};
+    G --> H{Implement AuthenticationMiddleware};
+    H --> I{Implement AuthorizationMiddleware};
+    I --> J{Create API Endpoints};
+    J --> K{Implement Password Reset Flow};
+    K --> L{Implement Tests};
+    L --> M(Document Implementation);
+    M --> N(Complete Task BE-002);
+
+subgraph Implementation Details
+    C --> C1(Created User and UserRole models in Shared.Models);
+    D --> D1(Created AuthService in UserService.Services);
+    E --> E1(Created JwtService in UserService.Processors);
+    F --> F1(Created TokenService in UserService.Processors);
+    G --> G1(Created AuthorizationService in UserService.Processors);
+    H --> H1(Created AuthenticationMiddleware in UserService.Middleware);
+    I --> I1(Created AuthorizationMiddleware in UserService.Middleware);
+    J --> J1(Created AuthController in UserService.Controllers with login, register, logout, refresh endpoints);
+    K --> K1(Implemented dummy password reset flow in AuthService);
+ L --> L1(No Unit tests were implemented);
+end
+
+subgraph Remaining Tasks
+ AA[Implement JWT-based authentication with secure token generation] --> BB(Implement Role-based access control with proper user roles);
+ BB --> CC(Enforce Tenant isolation for multi-tenancy);
+ CC --> DD(Implement Password security requirements with proper hashing);
+ DD --> EE(Implement Session management with secure storage);
+ EE --> FF(Complete User registration and login flows);
+ FF --> GG(Implement Password reset and recovery functionality);
+ GG --> HH(Implement Security headers and protections for authentication endpoints);
+ HH --> II(Implement Unit tests);
+ II --> JJ(Implement Integration tests);
+ JJ --> KK(Implement E2E tests);
+end
+
+subgraph Current Status
+ MM[AuthenticationMiddleware and AuthorizationMiddleware now have basic validation]
+ NN[Successfully fixed all the warnings and build errors]
+end

@@ -1,0 +1,22 @@
+graph LR
+    A[Analyze Task INF-005-A] --> B(Setup Prometheus Server);
+    B --> C{Create prometheus-config.yml};
+    C --> D{Configure Prometheus to collect system metrics};
+    D --> E(Setup Grafana Dashboards);
+    E --> F{Create Grafana dashboards to visualize key metrics};
+    F --> G(Setup AlertManager);
+    G --> H{Configure AlertManager to send notifications for critical events};
+    H --> I(Setup System Metrics Exporters);
+    I --> J{Install Node Exporter};
+    J --> K{Install cAdvisor};
+    K --> L(Configure Docker Compose);
+    L --> M{Modify docker-compose.yml to include Prometheus, Grafana, and exporters};
+    M --> N(Test Monitoring Infrastructure);
+    N --> O{Verify Prometheus is collecting metrics};
+    O --> P{Verify Grafana dashboards are displaying metrics};
+    P --> Q{Verify AlertManager is sending notifications};
+    Q --> R(Document Setup);
+    R --> S{Document Prometheus configuration};
+    S --> T{Document Grafana dashboards};
+    T --> U{Document AlertManager configuration};
+    U --> V(Complete Task INF-005-A);

@@ -1,0 +1,556 @@
+---
+openapi: 3.0.3
+info:
+  title: User Management API
+  description: API for managing user accounts and profiles
+  version: 1.0.0
+
+servers:
+  - url: https://api.appointmentsystem.com/v1
+    description: Production server
+
+paths:
+  /users:
+    get:
+      summary: Get all users
+      description: Retrieve a paginated list of users with optional filtering
+      tags:
+        - Users
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sort
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            default: createdAt
+        - name: order
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: userType
+          in: query
+          description: Filter by user type
+          required: false
+          schema:
+            $ref: '../common/enums.yaml#/components/schemas/UserType'
+        - name: isActive
+          in: query
+          description: Filter by active status
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Create a new user
+      description: Register a new user account
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      description: Retrieve detailed information about a specific user
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update user
+      description: Update information for an existing user
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete user
+      description: Remove a user account (soft delete)
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: User deleted successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /users/{userId}/notification-preferences:
+    get:
+      summary: Get user notification preferences
+      description: Retrieve notification preferences for a specific user
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved notification preferences
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferencesResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update user notification preferences
+      description: Update notification preferences for a specific user
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNotificationPreferencesRequest'
+      responses:
+        '200':
+          description: Notification preferences updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferencesResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - firstName
+        - lastName
+        - userType
+        - isActive
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the user
+        email:
+          type: string
+          format: email
+          description: Unique email address for the user
+        firstName:
+          type: string
+          description: User's first name
+        lastName:
+          type: string
+          description: User's last name
+        phoneNumber:
+          type: string
+          description: Contact phone number
+        userType:
+          $ref: '../common/enums.yaml#/components/schemas/UserType'
+        isActive:
+          type: boolean
+          description: Account status
+        createdAt:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last account update timestamp
+        lastLoginAt:
+          type: string
+          format: date-time
+          description: Timestamp of last login
+        tenantId:
+          type: string
+          format: uuid
+          description: Reference to tenant (for multi-tenancy). Required for non-SuperAdmin users.
+
+    CreateUserRequest:
+      type: object
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+        - userType
+      properties:
+        email:
+          type: string
+          format: email
+          description: Unique email address for the user
+        password:
+          type: string
+          description: User's password
+        firstName:
+          type: string
+          description: User's first name
+        lastName:
+          type: string
+          description: User's last name
+        phoneNumber:
+          type: string
+          description: Contact phone number
+        userType:
+          $ref: '../common/enums.yaml#/components/schemas/UserType'
+        tenantId:
+          type: string
+          format: uuid
+          description: Reference to tenant (for multi-tenancy). Required for non-SuperAdmin users.
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: User's first name
+        lastName:
+          type: string
+          description: User's last name
+        phoneNumber:
+          type: string
+          description: Contact phone number
+        isActive:
+          type: boolean
+          description: Account status
+        userType:
+          $ref: '../common/enums.yaml#/components/schemas/UserType'
+
+    UserResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/User'
+
+    UserListResponse:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        meta:
+          $ref: '../common/pagination.yaml#/components/schemas/Pagination'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            first:
+              type: string
+            last:
+              type: string
+            prev:
+              type: string
+            next:
+              type: string
+
+    ErrorResponse:
+      $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    NotificationPreference:
+      type: object
+      required:
+        - id
+        - userId
+        - emailEnabled
+        - smsEnabled
+        - pushEnabled
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the notification preference
+        userId:
+          type: string
+          format: uuid
+          description: Reference to the user
+        emailEnabled:
+          type: boolean
+          description: Whether email notifications are enabled
+        smsEnabled:
+          type: boolean
+          description: Whether SMS notifications are enabled
+        pushEnabled:
+          type: boolean
+          description: Whether push notifications are enabled
+        preferredTimezone:
+          type: string
+          description: User's preferred timezone
+        tenantId:
+          type: string
+          format: uuid
+          description: Reference to tenant (for multi-tenancy)
+
+    UpdateNotificationPreferencesRequest:
+      type: object
+      required:
+        - emailEnabled
+        - smsEnabled
+        - pushEnabled
+      properties:
+        emailEnabled:
+          type: boolean
+          description: Whether email notifications are enabled
+        smsEnabled:
+          type: boolean
+          description: Whether SMS notifications are enabled
+        pushEnabled:
+          type: boolean
+          description: Whether push notifications are enabled
+        preferredTimezone:
+          type: string
+          description: User's preferred timezone
+
+    NotificationPreferencesResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/NotificationPreference'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

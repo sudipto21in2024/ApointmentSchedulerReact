@@ -1,0 +1,10 @@
+<div
+  *ngIf="shouldShowMessage()"
+  class="validation-message"
+  [class]="getMessageClasses()"
+  [attr.role]="type === 'error' ? 'alert' : null"
+  [attr.aria-live]="type === 'error' ? 'polite' : null"
+>
+  <span *ngIf="icon" class="validation-message__icon" [innerHTML]="icon"></span>
+  <span class="validation-message__text">{{ message }}</span>
+</div>

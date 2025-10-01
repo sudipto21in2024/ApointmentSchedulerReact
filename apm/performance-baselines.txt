@@ -1,0 +1,29 @@
+# Performance Baselines Setup
+
+This file provides notes on how to set up performance baselines in Elastic APM.
+
+**Performance Baselines:**
+
+Performance baselines are a historical record of your application's performance. They help you identify performance regressions and anomalies.
+
+**Configuration Steps:**
+
+1.  **Ensure Application Instrumentation is Enabled:**
+    *   Performance baselines rely on data collected by the APM agents. Make sure the application instrumentation is properly configured (see `apm/application-instrumentation.txt`).
+2.  **Allow APM Server to Collect Data:**
+    *   Let the APM Server collect data for a period of time (e.g., 1-2 weeks) to establish a baseline.
+3.  **Define Baseline Metrics:**
+    *   Identify the key performance indicators (KPIs) that you want to track (e.g., response time, transaction duration, error rate).
+4.  **Create Baseline Alerts:**
+    *   Create alerts in Kibana to notify you when performance metrics deviate significantly from the established baseline.
+    *   Use the anomaly detection features in Elastic to automatically detect performance regressions.
+
+**Technical Notes:**
+
+*   The accuracy of the performance baselines depends on the quality and consistency of the collected APM data.
+*   Regularly review and adjust the baselines to account for changes in application behavior and traffic patterns.
+*   Consider using machine learning to automatically detect anomalies and adjust the baselines dynamically.
+
+**Security Considerations:**
+
+*   Implement access control for the APM Server UI and Kibana to prevent unauthorized access to performance baseline data.

@@ -1,0 +1,56 @@
+# SLI/SLO Definitions
+
+This file provides notes on how to define Service Level Indicators (SLIs) and Service Level Objectives (SLOs).
+
+**SLI (Service Level Indicator):**
+
+*   A quantitative measure of a particular aspect of service performance.
+*   Examples:
+    *   Request latency
+    *   Error rate
+    *   Availability
+    *   Throughput
+
+**SLO (Service Level Objective):**
+
+*   A target level of performance for a particular SLI.
+*   Examples:
+    *   99.9% of requests should have a latency of less than 200ms.
+    *   The service should have an availability of 99.99%.
+    *   The error rate should be less than 0.1%.
+
+**Configuration Steps:**
+
+1.  **Define SLIs:**
+    *   Identify the key metrics that are important to your business and your users.
+    *   Choose metrics that are measurable and actionable.
+2.  **Set SLOs:**
+    *   Set SLOs for each SLI.
+    *   Base SLOs on user expectations, business requirements, and historical performance data.
+    *   Make SLOs realistic and achievable.
+3.  **Monitor SLIs and SLOs:**
+    *   Use Prometheus and Grafana to monitor SLIs and SLOs.
+    *   Create dashboards to visualize SLI performance and SLO compliance.
+4.  **Alert on SLO Violations:**
+    *   Configure Alertmanager to send notifications when SLOs are violated.
+    *   Use appropriate alert thresholds to avoid false positives.
+
+**Example SLI/SLO Definitions:**
+
+*   **SLI:** Request latency
+    *   **SLO:** 99% of requests should have a latency of less than 100ms.
+*   **SLI:** Error rate
+    *   **SLO:** The service should have an error rate of less than 0.01%.
+*   **SLI:** Availability
+    *   **SLO:** The service should be available 99.99% of the time.
+
+**Technical Notes:**
+
+*   SLIs and SLOs should be aligned with business goals.
+*   Regularly review and adjust SLIs and SLOs to account for changes in application behavior and business requirements.
+*   Use SLOs to drive engineering decisions and prioritize work.
+
+**Security Considerations:**
+
+*   Ensure that SLI and SLO data does not contain sensitive information.
+*   Implement access control for monitoring systems to prevent unauthorized access to SLI/SLO data.

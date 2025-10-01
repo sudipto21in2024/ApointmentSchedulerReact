@@ -1,0 +1,136 @@
+{
+  "task_id": "BE-006",
+  "title": "Implement Service Creation and Management Features",
+  "description": "Develop comprehensive service management functionality including service creation, editing, categorization, and media upload capabilities for service providers.",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 24,
+    "story_points": 8,
+    "justification": "Implementing comprehensive service management requires developing multiple CRUD operations, validation logic, categorization features, and media handling capabilities for service providers."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a service provider, I want to create detailed service listings so that customers can understand what I offer",
+      "As a service provider, I need to organize services into categories so that customers can easily find them",
+      "As a service provider, I want to add media to services so that customers can visualize what I provide"
+    ],
+    "business_rules": [
+      "Services must be created with proper validation of required fields",
+      "Service descriptions must meet minimum length requirements",
+      "Service categories must be properly assigned and validated",
+      "Media uploads must be validated for file types and sizes",
+      "Service pricing must follow defined validation rules"
+    ],
+    "edge_cases": [
+      "Handling service creation with invalid data",
+      "Managing service updates with conflicting information",
+      "Processing service deletion with associated bookings",
+      "Validating media uploads for security and file type compliance",
+      "Managing service categories with hierarchical relationships"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-004"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Storage service for media uploads",
+      "Category management service"
+    ]
+  },
+  "acceptance_criteria": [
+    "Service creation API endpoint implemented with validation",
+    "Service editing functionality works correctly",
+    "Service categorization system supports hierarchical categories",
+    "Media upload functionality for service images/videos",
+    "Service listing and retrieval by category works",
+    "Service deletion properly handles dependent data",
+    "All service operations are secured with proper authentication"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "API Development",
+    "Service Management",
+    "File Upload Handling",
+    "Data Validation"
+  ],
+  "related_files": {
+    "will_create": [
+      "controllers/ServiceController.cs",
+      "services/ServiceService.cs",
+      "validators/ServiceValidator.cs",
+      "models/Service.cs",
+      "models/ServiceCategory.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd#5.1.1",
+      "docs/BusinessRequirements/UserJourneys.mmd#Stage 2: Service Management"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Service",
+      "ServiceCategory"
+    ],
+    "related": [
+      "User",
+      "Tenant"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/services",
+        "description": "Create a new service"
+      },
+      {
+        "method": "PUT",
+        "path": "/services/{id}",
+        "description": "Update service details"
+      },
+      {
+        "method": "GET",
+        "path": "/services/categories",
+        "description": "Get service categories"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Service creation validation",
+      "Service update operations",
+      "Category assignment validation",
+      "Media upload processing",
+      "Service listing by category"
+    ],
+    "integration_tests": [
+      "Complete service creation flow",
+      "Service categorization integration",
+      "Media upload and storage",
+      "Service retrieval and filtering"
+    ],
+    "e2e_tests": [
+      "Complete service management workflow",
+      "Category browsing and selection",
+      "Media attachment to services"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-004"
+    ],
+    "blocking_reason": "Basic CRUD operations must be implemented first to provide foundation for service management",
+    "can_start_date": "After BE-004 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement the service management features as defined in FR-1.1 to FR-1.4 of the BRD. Include proper validation for service descriptions and media uploads. Support hierarchical service categories as mentioned in FR-1.3.",
+    "design_references": "Service management requirements from BRD and service creation journey from User Journeys",
+    "security_considerations": "Implement strict validation and sanitization for service descriptions and media uploads to prevent XSS and other attacks"
+  }
+}

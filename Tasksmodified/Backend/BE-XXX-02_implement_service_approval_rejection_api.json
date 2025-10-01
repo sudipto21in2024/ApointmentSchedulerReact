@@ -1,0 +1,129 @@
+{
+  "task_id": "BE-XXX-02",
+  "title": "Implement Service Approval/Rejection API",
+  "description": "Implement API endpoints to allow Tenant Admins to explicitly approve or reject service listings.",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 16,
+    "story_points": 5
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a tenant administrator, I want to approve new service listings so that they become visible to customers.",
+      "As a tenant administrator, I want to reject service listings that do not meet our criteria."
+    ],
+    "business_rules": [
+      "Only authenticated tenant administrators can approve or reject services.",
+      "Approved services become active/visible to customers.",
+      "Rejected services remain inactive and may require a reason for rejection.",
+      "Service status must be updated accordingly (e.g., from 'Pending' to 'Approved' or 'Rejected')."
+    ],
+    "edge_cases": [
+      "Attempting to approve/reject a service that is not in 'Pending' status.",
+      "Missing authorization for the action.",
+      "Handling concurrent approval/rejection attempts."
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Service Management Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "New API endpoints `PUT /services/{id}/approve` and `PUT /services/{id}/reject` are implemented and functional.",
+    "Approving a service sets its status to 'Approved' (or 'Active').",
+    "Rejecting a service sets its status to 'Rejected' and optionally records a reason.",
+    "Proper authorization checks are enforced for these actions.",
+    "Appropriate success and error responses are returned."
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "API Design",
+    "Authorization"
+  ],
+  "related_files": {
+    "will_create": [],
+    "will_modify": [
+      "backend/services/ServiceManagementService/Controllers/ServiceController.cs",
+      "backend/services/ServiceManagementService/Services/IServiceService.cs",
+      "backend/services/ServiceManagementService/Services/ServiceService.cs",
+      "docs/API/OpenAPI/service-openapi.yaml"
+    ],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd",
+      "docs/knowledgebase/UiFlow/TenantAdmin_ServiceApprovalManagement_Flow.md"
+    ]
+  },
+  "entities": {
+    "primary": ["Service"],
+    "related": ["User"]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "PUT",
+        "path": "/services/{id}/approve",
+        "description": "Approve a service listing."
+      },
+      {
+        "method": "PUT",
+        "path": "/services/{id}/reject",
+        "description": "Reject a service listing."
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Test approval of a pending service.",
+      "Test rejection of a pending service with reason.",
+      "Test unauthorized approval/rejection attempts.",
+      "Test approval/rejection of a non-pending service."
+    ],
+    "integration_tests": [
+      "End-to-end service approval workflow with database updates and authorization checks."
+    ],
+    "e2e_tests": []
+  },
+  "blocking_information": {
+    "is_blocked": false,
+    "blocking_tasks": [],
+    "can_start_date": ""
+  },
+  "additional_context": {
+    "technical_notes": "Ensure service status transitions are handled correctly. Implement robust authorization checks based on user roles and tenant context. Consider logging approval/rejection actions for audit purposes.",
+    "design_references": "docs/BusinessRequirements/BRD.mmd, docs/knowledgebase/UiFlow/TenantAdmin_ServiceApprovalManagement_Flow.md",
+    "security_considerations": "Strictly enforce role-based access control for these sensitive operations. Validate service ID and status before processing."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/ServiceManagementService/Controllers/ServiceController.cs",
+      "backend/services/ServiceManagementService/Services/IServiceService.cs",
+      "backend/services/ServiceManagementService/Services/ServiceService.cs"
+    ]
+  },
+  "subtasks": []
+}

@@ -1,0 +1,15 @@
+<div
+  class="card"
+  [class.card--elevated]="config.variant === 'elevated'"
+  [class.card--outlined]="config.variant === 'outlined'"
+  [class.card--filled]="config.variant === 'filled'"
+  [class.card--interactive]="config.interactive"
+  [class.card--disabled]="config.disabled"
+  [class.card--loading]="config.loading"
+  [class.card--padding-none]="config.padding === 'none'"
+  [class.card--padding-sm]="config.padding === 'sm'"
+  [class.card--padding-md]="config.padding === 'md'"
+  [class.card--padding-lg]="config.padding === 'lg'"
+>
+  <ng-content></ng-content>
+</div>

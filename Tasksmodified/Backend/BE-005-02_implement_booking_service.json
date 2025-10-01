@@ -1,0 +1,162 @@
+{
+  "task_id": "BE-005-02",
+  "title": "Implement Booking Service",
+  "description": "Implement the BookingService class with all business logic for booking operations",
+  "priority": "HIGH",
+  "complexity": 5,
+  "effort_estimate": {
+    "hours": 16,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a system, I need to create bookings with proper validation",
+      "As a system, I need to manage booking status changes"
+    ],
+    "business_rules": [
+      "Booking creation must validate slot availability",
+      "Booking status changes must be tracked",
+      "Booking cancellation must follow policies"
+    ],
+    "edge_cases": [
+      "Handling concurrent booking requests for same slot",
+      "Managing booking conflicts and rescheduling"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-005-01"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Shared Models",
+      "Database Context",
+      "Slot Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "BookingService implements IBookingService interface",
+    "CreateBooking method validates slot availability",
+    "Booking status changes are properly tracked",
+    "Cancellation policies are enforced",
+    "Transaction management is implemented"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "Entity Framework Core",
+    "Transaction Management",
+    "Concurrency Handling"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/BookingService/Services/BookingService.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Entities/DatabaseSchema.mmd",
+      "shared/Models/Booking.cs",
+      "backend/services/BookingService/Services/IBookingService.cs"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking"
+    ],
+    "related": [
+      "Slot",
+      "Service",
+      "User",
+      "BookingHistory"
+    ]
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Booking creation with valid data",
+      "Booking creation with invalid slot",
+      "Booking status tracking",
+      "Cancellation policy enforcement"
+    ],
+    "integration_tests": [
+      "Booking creation with database",
+      "Booking status change tracking"
+    ],
+    "e2e_tests": []
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-005-01"
+    ],
+    "can_start_date": "After BE-005-01 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Use database transactions for multi-step operations. Implement proper error handling and logging.",
+    "design_references": "UserService/Services/UserService.cs",
+    "security_considerations": "Validate all input data. Implement proper audit logging for status changes."
+  },
+  "implementation_guidance": {
+    "method_signatures": [
+      "public async Task<Booking> CreateBookingAsync(CreateBookingRequest request)",
+      "public async Task<Booking> GetBookingByIdAsync(Guid bookingId)",
+      "public async Task<Booking> UpdateBookingAsync(Guid bookingId, UpdateBookingRequest request)",
+      "public async Task<Booking> CancelBookingAsync(Guid bookingId, CancelBookingRequest request)",
+      "public async Task<Booking> ConfirmBookingAsync(Guid bookingId)",
+      "public async Task<IEnumerable<Booking>> GetBookingsAsync(BookingFilter filter)",
+      "public async Task<Booking> RescheduleBookingAsync(Guid bookingId, RescheduleBookingRequest request)"
+    ],
+    "implementation_logic": [
+      "CreateBookingAsync: Validate slot availability, check for conflicts, create booking entity, update slot availability, save to database with transaction",
+      "GetBookingByIdAsync: Query database for booking by ID, include related entities",
+      "UpdateBookingAsync: Retrieve booking, validate status for updates, update properties, save changes",
+      "CancelBookingAsync: Validate cancellation rules, update booking status, update slot availability, process refunds, save with transaction",
+      "ConfirmBookingAsync: Validate confirmation rules, update booking status, save changes",
+      "GetBookingsAsync: Build query based on filter criteria, apply sorting and pagination, execute query",
+      "RescheduleBookingAsync: Validate rescheduling rules, check new slot availability, update booking and slot availability, save with transaction"
+    ],
+    "file_structure": [
+      "backend/services/BookingService/Services/BookingService.cs",
+      "backend/services/BookingService/Services/IBookingService.cs"
+    ],
+    "dependencies": [
+      "Microsoft.EntityFrameworkCore",
+      "Microsoft.Extensions.Logging",
+      "Shared.Data",
+      "Shared.Models",
+      "BookingService.Services.ISlotService",
+      "BookingService.Exceptions",
+      "System.Collections.Generic",
+      "System.Threading.Tasks",
+      "System.Linq"
+    ],
+    "error_handling": [
+      "SlotNotAvailableException: When slot is not available for booking or rescheduling",
+      "BusinessRuleViolationException: When business rules are violated",
+      "EntityNotFoundException: When requested booking is not found",
+      "DbUpdateException: When database operations fail",
+      "Use database transactions for multi-step operations with rollback on errors"
+    ],
+    "testing_guidance": [
+      "CreateBookingAsync_WithValidRequest_CreatesBooking",
+      "CreateBookingAsync_WithUnavailableSlot_ThrowsSlotNotAvailableException",
+      "CreateBookingAsync_WithExistingBooking_ThrowsBusinessRuleViolationException",
+      "GetBookingByIdAsync_WithValidId_ReturnsBooking",
+      "GetBookingByIdAsync_WithInvalidId_ReturnsNull",
+      "UpdateBookingAsync_WithValidRequest_UpdatesBooking",
+      "CancelBookingAsync_WithValidRequest_CancelsBooking",
+      "ConfirmBookingAsync_WithValidRequest_ConfirmsBooking",
+      "GetBookingsAsync_WithFilter_ReturnsFilteredBookings",
+      "RescheduleBookingAsync_WithValidRequest_ReschedulesBooking"
+    ]
+  }
+}

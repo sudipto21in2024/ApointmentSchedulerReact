@@ -1,0 +1,590 @@
+---
+openapi: 3.0.3
+info:
+  title: Appointment Management API
+  description: API for managing bookings and time slots
+  version: 1.0.0
+
+servers:
+  - url: https://api.appointmentsystem.com/v1
+    description: Production server
+
+paths:
+  /bookings:
+    get:
+      summary: Get all bookings
+      description: Retrieve a paginated list of bookings with optional filtering
+      tags:
+        - Bookings
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sort
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            default: createdAt
+        - name: order
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: status
+          in: query
+          description: Filter by booking status
+          required: false
+          schema:
+            $ref: '../common/enums.yaml#/components/schemas/BookingStatus'
+        - name: customerId
+          in: query
+          description: Filter by customer ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: serviceId
+          in: query
+          description: Filter by service ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          description: Filter by start date
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Filter by end date
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successfully retrieved bookings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingListResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Create a new booking
+      description: Book a service for a customer
+      tags:
+        - Bookings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBookingRequest'
+      responses:
+        '201':
+          description: Booking created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '409':
+          description: Booking conflict (slot not available)
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /bookings/{id}:
+    get:
+      summary: Get booking by ID
+      description: Retrieve detailed information about a specific booking
+      tags:
+        - Bookings
+      parameters:
+        - name: id
+          in: path
+          description: Booking ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved booking
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update booking
+      description: Update information for an existing booking
+      tags:
+        - Bookings
+      parameters:
+        - name: id
+          in: path
+          description: Booking ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBookingRequest'
+      responses:
+        '200':
+          description: Booking updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Cancel booking
+      description: Cancel a booking (soft delete)
+      tags:
+        - Bookings
+      parameters:
+        - name: id
+          in: path
+          description: Booking ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Booking cancelled successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /slots:
+    get:
+      summary: Get available slots
+      description: Retrieve available time slots for a service
+      tags:
+        - Slots
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sort
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            default: startDateTime
+        - name: order
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+        - name: serviceId
+          in: query
+          description: Filter by service ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          description: Filter by start date
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Filter by end date
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: isAvailable
+          in: query
+          description: Filter by availability status
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved slots
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlotListResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Booking:
+      type: object
+      required:
+        - id
+        - customerId
+        - serviceId
+        - slotId
+        - status
+        - bookingDate
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the booking
+        customerId:
+          type: string
+          format: uuid
+          description: Reference to customer (User)
+        serviceId:
+          type: string
+          format: uuid
+          description: Reference to service
+        slotId:
+          type: string
+          format: uuid
+          description: Reference to slot
+        tenantId:
+          type: string
+          format: uuid
+          description: Reference to tenant
+        status:
+          $ref: '../common/enums.yaml#/components/schemas/BookingStatus'
+        bookingDate:
+          type: string
+          format: date-time
+          description: Date when booking was made
+        createdAt:
+          type: string
+          format: date-time
+          description: Booking creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last booking update timestamp
+        notes:
+          type: string
+          description: Customer notes for booking
+        cancelledAt:
+          type: string
+          format: date-time
+          description: Timestamp when booking was cancelled
+        cancelledBy:
+          type: string
+          format: uuid
+          description: Reference to user who cancelled (if applicable)
+        paymentId:
+          type: string
+          format: uuid
+          description: Reference to payment (if applicable)
+
+    CreateBookingRequest:
+      type: object
+      required:
+        - customerId
+        - serviceId
+        - slotId
+      properties:
+        customerId:
+          type: string
+          format: uuid
+          description: Reference to customer (User)
+        serviceId:
+          type: string
+          format: uuid
+          description: Reference to service
+        slotId:
+          type: string
+          format: uuid
+          description: Reference to slot
+        tenantId:
+          type: string
+          format: uuid
+          description: Reference to tenant
+        notes:
+          type: string
+          description: Customer notes for booking
+
+    UpdateBookingRequest:
+      type: object
+      properties:
+        status:
+          $ref: '../common/enums.yaml#/components/schemas/BookingStatus'
+        notes:
+          type: string
+          description: Customer notes for booking
+
+    BookingResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Booking'
+
+    BookingListResponse:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Booking'
+        meta:
+          $ref: '../common/pagination.yaml#/components/schemas/Pagination'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            first:
+              type: string
+            last:
+              type: string
+            prev:
+              type: string
+            next:
+              type: string
+
+    Slot:
+      type: object
+      required:
+        - id
+        - serviceId
+        - startDateTime
+        - endDateTime
+        - maxBookings
+        - availableBookings
+        - isAvailable
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the slot
+        serviceId:
+          type: string
+          format: uuid
+          description: Reference to service
+        startDateTime:
+          type: string
+          format: date-time
+          description: Slot start time
+        endDateTime:
+          type: string
+          format: date-time
+          description: Slot end time
+        maxBookings:
+          type: integer
+          description: Maximum bookings allowed
+        availableBookings:
+          type: integer
+          description: Remaining available bookings
+        isAvailable:
+          type: boolean
+          description: Slot availability status
+        createdAt:
+          type: string
+          format: date-time
+          description: Slot creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last slot update timestamp
+        isRecurring:
+          type: boolean
+          description: Recurring slot flag
+
+    SlotListResponse:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Slot'
+        meta:
+          $ref: '../common/pagination.yaml#/components/schemas/Pagination'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            first:
+              type: string
+            last:
+              type: string
+            prev:
+              type: string
+            next:
+              type: string
+
+    ErrorResponse:
+      $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

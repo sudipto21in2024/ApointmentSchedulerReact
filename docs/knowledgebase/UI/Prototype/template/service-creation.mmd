@@ -1,0 +1,91 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#2563EB", "secondaryColor": "#1D4ED8", "lineColor": "#6B7280"}}}%%
+graph TD
+    %% Application Root
+    AppRoot[Container: fluid=true, padding="0"]
+
+    %% Global Navigation (Header)
+    AppRoot --> GlobalNavWrapper[Box:]
+    GlobalNavWrapper --> GlobalNav[Navbar: brand="AppointmentScheduler", items=["Dashboard", "Services", "Bookings", "Profile"]]
+
+    %% Main Content Wrapper
+    AppRoot --> MainContentWrapper[Flex: direction="row", align="start", gap="0"]
+    MainContentWrapper --> SidebarNav[Sidebar: items=["Dashboard", "Services", "Bookings", "Customers", "Settings", "Help", "Logout"]]
+    MainContentWrapper --> PrimaryContentArea[Container: maxWidth="800px", padding="24px"]
+
+    %% Header Section
+    PrimaryContentArea --> HeaderSection[Heading: level=1, text="Create Service"]
+    
+    %% Form Wizard
+    PrimaryContentArea --> FormWizard[FormWizard: steps=["Basic Info", "Pricing", "Availability", "Review"], currentStep=1]
+    
+    %% Step 1: Basic Information
+    FormWizard --> BasicInfoStep[FormStep: title="Basic Information"]
+    BasicInfoStep --> BasicInfoSection[FormSection:]
+    BasicInfoSection --> ServiceNameField[FormField: text, name="serviceName", label="Service Name", placeholder="e.g., Haircut", required=true]
+    BasicInfoSection --> DescriptionField[FormField: textarea, name="description", label="Description", placeholder="Describe your service...", rows=4]
+    BasicInfoSection --> CategorySelect[FormField: select, name="category", label="Category", options=["Hair", "Beard", "Spa", "Nails"], placeholder="Select a category"]
+    BasicInfoSection --> ServiceImageField[FormField: image, name="serviceImage", label="Service Image", accept="image/*"]
+    
+    %% Step 2: Pricing
+    FormWizard --> PricingStep[FormStep: title="Pricing"]
+    PricingStep --> PricingSection[FormSection:]
+    PricingSection --> DurationField[FormField: number, name="duration", label="Duration (minutes)", min=15, step=15, value=30]
+    PricingSection --> PriceField[FormField: currency, name="price", label="Price", currency="USD", value=25]
+    PricingSection --> VariablePricingCheckbox[FormField: checkbox, name="variablePricing", label="Variable pricing based on client"]
+    
+    %% Step 3: Availability
+    FormWizard --> AvailabilityStep[FormStep: title="Availability"]
+    AvailabilityStep --> AvailabilitySection[FormSection:]
+    AvailabilitySection --> AvailableOnlineCheckbox[FormField: checkbox, name="availableOnline", label="Available for online booking", checked=true]
+    AvailabilitySection --> BookingWindowRange[FormField: range, name="bookingWindow", label="Booking window", min=0, max=30, value=[0, 7], tooltips=true]
+    AvailabilitySection --> SimultaneousBookingCheckbox[FormField: checkbox, name="simultaneousBooking", label="Can be booked simultaneously with other services"]
+    
+    %% Step 4: Review
+    FormWizard --> ReviewStep[FormStep: title="Review"]
+    ReviewStep --> ReviewStack[Stack: spacing="16px"]
+    ReviewStack --> ServicePreviewHeading[Heading: level=3, text="Service Preview"]
+    ReviewStack --> ServiceCardPreview[ServiceCard: title="[Service Name]", description="[Description]", duration="[Duration]", price="[Price]"]
+    ReviewStack --> NavigationButtons[Flex: direction="row", justify="space-between"]
+    NavigationButtons --> BackButton[Button: variant="secondary", text="Back"]
+    NavigationButtons --> PublishButton[Button: variant="primary", text="Publish Service"]
+    
+    %% Global Footer
+    AppRoot --> GlobalFooter[Box: padding="24px", background="#F3F4F6"]
+    GlobalFooter --> FooterText[Text: content="© 2025 AppointmentScheduler. All rights reserved.", align="center"]
+
+    %% Styling for new components
+    style AppRoot fill:#F3F4F6,stroke:none
+    style GlobalNavWrapper fill:#FFFFFF,stroke:none
+    style GlobalNav fill:#FFFFFF,stroke:none,border-bottom:1px solid #E5E7EB
+    style MainContentWrapper fill:none,stroke:none
+    style SidebarNav fill:#FFFFFF,stroke:none,width:200px,border-right:1px solid #E5E7EB
+    style GlobalFooter fill:#F3F4F6,stroke:none
+    style FooterText fill:#6B7280,stroke:none,font-size:12px
+
+    %% Styling for existing components, adjusted to new structure
+    style PrimaryContentArea fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style HeaderSection fill:#111827,stroke:none
+    style FormWizard fill:#FFFFFF,stroke:none
+    style BasicInfoStep fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style BasicInfoSection fill:#FFFFFF,stroke:none
+    style ServiceNameField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style DescriptionField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style CategorySelect fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style ServiceImageField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style PricingStep fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style PricingSection fill:#FFFFFF,stroke:none
+    style DurationField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style PriceField fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style VariablePricingCheckbox fill:#FFFFFF,stroke:none
+    style AvailabilityStep fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style AvailabilitySection fill:#FFFFFF,stroke:none
+    style AvailableOnlineCheckbox fill:#FFFFFF,stroke:none
+    style BookingWindowRange fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style SimultaneousBookingCheckbox fill:#FFFFFF,stroke:none
+    style ReviewStep fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style ReviewStack fill:#FFFFFF,stroke:none
+    style ServicePreviewHeading fill:#111827,stroke:none
+    style ServiceCardPreview fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style NavigationButtons fill:#FFFFFF,stroke:none
+    style BackButton fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px,color:#111827
+    style PublishButton fill:#2563EB,stroke:#2563EB,stroke-width:1px,color:#FFFFFF

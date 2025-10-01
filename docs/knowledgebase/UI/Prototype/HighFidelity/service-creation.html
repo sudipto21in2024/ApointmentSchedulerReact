@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Service</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* Custom styles based on the themeVariables and component properties */
+        :root {
+            --primary-color: #2563EB;
+            --secondary-color: #1D4ED8;
+            --line-color: #6B7280;
+        }
+
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6; /* Light gray background */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Global Layout */
+        .app-header {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            padding: 16px 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .app-header .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .app-header .nav-item {
+            margin-left: 20px;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .main-content-wrapper {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        .sidebar-nav {
+            width: 200px;
+            background-color: #FFFFFF;
+            border-right: 1px solid #E5E7EB;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            color: #374151;
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .sidebar-nav-item:hover {
+            background-color: #F3F4F6;
+            color: var(--primary-color);
+        }
+        .sidebar-nav-item.active {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+        }
+        .sidebar-nav-item.active .material-icons {
+            color: #FFFFFF;
+        }
+
+        .primary-content-area {
+            flex-grow: 1;
+            padding: 24px;
+            background-color: #FFFFFF;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 24px; /* Adjust margin as needed */
+        }
+
+        .global-footer {
+            background-color: #F3F4F6;
+            padding: 24px;
+            text-align: center;
+            color: #6B7280;
+            font-size: 12px;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        /* Component specific styles */
+        .container-component {
+            max-width: 800px;
+            padding: 24px;
+            background-color: #FFFFFF; /* Moved from .primary-content-area */
+            border: 1px solid #D1D5DB; /* Moved from .primary-content-area */
+            border-radius: 8px; /* Moved from .primary-content-area */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Moved from .primary-content-area */
+            width: 100%;
+            margin: 0 auto; /* Center the container within its parent */
+        }
+
+        .form-section {
+            padding: 0;
+            margin-bottom: 16px;
+        }
+        .form-section h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #111827;
+        }
+
+        .form-field-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-field-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            font-size: 1rem;
+            color: #374151;
+        }
+
+        .form-field-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .form-field-textarea {
+            resize: vertical;
+        }
+
+        .form-field-checkbox {
+            display: flex;
+            align-items: center;
+        }
+        .form-field-checkbox input[type="checkbox"] {
+            margin-right: 8px;
+            height: 16px;
+            width: 16px;
+            color: var(--primary-color);
+            border-color: #D1D5DB;
+            border-radius: 4px;
+        }
+
+        .form-wizard-steps {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .form-wizard-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            z-index: 1;
+        }
+        .form-wizard-step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #E5E7EB;
+            color: #6B7280;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .form-wizard-step-circle.active {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+        }
+        .form-wizard-step-line {
+            position: absolute;
+            height: 2px;
+            background-color: #E5E7EB;
+            left: 0;
+            right: 0;
+            top: 15px; /* Half of circle height */
+            z-index: 0;
+        }
+        .form-wizard-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            background-color: #E5E7EB;
+            width: calc(100% - 64px); /* Adjust based on circle width and spacing */
+            left: calc(50% + 16px); /* Half circle width + some spacing */
+            top: 15px;
+            z-index: 0;
+        }
+        .form-wizard-step.active + .form-wizard-step::before {
+            background-color: var(--primary-color);
+        }
+
+        .button-primary {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .button-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .button-secondary {
+            background-color: #FFFFFF;
+            color: #374151;
+            border: 1px solid #D1D5DB;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .button-secondary:hover {
+            background-color: #F3F4F6;
+            border-color: #9CA3AF;
+        }
+
+        .service-card {
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .service-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .service-card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        .service-card-description {
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+        .service-card-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: #374151;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Global Navigation (Header) -->
+    <header class="app-header">
+        <div class="logo">AppointmentScheduler</div>
+        <nav>
+            <a href="#" class="nav-item">Dashboard</a>
+            <a href="#" class="nav-item">Services</a>
+            <a href="#" class="nav-item">Bookings</a>
+            <a href="#" class="nav-item">Profile</a>
+        </nav>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content-wrapper">
+        <!-- Primary Content Area -->
+        <main class="primary-content-area">
+            <div class="container-component">
+                <div class="flex flex-col gap-6">
+                    <!-- Page Header -->
+                    <h1 class="text-3xl font-bold text-gray-900">Create Service</h1>
+
+                    <!-- Form Wizard -->
+                    <div class="form-wizard-steps">
+                        <div class="form-wizard-step">
+                            <div class="form-wizard-step-circle active">1</div>
+                            <div class="text-sm text-gray-700">Basic Info</div>
+                        </div>
+                        <div class="form-wizard-step">
+                            <div class="form-wizard-step-circle">2</div>
+                            <div class="text-sm text-gray-700">Pricing</div>
+                        </div>
+                        <div class="form-wizard-step">
+                            <div class="form-wizard-step-circle">3</div>
+                            <div class="text-sm text-gray-700">Availability</div>
+                        </div>
+                        <div class="form-wizard-step">
+                            <div class="form-wizard-step-circle">4</div>
+                            <div class="text-sm text-gray-700">Review</div>
+                        </div>
+                        <div class="form-wizard-step-line"></div>
+                    </div>
+
+                    <!-- Step 1: Basic Information -->
+                    <div id="step-basic-info">
+                        <div class="form-section">
+                            <div class="mb-4">
+                                <label for="serviceName" class="form-field-label">Service Name</label>
+                                <input type="text" id="serviceName" name="serviceName" placeholder="e.g., Haircut" required class="form-field-input">
+                            </div>
+                            <div class="mb-4">
+                                <label for="description" class="form-field-label">Description</label>
+                                <textarea id="description" name="description" rows="4" placeholder="Describe your service..." class="form-field-input form-field-textarea"></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="category" class="form-field-label">Category</label>
+                                <select id="category" name="category" class="form-field-input">
+                                    <option value="" disabled selected>Select a category</option>
+                                    <option value="hair">Hair</option>
+                                    <option value="beard">Beard</option>
+                                    <option value="spa">Spa</option>
+                                    <option value="nails">Nails</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="serviceImage" class="form-field-label">Service Image</label>
+                                <input type="file" id="serviceImage" name="serviceImage" accept="image/*" class="form-field-input">
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button class="button-primary" onclick="nextStep(2)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Pricing -->
+                    <div id="step-pricing" style="display: none;">
+                        <div class="form-section">
+                            <div class="mb-4">
+                                <label for="duration" class="form-field-label">Duration (minutes)</label>
+                                <input type="number" id="duration" name="duration" min="15" step="15" value="30" class="form-field-input">
+                            </div>
+                            <div class="mb-4">
+                                <label for="price" class="form-field-label">Price</label>
+                                <input type="number" id="price" name="price" value="25" class="form-field-input">
+                                <span class="text-gray-500 text-sm">USD</span>
+                            </div>
+                            <div class="form-field-checkbox mb-4">
+                                <input type="checkbox" id="variablePricing" name="variablePricing">
+                                <label for="variablePricing" class="ml-2 text-sm text-gray-900">Variable pricing based on client</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-between">
+                            <button class="button-secondary" onclick="nextStep(1)">Back</button>
+                            <button class="button-primary" onclick="nextStep(3)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Availability -->
+                    <div id="step-availability" style="display: none;">
+                        <div class="form-section">
+                            <div class="form-field-checkbox mb-4">
+                                <input type="checkbox" id="availableOnline" name="availableOnline" checked>
+                                <label for="availableOnline" class="ml-2 text-sm text-gray-900">Available for online booking</label>
+                            </div>
+                            <div class="mb-4">
+                                <label for="bookingWindow" class="form-field-label">Booking window</label>
+                                <!-- Range slider requires a more complex JS implementation -->
+                                <input type="range" id="bookingWindow" name="bookingWindow" min="0" max="30" value="7" class="form-field-input">
+                                <span class="text-gray-500 text-sm">0 to 30 days, currently 7 days</span>
+                            </div>
+                            <div class="form-field-checkbox mb-4">
+                                <input type="checkbox" id="simultaneousBooking" name="simultaneousBooking">
+                                <label for="simultaneousBooking" class="ml-2 text-sm text-gray-900">Can be booked simultaneously with other services</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-between">
+                            <button class="button-secondary" onclick="nextStep(2)">Back</button>
+                            <button class="button-primary" onclick="nextStep(4)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Review -->
+                    <div id="step-review" style="display: none;">
+                        <div class="flex flex-col gap-4">
+                            <h3 class="text-xl font-semibold text-gray-900">Service Preview</h3>
+                            <div class="service-card">
+                                <img src="https://via.placeholder.com/300x200?text=Service+Image" alt="Service Image">
+                                <div class="service-card-title">[Service Name]</div>
+                                <div class="service-card-description">[Description]</div>
+                                <div class="service-card-details">
+                                    <span>Duration: [Duration]</span>
+                                    <span>Price: [Price]</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mt-6">
+                            <button class="button-secondary" onclick="nextStep(3)">Back</button>
+                            <button class="button-primary">Publish Service</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Global Footer -->
+    <footer class="app-footer">
+        &copy; 2025 AppointmentScheduler. All rights reserved.
+    </footer>
+
+    <script>
+        function nextStep(step) {
+            document.getElementById('step-basic-info').style.display = 'none';
+            document.getElementById('step-pricing').style.display = 'none';
+            document.getElementById('step-availability').style.display = 'none';
+            document.getElementById('step-review').style.display = 'none';
+
+            document.querySelector('.form-wizard-step-circle:nth-child(1)').classList.remove('active');
+            document.querySelector('.form-wizard-step-circle:nth-child(2)').classList.remove('active');
+            document.querySelector('.form-wizard-step-circle:nth-child(3)').classList.remove('active');
+            document.querySelector('.form-wizard-step-circle:nth-child(4)').classList.remove('active');
+
+            if (step === 1) {
+                document.getElementById('step-basic-info').style.display = 'block';
+                document.querySelector('.form-wizard-step-circle:nth-child(1)').classList.add('active');
+            } else if (step === 2) {
+                document.getElementById('step-pricing').style.display = 'block';
+                document.querySelector('.form-wizard-step-circle:nth-child(2)').classList.add('active');
+            } else if (step === 3) {
+                document.getElementById('step-availability').style.display = 'block';
+                document.querySelector('.form-wizard-step-circle:nth-child(3)').classList.add('active');
+            } else if (step === 4) {
+                document.getElementById('step-review').style.display = 'block';
+                document.querySelector('.form-wizard-step-circle:nth-child(4)').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+{
+  "component_library": "booking_components",
+  "version": "1.0.0",
+  "components": {
+    "BookingWizardComponent": {
+      "template_id": "multi_step_wizard_card",
+      "required_structure": {
+        "root": {
+          "element": "div",
+          "classes": ["booking-wizard-container", "py-12", "bg-neutral-100"],
+          "children": ["wizard_card"]
+        },
+        "wizard_card": {
+          "element": "div",
+          "classes": ["wizard-card", "max-w-4xl", "mx-auto", "bg-white", "rounded-xl", "shadow-lg", "overflow-hidden"],
+          "children": ["wizard_header", "step_tracker", "step_content", "wizard_footer"]
+        },
+        "wizard_header": {
+          "element": "div",
+          "classes": ["wizard-header", "p-6", "bg-primary", "text-white"],
+          "children": ["title"]
+        },
+        "title": {
+          "element": "h2",
+          "classes": ["text-2xl", "font-bold"],
+          "content": "Book Your Appointment"
+        },
+        "step_tracker": {
+          "element": "div",
+          "classes": ["step-tracker", "flex", "justify-around", "p-4", "border-b"],
+          "children": ["step_1", "step_2", "step_3"]
+        },
+        "step_1": {
+          "element": "div",
+          "classes": ["step", "step-active", "flex", "items-center", "space-x-2"],
+          "children": ["step_1_indicator", "step_1_label"]
+        },
+        "step_1_indicator": {
+          "element": "div",
+          "classes": ["step-indicator", "w-8", "h-8", "rounded-full", "bg-primary", "text-white", "flex", "items-center", "justify-center", "font-bold"],
+          "content": "1"
+        },
+        "step_1_label": {
+          "element": "span",
+          "classes": ["step-label", "font-medium", "text-primary"],
+          "content": "Select Service"
+        },
+        "step_2": {
+          "element": "div",
+          "classes": ["step", "flex", "items-center", "space-x-2"],
+          "children": ["step_2_indicator", "step_2_label"]
+        },
+        "step_2_indicator": {
+          "element": "div",
+          "classes": ["step-indicator", "w-8", "h-8", "rounded-full", "bg-gray-200", "text-gray-600", "flex", "items-center", "justify-center", "font-bold"],
+          "content": "2"
+        },
+        "step_2_label": {
+          "element": "span",
+          "classes": ["step-label", "font-medium", "text-gray-500"],
+          "content": "Choose Time"
+        },
+        "step_3": {
+          "element": "div",
+          "classes": ["step", "flex", "items-center", "space-x-2"],
+          "children": ["step_3_indicator", "step_3_label"]
+        },
+        "step_3_indicator": {
+          "element": "div",
+          "classes": ["step-indicator", "w-8", "h-8", "rounded-full", "bg-gray-200", "text-gray-600", "flex", "items-center", "justify-center", "font-bold"],
+          "content": "3"
+        },
+        "step_3_label": {
+          "element": "span",
+          "classes": ["step-label", "font-medium", "text-gray-500"],
+          "content": "Confirm"
+        },
+        "step_content": {
+          "element": "div",
+          "classes": ["step-content", "p-8"],
+          "children": ["service_selection_step"] 
+        },
+        "service_selection_step": {
+            "element": "div",
+            "classes": ["step-panel"],
+            "children": ["service_select_label", "service_select_input"]
+        },
+        "service_select_label": {
+            "element": "h3",
+            "classes": ["text-lg", "font-semibold", "text-gray-800", "mb-4"],
+            "content": "Which service would you like to book?"
+        },
+        "service_select_input": {
+            "element": "select",
+            "classes": ["w-full", "p-3", "border", "border-gray-300", "rounded-md", "focus:outline-none", "focus:ring-2", "focus:ring-primary"],
+            "attributes": {"name": "serviceId"}
+        },
+        "wizard_footer": {
+          "element": "div",
+          "classes": ["wizard-footer", "flex", "justify-between", "p-6", "bg-gray-50", "border-t"],
+          "children": ["back_button", "next_button"]
+        },
+        "back_button": {
+          "element": "button",
+          "classes": ["px-6", "py-2", "rounded-md", "bg-gray-200", "text-gray-800", "hover:bg-gray-300", "font-medium", "disabled:opacity-50"],
+          "attributes": {"type": "button", "disabled": true},
+          "content": "Back"
+        },
+        "next_button": {
+          "element": "button",
+          "classes": ["px-6", "py-2", "rounded-md", "bg-primary", "text-white", "hover:bg-primary-hover", "font-medium"],
+          "attributes": {"type": "button"},
+          "content": "Next"
+        }
+      },
+      "validation_rules": {
+        "serviceId": ["required"],
+        "slotId": ["required"],
+        "customerNotes": ["maxLength:500"]
+      }
+    }
+  }
+}

@@ -1,0 +1,393 @@
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: ./backend/Gateway/Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=80
+      - Consul:Host=http://consul:8500
+    depends_on:
+      - consul
+      - migration-runner
+      - userservice
+      - bookingservice
+      - servicemanagementservice
+      - paymentservice
+      - notificationservice
+      - reportingservice
+      - slotmanagementservice
+      - configurationservice
+      - tenantmanagementservice
+      - authenticationservice
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthz"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  consul:
+    image: consul:1.9.0
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    command: agent -server -bootstrap -ui -client=0.0.0.0
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  userservice:
+    build:
+      context: .
+      dockerfile: ./backend/services/UserService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=80 # Expose port 80 internally
+      - Consul:Host=http://consul:8500
+      - Consul:ServiceName=UserService
+    depends_on:
+      - sqlserver
+      - rabbitmq
+      - consul
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthz"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  bookingservice:
+    build:
+      context: .
+      dockerfile: ./backend/services/BookingService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=80
+      - Consul:Host=http://consul:8500
+      - Consul:ServiceName=BookingService
+    depends_on:
+      - sqlserver
+      - consul
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthz"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  servicemanagementservice:
+    build:
+      context: .
+      dockerfile: ./backend/services/ServiceManagementService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=80
+      - Consul:Host=http://consul:8500
+      - Consul:ServiceName=ServiceManagementService
+    depends_on:
+      - sqlserver
+      - consul
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthz"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  paymentservice:
+    build:
+      context: .
+      dockerfile: ./backend/services/PaymentService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=80
+      - Consul:Host=http://consul:8500
+      - Consul:ServiceName=PaymentService
+    depends_on:
+      - sqlserver
+      - consul
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthz"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  notificationservice:
+    build:
+      context: .
+      dockerfile: ./backend/services/NotificationService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=80
+      - Consul:Host=http://consul:8500
+      - Consul:ServiceName=NotificationService
+    depends_on:
+      - sqlserver
+      - consul
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthz"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  reportingservice:
+    build:
+      context: .
+      dockerfile: ./backend/services/ReportingService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=80
+      - Consul:Host=http://consul:8500
+      - Consul:ServiceName=ReportingService
+    depends_on:
+      - sqlserver
+      - consul
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthz"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  slotmanagementservice:
+    build:
+      context: .
+      dockerfile: ./backend/services/SlotManagementService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=80
+      - Consul:Host=http://consul:8500
+      - Consul:ServiceName=SlotManagementService
+    depends_on:
+      - sqlserver
+      - consul
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthz"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  configurationservice:
+    build:
+      context: .
+      dockerfile: ./backend/services/ConfigurationService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=80
+      - Consul:Host=http://consul:8500
+      - Consul:ServiceName=ConfigurationService
+    depends_on:
+      - sqlserver
+      - consul
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthz"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  tenantmanagementservice:
+    build:
+      context: .
+      dockerfile: ./backend/services/TenantManagementService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=80
+      - Consul:Host=http://consul:8500
+      - Consul:ServiceName=TenantManagementService
+    depends_on:
+      - sqlserver
+      - consul
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthz"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  authenticationservice:
+    build:
+      context: .
+      dockerfile: ./backend/services/AuthenticationService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=80
+      - Consul:Host=http://consul:8500
+      - Consul:ServiceName=AuthenticationService
+    depends_on:
+      - sqlserver
+      - consul
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthz"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  sqlserver:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    ports:
+      - "1433:1433"
+    restart: always
+    healthcheck:
+      test: ["CMD", "sqlcmd", "-S", "localhost", "-U", "sa", "-P", "MySuperSecretPassword123!", "-Q", "SELECT 1"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=MySuperSecretPassword123!
+      - MSSQL_PID=Developer
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+      - ./database-scripts:/database-scripts
+    command: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$$SA_PASSWORD" -i /database-scripts/setup.sql
+
+  migration-runner:
+    build:
+      context: .
+      dockerfile: ./database-scripts/Dockerfile.migration
+    environment:
+      - SA_PASSWORD=MySuperSecretPassword123!
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    restart: "no"  # Run once and exit
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - prometheus_data:/prometheus
+      - ./monitoring/prometheus-config.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - sqlserver
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.6
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.17.6
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./logging/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.6
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "14268:14268"
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    ports:
+      - "4317:4317"
+      - "55680:55680"
+    volumes:
+      - ./tracing/otel-collector-config.yml:/etc/otel-collector-config.yml
+    depends_on:
+      - jaeger
+
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.17.6
+    ports:
+      - "8200:8200"
+    environment:
+      - APM_SERVER_HOST=0.0.0.0:8200
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+  cadvisor:
+    image: gcr.io/google-containers/cadvisor:latest
+    ports:
+      - "8080:8080"
+  alertmanager:
+    image: prom/alertmanager:latest
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    depends_on:
+      - prometheus
+
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  runbook_executor:
+    build:
+      context: .
+      dockerfile: ./scripts/Dockerfile.runbook_executor
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    restart: always
+
+volumes:
+  sqlserver_data:
+  prometheus_data:
+  grafana_data:
+  elasticsearch_data:

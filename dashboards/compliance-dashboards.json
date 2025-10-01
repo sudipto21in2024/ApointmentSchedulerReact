@@ -1,0 +1,57 @@
+{
+  "title": "Compliance Dashboard",
+  "description": "A dashboard to visualize compliance-related data.",
+  "panels": [
+    {
+      "title": "Failed Login Attempts",
+      "type": "metric",
+      "query": "sum(failed_login_attempts_total)"
+    },
+    {
+      "title": "Unauthorized Access Attempts",
+      "type": "metric",
+      "query": "sum(unauthorized_access_attempts_total)"
+    },
+    {
+      "title": "Configuration Changes",
+      "type": "table",
+      "columns": ["timestamp", "user", "action", "resource"],
+      "query": "type:configuration_change"
+    },
+    {
+      "title": "Audit Log Events",
+      "type": "table",
+      "columns": ["timestamp", "user", "action", "resource"],
+      "query": "type:audit_log"
+    },
+    {
+      "title": "Firewall Events",
+      "type": "table",
+      "columns": ["timestamp", "source", "destination", "action"],
+      "query": "type:firewall"
+    }
+  ],
+  "time_range": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "Prometheus",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "matchAny": false,
+          "tags": [],
+          "type": "tags"
+        }
+      }
+    ]
+  }
+}

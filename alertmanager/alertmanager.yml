@@ -1,0 +1,26 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 12h
+  receiver: 'rabbitmq.alerts'
+
+receivers:
+  - name: 'web.hook'
+    webhook_configs:
+      - url: 'http://localhost:3000/alerts'
+
+  - name: 'rabbitmq.alerts'
+    rabbitmq_configs:
+      - uri: 'amqp://guest:guest@rabbitmq:5672/'
+        exchange: ''
+        routing_key: '{{ .CommonLabels.service }}'
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']

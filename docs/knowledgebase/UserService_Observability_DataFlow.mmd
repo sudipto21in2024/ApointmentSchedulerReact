@@ -1,0 +1,71 @@
+graph TD
+    A[API Request] --> B[Authentication Middleware]
+    B --> C[Authorization Middleware]
+    C --> D[AuthController]
+    D --> E[Activity Span Creation]
+    E --> F[Trace ID Injection in Logs]
+    F --> G[AuthenticationService]
+    G --> H[UserService]
+    H --> I[Database Operation]
+    I --> J[Response Generation]
+    J --> K[Activity Span Completion]
+    K --> L[Response to Client]
+    
+    subgraph "Observability Components"
+        M[OpenTelemetry Collector]
+        N[Jaeger - Tracing]
+        O[Elasticsearch - Logs]
+        P[Grafana - Metrics]
+        Q[Prometheus - Metrics]
+    end
+    
+    D -- "Trace Context" --> M
+    G -- "Trace Context" --> M
+    H -- "Trace Context" --> M
+    I -- "Trace Context" --> M
+    
+    M --> N
+    M --> O
+    M --> Q
+    
+    N -- "Traces" --> P
+    O -- "Logs" --> P
+    Q -- "Metrics" --> P
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#f3e5f5
+    style D fill:#e8f5e8
+    style G fill:#fff3e0
+    style H fill:#fce4ec
+    style I fill:#f1f8e9
+    style M fill:#c8e6c9
+    style N fill:#b2dfdb
+    style O fill:#bbdefb
+    style P fill:#d1c4e9
+    style Q fill:#ffccbc
+    
+    classDef requestFlow fill:#e1f5fe,stroke:#333;
+    classDef middleware fill:#f3e5f5,stroke:#33;
+    classDef controller fill:#e8f5e8,stroke:#333;
+    classDef service fill:#fff3e0,stroke:#33;
+    classDef data fill:#fce4ec,stroke:#33;
+    classDef response fill:#f1f8e9,stroke:#333;
+    classDef observability fill:#c8e6c9,stroke:#333;
+    classDef tracing fill:#b2dfdb,stroke:#33;
+    classDef logging fill:#bbdefb,stroke:#333;
+    classDef visualization fill:#d1c4e9,stroke:#333;
+    classDef metrics fill:#ffccbc,stroke:#333;
+    
+    class A,requestFlow
+    class B,C,middleware
+    class D,controller
+    class E,F,observability
+    class G,service
+    class H,data
+    class I,response
+    class M,observability
+    class N,tracing
+    class O,logging
+    class P,visualization
+    class Q,metrics

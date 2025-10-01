@@ -1,0 +1,28 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
+WORKDIR /app
+
+# Copy everything
+COPY . .
+
+# Install EF Core tools globally
+RUN dotnet tool install --global dotnet-ef --version 8.0.0
+
+# Add dotnet tools to PATH
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+# Create migration script
+RUN echo '#!/bin/bash\n\
+echo "Waiting for SQL Server to be ready..."\n\
+until /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P "$SA_PASSWORD" -Q "SELECT 1" > /dev/null 2>&1; do\n\
+  echo "SQL Server is unavailable - sleeping"\n\
+  sleep 5\n\
+done\n\
+echo "SQL Server is ready. Running EF Core migrations..."\n\
+cd /app/shared\n\
+dotnet ef database update --connection "Server=sqlserver;Database=AppointmentScheduler;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=true" --project Shared.csproj\n\
+echo "EF Core migrations completed successfully"\n\
+echo "Migration service completed - exiting"' > /app/run-migrations.sh
+
+RUN chmod +x /app/run-migrations.sh
+
+ENTRYPOINT ["/app/run-migrations.sh"]

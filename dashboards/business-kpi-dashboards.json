@@ -1,0 +1,30 @@
+{
+  "title": "Business KPI Dashboard",
+  "description": "A dashboard to visualize key business performance indicators.",
+  "panels": [
+    {
+      "title": "Total Bookings",
+      "type": "metric",
+      "query": "sum(bookings_total)"
+    },
+    {
+      "title": "Average Booking Value",
+      "type": "metric",
+      "query": "avg(booking_value_avg)"
+    },
+    {
+      "title": "Customer Retention Rate",
+      "type": "metric",
+      "query": "customer_retention_rate"
+    },
+    {
+      "title": "Booking Conversion Rate",
+      "type": "metric",
+      "query": "booking_conversion_rate"
+    }
+  ],
+  "time_range": {
+    "from": "now-30d",
+    "to": "now"
+  }
+}

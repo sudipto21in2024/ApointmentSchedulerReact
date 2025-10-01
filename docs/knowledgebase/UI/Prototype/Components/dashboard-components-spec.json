@@ -1,0 +1,122 @@
+{
+  "component_library": "dashboard_components",
+  "version": "1.0.0",
+  "components": {
+    "ProviderDashboardComponent": {
+      "template_id": "dashboard_main_content",
+      "required_structure": {
+        "root": {
+          "element": "div",
+          "classes": ["dashboard-container", "p-6", "bg-neutral-100"],
+          "children": ["kpi_grid", "recent_bookings_section"]
+        },
+        "kpi_grid": {
+          "element": "div",
+          "classes": ["grid", "grid-cols-1", "md:grid-cols-2", "lg:grid-cols-4", "gap-6", "mb-8"],
+          "children": ["kpi_card_revenue", "kpi_card_bookings", "kpi_card_customers", "kpi_card_satisfaction"]
+        },
+        "kpi_card_revenue": {
+          "element": "div",
+          "classes": ["kpi-card", "bg-white", "p-6", "rounded-lg", "shadow"],
+          "children": ["kpi_revenue_header", "kpi_revenue_value", "kpi_revenue_trend"]
+        },
+        "kpi_revenue_header": {
+          "element": "div",
+          "classes": ["flex", "justify-between", "items-start"],
+          "children": ["kpi_revenue_title", "kpi_revenue_icon"]
+        },
+        "kpi_revenue_title": { "element": "h4", "classes": ["text-sm", "font-medium", "text-gray-500"], "content": "Total Revenue" },
+        "kpi_revenue_icon": { "element": "div", "classes": ["text-green-500"] },
+        "kpi_revenue_value": { "element": "p", "classes": ["text-3xl", "font-bold", "text-gray-900", "mt-2"], "content": "$0.00" },
+        "kpi_revenue_trend": { "element": "p", "classes": ["text-xs", "text-gray-500", "mt-1"], "content": "+0% from last month" },
+        
+        "kpi_card_bookings": {
+          "element": "div",
+          "classes": ["kpi-card", "bg-white", "p-6", "rounded-lg", "shadow"],
+          "children": ["kpi_bookings_header", "kpi_bookings_value", "kpi_bookings_trend"]
+        },
+        "kpi_bookings_header": {
+          "element": "div",
+          "classes": ["flex", "justify-between", "items-start"],
+          "children": ["kpi_bookings_title", "kpi_bookings_icon"]
+        },
+        "kpi_bookings_title": { "element": "h4", "classes": ["text-sm", "font-medium", "text-gray-500"], "content": "Total Bookings" },
+        "kpi_bookings_icon": { "element": "div", "classes": ["text-blue-500"] },
+        "kpi_bookings_value": { "element": "p", "classes": ["text-3xl", "font-bold", "text-gray-900", "mt-2"], "content": "0" },
+        "kpi_bookings_trend": { "element": "p", "classes": ["text-xs", "text-gray-500", "mt-1"], "content": "+0% from last month" },
+
+        "kpi_card_customers": {
+          "element": "div",
+          "classes": ["kpi-card", "bg-white", "p-6", "rounded-lg", "shadow"],
+          "children": ["kpi_customers_header", "kpi_customers_value", "kpi_customers_trend"]
+        },
+        "kpi_customers_header": { "element": "div", "classes": ["flex", "justify-between", "items-start"], "children": ["kpi_customers_title", "kpi_customers_icon"] },
+        "kpi_customers_title": { "element": "h4", "classes": ["text-sm", "font-medium", "text-gray-500"], "content": "New Customers" },
+        "kpi_customers_icon": { "element": "div", "classes": ["text-purple-500"] },
+        "kpi_customers_value": { "element": "p", "classes": ["text-3xl", "font-bold", "text-gray-900", "mt-2"], "content": "0" },
+        "kpi_customers_trend": { "element": "p", "classes": ["text-xs", "text-gray-500", "mt-1"], "content": "+0% from last month" },
+
+        "kpi_card_satisfaction": {
+          "element": "div",
+          "classes": ["kpi-card", "bg-white", "p-6", "rounded-lg", "shadow"],
+          "children": ["kpi_satisfaction_header", "kpi_satisfaction_value", "kpi_satisfaction_trend"]
+        },
+        "kpi_satisfaction_header": { "element": "div", "classes": ["flex", "justify-between", "items-start"], "children": ["kpi_satisfaction_title", "kpi_satisfaction_icon"] },
+        "kpi_satisfaction_title": { "element": "h4", "classes": ["text-sm", "font-medium", "text-gray-500"], "content": "Satisfaction" },
+        "kpi_satisfaction_icon": { "element": "div", "classes": ["text-yellow-500"] },
+        "kpi_satisfaction_value": { "element": "p", "classes": ["text-3xl", "font-bold", "text-gray-900", "mt-2"], "content": "0%" },
+        "kpi_satisfaction_trend": { "element": "p", "classes": ["text-xs", "text-gray-500", "mt-1"], "content": "Based on X reviews" },
+
+        "recent_bookings_section": {
+          "element": "div",
+          "classes": ["recent-bookings", "bg-white", "p-6", "rounded-lg", "shadow"],
+          "children": ["bookings_header", "bookings_table_wrapper"]
+        },
+        "bookings_header": {
+          "element": "div",
+          "classes": ["flex", "justify-between", "items-center", "mb-4"],
+          "children": ["bookings_title", "view_all_link"]
+        },
+        "bookings_title": {
+          "element": "h3",
+          "classes": ["text-lg", "font-semibold", "text-gray-800"],
+          "content": "Recent Bookings"
+        },
+        "view_all_link": {
+          "element": "a",
+          "classes": ["text-sm", "font-medium", "text-primary", "hover:text-primary-hover"],
+          "attributes": {"href": "/bookings"},
+          "content": "View All"
+        },
+        "bookings_table_wrapper": {
+          "element": "div",
+          "classes": ["overflow-x-auto"],
+          "children": ["bookings_table"]
+        },
+        "bookings_table": {
+          "element": "table",
+          "classes": ["w-full", "text-sm", "text-left", "text-gray-500"],
+          "children": ["table_head", "table_body"]
+        },
+        "table_head": {
+          "element": "thead",
+          "classes": ["text-xs", "text-gray-700", "uppercase", "bg-gray-50"],
+          "children": ["table_header_row"]
+        },
+        "table_header_row": {
+          "element": "tr",
+          "children": ["th_customer", "th_service", "th_date", "th_status", "th_actions"]
+        },
+        "th_customer": { "element": "th", "classes": ["px-6", "py-3"], "content": "Customer" },
+        "th_service": { "element": "th", "classes": ["px-6", "py-3"], "content": "Service" },
+        "th_date": { "element": "th", "classes": ["px-6", "py-3"], "content": "Date & Time" },
+        "th_status": { "element": "th", "classes": ["px-6", "py-3"], "content": "Status" },
+        "th_actions": { "element": "th", "classes": ["px-6", "py-3"], "content": "Actions" },
+        "table_body": {
+          "element": "tbody"
+        }
+      },
+      "validation_rules": {}
+    }
+  }
+}

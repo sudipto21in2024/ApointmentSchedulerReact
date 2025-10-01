@@ -1,0 +1,59 @@
+# Custom Application Metrics
+
+This file provides notes on how to create custom application metrics.
+
+**Custom Application Metrics:**
+
+Custom application metrics are metrics that are specific to your application and provide insights into its unique behavior.
+
+**Implementation Steps:**
+
+1.  **Identify Key Metrics:**
+    *   Identify the key metrics that are important to your application and your business.
+    *   Examples:
+        *   Number of new users
+        *   Number of active users
+        *   Transaction volume
+        *   Order value
+2.  **Instrument Application Code:**
+    *   Instrument your application code to collect the custom metrics.
+    *   Use a Prometheus client library or other appropriate tool to collect and expose the metrics.
+3.  **Define Prometheus Metrics:**
+    *   Define the custom metrics in Prometheus.
+    *   Use appropriate metric types (e.g., Counter, Gauge, Histogram).
+4.  **Configure Prometheus to Scrape Metrics:**
+    *   Configure Prometheus to scrape the custom metrics from your application.
+    *   Add a new scrape job to the `prometheus.yml` file.
+5.  **Create Grafana Dashboards:**
+    *   Create Grafana dashboards to visualize the custom metrics.
+    *   Use appropriate visualizations (e.g., graphs, tables, single stat panels) to display the metrics.
+
+**Example Implementation (Java):**
+
+```java
+import io.prometheus.client.Counter;
+
+public class MyAppMetrics {
+
+    static final Counter newUsers = Counter.build()
+            .name("new_users_total")
+            .help("Total number of new users.")
+            .labelNames("trace_id")
+            .register();
+
+    public static void recordNewUser() {
+        newUsers.inc();
+    }
+}
+```
+
+**Technical Notes:**
+
+*   Choose metric names that are descriptive and consistent.
+*   Use labels to add context to the metrics (e.g., service name, environment).
+*   Regularly review and adjust the custom metrics to ensure they are still relevant and providing valuable insights.
+
+**Security Considerations:**
+
+*   Ensure that custom metric data does not contain sensitive information.
+*   Implement access control for Prometheus and Grafana to prevent unauthorized access to metric data.

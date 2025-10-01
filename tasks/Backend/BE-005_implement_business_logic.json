@@ -1,0 +1,149 @@
+{
+  "task_id": "BE-005",
+  "title": "Implement Core Booking and Appointment Business Logic",
+  "description": "Develop the core business logic for the appointment booking system including booking workflows, slot management, payment processing, and notification systems. This ensures all business rules and processes function correctly within the system.",
+  "priority": "HIGH",
+  "complexity": 5,
+  "effort_estimate": {
+    "hours": 40,
+    "story_points": 13,
+    "justification": "Implementing complex business logic for booking workflows, slot management, payment processing, and notifications is a highly complex task that requires deep understanding of the business requirements and careful implementation of multiple interconnected processes."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a service provider, I want to manage my service availability so that customers can book appointments",
+      "As a customer, I need to book appointments with proper slot availability checks",
+      "As a system, I must process payments securely so that transactions are completed successfully",
+      "As a user, I want notifications about my bookings so that I'm informed of changes"
+    ],
+    "business_rules": [
+      "Booking slot availability must be checked before reservation",
+      "Payment processing must follow security protocols",
+      "Notifications must be sent for booking confirmations and changes",
+      "Booking cancellation policies must be enforced",
+      "Slot conflicts must be detected and prevented",
+      "Booking status changes must be tracked and audited"
+    ],
+    "edge_cases": [
+      "Handling simultaneous booking requests for same slot",
+      "Managing booking conflicts and rescheduling",
+      "Processing refunds and cancellations",
+      "Implementing proper error handling for payment failures",
+      "Managing time zone conversions for global users",
+      "Tracking booking status changes and history"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-004"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Payment gateway integration",
+      "Notification service integration"
+    ]
+  },
+  "acceptance_criteria": [
+    "Booking workflow is fully implemented with proper validation",
+    "Slot management system prevents conflicts and handles availability",
+    "Payment processing works correctly with error handling",
+    "Notification system sends appropriate alerts to users",
+    "Cancellation and refund policies are enforced",
+    "Business logic is properly tested and documented",
+    "All business rules are enforced consistently",
+    "Booking status tracking and audit trail is maintained"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "Business Logic Implementation",
+    "Workflow Management",
+    "Payment Processing",
+    "Notification Systems"
+  ],
+  "related_files": {
+    "will_create": [
+      "services/BookingService.cs",
+      "services/SlotService.cs",
+      "services/PaymentService.cs",
+      "services/NotificationService.cs",
+      "validators/BookingValidator.cs",
+      "processors/BookingProcessor.cs",
+      "processors/SlotProcessor.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd",
+      "docs/Entities/DatabaseSchema.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking",
+      "Slot",
+      "Payment",
+      "Notification"
+    ],
+    "related": [
+      "User",
+      "Service",
+      "Tenant"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/bookings",
+        "description": "Create a new booking"
+      },
+      {
+        "method": "PUT",
+        "path": "/bookings/{id}/cancel",
+        "description": "Cancel a booking"
+      },
+      {
+        "method": "POST",
+        "path": "/payments/process",
+        "description": "Process a payment"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/booking-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Booking workflow logic",
+      "Slot availability validation",
+      "Payment processing",
+      "Notification sending",
+      "Cancellation and refund logic",
+      "Booking status tracking"
+    ],
+    "integration_tests": [
+      "End-to-end booking flow",
+      "Payment gateway integration",
+      "Notification delivery",
+      "Database consistency checks",
+      "Booking status audit trail"
+    ],
+    "e2e_tests": [
+      "Complete booking journey",
+      "Payment processing workflow",
+      "Booking modification and cancellation",
+      "Notification delivery scenarios",
+      "Booking status tracking and history"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-004"
+    ],
+    "blocking_reason": "Basic CRUD operations must be implemented first to provide the foundation for business logic",
+    "can_start_date": "After BE-004 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement the core booking workflow as described in the BRD and LLD documents. Ensure proper validation of slot availability, implement conflict resolution, and handle edge cases like simultaneous booking requests. Follow the CQRS pattern for complex operations. Include booking status tracking and audit trails.",
+    "design_references": "Business requirements document and low-level design documentation",
+    "security_considerations": "Payment processing must follow PCI DSS compliance. All sensitive data must be handled securely. Booking status changes must be audited."
+  }
+}

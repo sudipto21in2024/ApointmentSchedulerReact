@@ -1,0 +1,101 @@
+// Input Component Styles
+// Uses design tokens from docs/UI/DesignTokens.json
+
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+input {
+  width: 100%;
+  font-family: var(--font-family, 'Inter', sans-serif);
+  border-radius: var(--border-radius-input, 6px);
+  transition: var(--transition-normal, 0.2s ease);
+  outline: none;
+  border: 1px solid var(--color-neutral-gray300, #d1d5db);
+  background-color: var(--color-neutral-white, #ffffff);
+
+  &:focus {
+    border-color: var(--color-primary-main, #2563EB);
+    box-shadow: var(--focus-ring, 0 0 0 3px rgba(37, 99, 235, 0.3));
+  }
+
+  &:disabled {
+    background-color: var(--color-neutral-gray100, #f3f4f6);
+    color: var(--color-neutral-gray500, #6b7280);
+    cursor: not-allowed;
+  }
+
+  &:read-only {
+    background-color: var(--color-neutral-gray50, #f9fafb);
+    cursor: default;
+  }
+
+  &::placeholder {
+    color: var(--color-neutral-gray500, #6b7280);
+  }
+
+  // Variants
+  &--filled {
+    background-color: var(--color-neutral-gray50, #f9fafb);
+    border-color: transparent;
+
+    &:focus {
+      background-color: var(--color-neutral-white, #ffffff);
+      border-color: var(--color-primary-main, #2563EB);
+    }
+  }
+
+  &--outlined {
+    background-color: transparent;
+    border-color: var(--color-neutral-gray300, #d1d5db);
+  }
+
+  // Sizes
+  &--sm {
+    height: 32px;
+    padding: 0 var(--spacing-sm, 8px);
+    font-size: var(--font-size-sm, 14px);
+  }
+
+  &--md {
+    height: 40px;
+    padding: 0 var(--spacing-md, 16px);
+    font-size: var(--font-size-base, 14px);
+  }
+
+  &--lg {
+    height: 48px;
+    padding: 0 var(--spacing-lg, 24px);
+    font-size: var(--font-size-base, 16px);
+  }
+
+  // Error state
+  &--error {
+    border-color: var(--color-secondary-danger, #ef4444);
+
+    &:focus {
+      border-color: var(--color-secondary-danger, #ef4444);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+    }
+  }
+
+  // Success state
+  &--success {
+    border-color: var(--color-secondary-success, #10b981);
+
+    &:focus {
+      border-color: var(--color-secondary-success, #10b981);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    &--lg {
+      height: 44px;
+      padding: 0 var(--spacing-md, 16px);
+    }
+  }
+}

@@ -1,0 +1,59 @@
+# Trace ID Injection in Logs
+
+This file provides notes on how to implement trace ID injection in logs.
+
+**Trace ID Injection:**
+
+Trace ID injection involves adding the trace ID to log messages so that you can correlate logs with traces.
+
+**Implementation Steps:**
+
+1.  **Get Trace ID:**
+    *   Obtain the current trace ID from the OpenTelemetry context.
+    *   The method for obtaining the trace ID depends on the language and framework you are using.
+2.  **Add Trace ID to Log Messages:**
+    *   Add the trace ID to each log message as a field (e.g., `trace_id`).
+    *   Use a consistent field name for the trace ID across all services.
+3.  **Configure Logstash to Parse Trace ID:**
+    *   Configure Logstash to parse the trace ID from the log messages.
+    *   Use a Grok filter or other appropriate filter to extract the trace ID from the log message.
+4.  **Configure Kibana to Display Trace ID:**
+    *   Configure Kibana to display the trace ID in the log view.
+    *   Add the `trace_id` field to the list of displayed columns.
+
+**Example Implementation (Java):**
+
+```java
+import io.opentelemetry.api.trace.Span;
+import org.slf4j.MDC;
+
+public class LoggingUtils {
+
+    public static void injectTraceId() {
+        Span currentSpan = Span.current();
+        if (currentSpan != null) {
+            String traceId = currentSpan.getSpanContext().getTraceId();
+            MDC.put("trace_id", traceId);
+        } else {
+            MDC.remove("trace_id");
+        }
+    }
+}
+```
+
+**Logback Configuration (logback.xml):**
+
+```xml
+<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %level %logger{36} - %msg %X{trace_id}%n</pattern>
+```
+
+**Technical Notes:**
+
+*   Use a logging framework that supports MDC (Mapped Diagnostic Context) or similar mechanisms for adding context to log messages.
+*   Ensure that the trace ID is propagated across services using context propagation.
+*   Consider adding other relevant context data to log messages, such as span ID and service name.
+
+**Security Considerations:**
+
+*   Ensure that trace IDs do not contain sensitive information.
+*   Implement access control for log data to prevent unauthorized access to trace IDs.

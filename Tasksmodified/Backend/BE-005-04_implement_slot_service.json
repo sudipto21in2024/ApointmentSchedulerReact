@@ -1,0 +1,153 @@
+{
+  "task_id": "BE-005-04",
+ "title": "Implement Slot Service",
+ "description": "Implement the SlotService class with all business logic for slot management operations",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 12,
+    "story_points": 5
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a system, I need to manage slot availability for services",
+      "As a system, I need to check slot availability before booking"
+    ],
+    "business_rules": [
+      "Slot availability must be checked before booking",
+      "Slot capacity must be managed properly",
+      "Slot conflicts must be prevented"
+    ],
+    "edge_cases": [
+      "Handling concurrent slot availability checks",
+      "Managing slot capacity updates"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-005-03"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Shared Models",
+      "Database Context"
+    ]
+  },
+  "acceptance_criteria": [
+    "SlotService implements ISlotService interface",
+    "IsSlotAvailable method correctly checks slot availability",
+    "Slot capacity is properly managed",
+    "Transaction management is implemented for slot updates"
+  ],
+ "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "Entity Framework Core",
+    "Transaction Management",
+    "Concurrency Handling"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/BookingService/Services/SlotService.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Entities/DatabaseSchema.mmd",
+      "shared/Models/Slot.cs",
+      "backend/services/BookingService/Services/ISlotService.cs"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Slot"
+    ],
+    "related": [
+      "Service",
+      "Booking"
+    ]
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Slot availability checking with available slots",
+      "Slot availability checking with unavailable slots",
+      "Slot capacity management",
+      "Slot creation and deletion"
+    ],
+    "integration_tests": [
+      "Slot availability checking with database",
+      "Slot capacity updates with concurrent access"
+    ],
+    "e2e_tests": []
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-005-03"
+    ],
+    "can_start_date": "After BE-005-03 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Use database transactions for multi-step operations. Implement proper error handling and logging.",
+    "design_references": "UserService/Services/UserService.cs",
+    "security_considerations": "Validate all input data. Implement proper locking for concurrent access."
+  },
+  "implementation_guidance": {
+    "method_signatures": [
+      "public async Task<Slot> CreateSlotAsync(CreateSlotRequest request)",
+      "public async Task<Slot> GetSlotByIdAsync(Guid slotId)",
+      "public async Task<Slot> UpdateSlotAsync(Guid slotId, UpdateSlotRequest request)",
+      "public async Task DeleteSlotAsync(Guid slotId)",
+      "public async Task<bool> IsSlotAvailableAsync(Guid slotId)",
+      "public async Task<IEnumerable<Slot>> GetAvailableSlotsAsync(Guid serviceId, DateTime startDate, DateTime endDate)",
+      "public async Task<Slot> UpdateSlotAvailabilityAsync(Guid slotId, int bookingCount)"
+    ],
+    "implementation_logic": [
+      "CreateSlotAsync: Validate slot parameters, create slot entity, save to database",
+      "GetSlotByIdAsync: Query database for slot by ID, include related entities",
+      "UpdateSlotAsync: Retrieve slot, validate parameters, update properties, save changes",
+      "DeleteSlotAsync: Validate slot can be deleted, mark as deleted or remove from database",
+      "IsSlotAvailableAsync: Check if slot exists, is available, and has capacity",
+      "GetAvailableSlotsAsync: Query slots for service within date range that are available",
+      "UpdateSlotAvailabilityAsync: Update slot availability count, handle capacity limits"
+    ],
+    "file_structure": [
+      "backend/services/BookingService/Services/SlotService.cs",
+      "backend/services/BookingService/Services/ISlotService.cs"
+    ],
+    "dependencies": [
+      "Microsoft.EntityFrameworkCore",
+      "Microsoft.Extensions.Logging",
+      "Shared.Data",
+      "Shared.Models",
+      "System.Collections.Generic",
+      "System.Threading.Tasks",
+      "System.Linq"
+    ],
+    "error_handling": [
+      "EntityNotFoundException: When requested slot is not found",
+      "BusinessRuleViolationException: When business rules are violated",
+      "DbUpdateException: When database operations fail",
+      "Use database transactions for multi-step operations with rollback on errors"
+    ],
+    "testing_guidance": [
+      "CreateSlotAsync_WithValidRequest_CreatesSlot",
+      "GetSlotByIdAsync_WithValidId_ReturnsSlot",
+      "UpdateSlotAsync_WithValidRequest_UpdatesSlot",
+      "DeleteSlotAsync_WithValidId_DeletesSlot",
+      "IsSlotAvailableAsync_WithAvailableSlot_ReturnsTrue",
+      "IsSlotAvailableAsync_WithUnavailableSlot_ReturnsFalse",
+      "GetAvailableSlotsAsync_WithValidRange_ReturnsSlots",
+      "UpdateSlotAvailabilityAsync_WithValidCount_UpdatesSlot"
+    ]
+  }
+}

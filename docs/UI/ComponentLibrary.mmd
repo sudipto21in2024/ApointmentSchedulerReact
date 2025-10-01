@@ -1,0 +1,266 @@
+---
+title: Component Library - Multi-Tenant Appointment Booking System
+---
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#2563EB", "secondaryColor": "#1D4ED8", "lineColor": "#6B7280"}}}%%
+graph TD
+    %% Main Components
+    A[Header] --> B[Navigation]
+    A --> C[User Menu]
+    A --> D[Search Bar]
+    
+    B --> B1[Logo]
+    B --> B2[Main Nav Items]
+    B --> B3[Mobile Menu Toggle]
+    
+    C --> C1[Avatar]
+    C --> C2[User Name]
+    C --> C3[Dropdown Menu]
+    
+    D --> D1[Search Input]
+    D --> D2[Search Icon]
+    
+    %% Page Components
+    E[Page Layout] --> F[Dashboard Sidebar]
+    E --> G[Main Content Area]
+    
+    F --> F1[Navigation Menu]
+    F --> F2[Quick Stats]
+    F --> F3[Tenant Selector]
+    
+    G --> G1[Page Header]
+    G --> G2[Content Cards]
+    G --> G3[Action Buttons]
+    
+    %% Cards and Data Displays
+    H[Cards] --> H1[Service Card]
+    H --> H2[Booking Card]
+    H --> H3[Review Card]
+    H --> H4[User Card]
+    
+    H1 --> H1a[Service Image]
+    H1 --> H1b[Service Name]
+    H1 --> H1c[Service Description]
+    H1 --> H1d[Price and Duration]
+    H1 --> H1e[Actions]
+    
+    H2 --> H2a[Booking Date]
+    H2 --> H2b[Service Name]
+    H2 --> H2c[Status Badge]
+    H2 --> H2d[Customer Info]
+    H2 --> H2e[Actions]
+    
+    H3 --> H3a[Rating Stars]
+    H3 --> H3b[Reviewer Name]
+    H3 --> H3c[Review Date]
+    H3 --> H3d[Review Text]
+    
+    H4 --> H4a[User Avatar]
+    H4 --> H4b[User Name]
+    H4 --> H4c[User Role]
+    H4 --> H4d[Contact Info]
+    
+    %% Forms and Inputs
+    I[Forms] --> I1[Login Form]
+    I --> I2[Registration Form]
+    I --> I3[Service Form]
+    I --> I4[Booking Form]
+    I --> I5[Profile Form]
+    
+    I1 --> I1a[Email Input]
+    I1 --> I1b[Password Input]
+    I1 --> I1c[Remember Me Checkbox]
+    I1 --> I1d[Login Button]
+    I1 --> I1e[Forgot Password Link]
+    
+    I2 --> I2a[First Name Input]
+    I2 --> I2b[Last Name Input]
+    I2 --> I2c[Email Input]
+    I2 --> I2d[Password Input]
+    I2 --> I2e[Confirm Password Input]
+    I2 --> I2f[Register Button]
+    
+    I3 --> I3a[Service Name Input]
+    I3 --> I3b[Description Textarea]
+    I3 --> I3c[Category Dropdown]
+    I3 --> I3d[Duration Input]
+    I3 --> I3e[Price Input]
+    I3 --> I3f[Save Button]
+    
+    I4 --> I4a[Service Selection]
+    I4 --> I4b[Date Picker]
+    I4 --> I4c[Time Slot Selection]
+    I4 --> I4d[Notes Textarea]
+    I4 --> I4e[Book Now Button]
+    
+    I5 --> I5a[Profile Picture Upload]
+    I5 --> I5b[First Name Input]
+    I5 --> I5c[Last Name Input]
+    I5 --> I5d[Email Input]
+    I5 --> I5e[Phone Input]
+    I5 --> I5f[Save Changes Button]
+    
+    %% UI Elements
+    J[UI Elements] --> J1[Buttons]
+    J --> J2[Badges]
+    J --> J3[Labels]
+    J --> J4[Progress Indicators]
+    J --> J5[Modals]
+    J --> J6[Toasts]
+    J --> J7[Tables]
+    J --> J8[Charts]
+    
+    J1 --> J1a[Primary Button]
+    J1 --> J1b[Secondary Button]
+    J1 --> J1c[Ghost Button]
+    J1 --> J1d[Disabled Button]
+    
+    J2 --> J2a[Status Badge]
+    J2 --> J2b[Tag Badge]
+    J2 --> J2c[Notification Badge]
+    
+    J3 --> J3a[Label Text]
+    J3 --> J3b[Help Text]
+    
+    J4 --> J4a[Loading Spinner]
+    J4 --> J4b[Progress Bar]
+    J4 --> J4c[Rating Stars]
+    
+    J5 --> J5a[Modal Header]
+    J5 --> J5b[Modal Body]
+    J5 --> J5c[Modal Footer]
+    
+    J6 --> J6a[Success Toast]
+    J6 --> J6b[Warning Toast]
+    J6 --> J6c[Error Toast]
+    J6 --> J6d[Info Toast]
+    
+    J7 --> J7a[Table Header]
+    J7 --> J7b[Table Rows]
+    J7 --> J7c[Pagination]
+    
+    J8 --> J8a[Bar Chart]
+    J8 --> J8b[Line Chart]
+    J8 --> J8c[Pie Chart]
+    J8 --> J8d[Heatmap]
+    
+    %% State Components
+    K[State Components] --> K1[Empty State]
+    K --> K2[Loading State]
+    K --> K3[Error State]
+    K --> K4[Success State]
+    K --> K5[Confirmation Dialog]
+    
+    K1 --> K1a[Icon]
+    K1 --> K1b[Title]
+    K1 --> K1c[Description]
+    K1 --> K1d[Action Button]
+    
+    K2 --> K2a[Spinner]
+    K2 --> K2b[Loading Text]
+    
+    K3 --> K3a[Error Icon]
+    K3 --> K3b[Error Title]
+    K3 --> K3c[Error Message]
+    K3 --> K3d[Retry Button]
+    
+    K4 --> K4a[Success Icon]
+    K4 --> K4b[Success Title]
+    K4 --> K4c[Success Message]
+    K4 --> K4d[Continue Button]
+    
+    K5 --> K5a[Dialog Title]
+    K5 --> K5b[Dialog Message]
+    K5 --> K5c[Confirm Button]
+    K5 --> K5d[Cancel Button]
+    
+    %% Utility Components
+    L[Utility Components] --> L1[Navigation Pills]
+    L --> L2[Accordion]
+    L --> L3[Tabs]
+    L --> L4[Stepper]
+    L --> L5[Tooltip]
+    L --> L6[Popover]
+    L --> L7[Breadcrumb]
+    L --> L8[Pagination]
+    
+    L1 --> L1a[Active Pill]
+    L1b[Inactive Pill]
+    
+    L2 --> L2a[Collapsible Section]
+    L2b[Header with Icon]
+    L2c[Content Panel]
+    
+    L3 --> L3a[Tab Navigation]
+    L3b[Tab Content]
+    
+    L4 --> L4a[Step Indicator]
+    L4b[Step Labels]
+    L4c[Progress Bar]
+    
+    L5 --> L5a[Trigger Element]
+    L5b[Tooltip Content]
+    
+    L6 --> L6a[Trigger Element]
+    L6b[Popover Content]
+    
+    L7 --> L7a[Home Link]
+    L7b[Separator]
+    L7c[Current Page]
+    
+    L8 --> L8a[Previous Button]
+    L8b[Page Numbers]
+    L8c[Next Button]
+    
+    %% Styling and Layout
+    M[Layout Components] --> M1[Grid System]
+    M --> M2[Card Layout]
+    M --> M3[Form Layout]
+    M --> M4[Responsive Layout]
+    
+    M1 --> M1a[Columns]
+    M1b[Rows]
+    M1c[Gutters]
+    
+    M2 --> M2a[Card Container]
+    M2b[Card Header]
+    M2c[Card Body]
+    M2d[Card Footer]
+    
+    M3 --> M3a[Form Group]
+    M3b[Form Label]
+    M3c[Form Input]
+    M3d[Form Help Text]
+    
+    M4 --> M4a[Mobile First]
+    M4b[Breakpoints]
+    M4c[Flexible Grid]
+    
+    %% Style Connections
+    style A fill:#2563EB,stroke:#1D4ED8,stroke-width:2px,color:white
+    style E fill:#1D4ED8,stroke:#111827,stroke-width:2px,color:white
+    style H fill:#3B82F6,stroke:#111827,stroke-width:2px,color:white
+    style I fill:#6B7280,stroke:#111827,stroke-width:2px,color:white
+    style J fill:#8B5CF6,stroke:#111827,stroke-width:2px,color:white
+    style K fill:#EC4899,stroke:#111827,stroke-width:2px,color:white
+    style L fill:#10B981,stroke:#111827,stroke-width:2px,color:white
+    style M fill:#F59E0B,stroke:#111827,stroke-width:2px,color:white
+    
+    classDef main fill:#2563EB,stroke:#1D4ED8,stroke-width:2px,color:white;
+    classDef layout fill:#1D4ED8,stroke:#111827,stroke-width:2px,color:white;
+    classDef data fill:#3B82F6,stroke:#111827,stroke-width:2px,color:white;
+    classDef forms fill:#6B7280,stroke:#111827,stroke-width:2px,color:white;
+    classDef ui fill:#8B5CF6,stroke:#111827,stroke-width:2px,color:white;
+    classDef states fill:#EC4899,stroke:#111827,stroke-width:2px,color:white;
+    classDef utility fill:#10B981,stroke:#111827,stroke-width:2px,color:white;
+    classDef layoutComp fill:#F59E0B,stroke:#111827,stroke-width:2px,color:white;
+    
+    class A,B,C,D,E,F,G,H,I,J,K,L,M main
+    class B1,B2,B3,C1,C2,C3,D1,D2 layout
+    class H1,H2,H3,H4 data
+    class I1,I2,I3,I4,I5 forms
+    class J1,J2,J3,J4,J5,J6,J7,J8 ui
+    class K1,K2,K3,K4,K5 states
+    class L1,L2,L3,L4,L5,L6,L7,L8 utility
+    class M1,M2,M3,M4 layoutComp

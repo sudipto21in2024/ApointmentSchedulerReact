@@ -1,0 +1,92 @@
+# Context Propagation
+
+This file provides notes on how to implement context propagation to ensure trace IDs are propagated across services.
+
+**Context Propagation:**
+
+Context propagation is the mechanism by which trace IDs and other context data are passed between services in a distributed system. This ensures that traces are correctly correlated across service boundaries.
+
+**Implementation Methods:**
+
+1.  **Automatic Context Propagation:**
+    *   Use a framework or library that automatically propagates context data.
+    *   Many modern frameworks support automatic context propagation for HTTP requests, message queues, and other communication channels.
+2.  **Manual Context Propagation:**
+    *   Manually inject and extract context data from requests and messages.
+    *   Requires more code changes but provides more control over the propagation process.
+
+**Configuration Steps (Example using OpenTelemetry and HTTP):**
+
+1.  **Inject Trace Context:**
+    *   When making an HTTP request to another service, inject the trace context into the request headers.
+    *   Use the OpenTelemetry API to get the current context and inject it into the headers.
+2.  **Extract Trace Context:**
+    *   When receiving an HTTP request, extract the trace context from the request headers.
+    *   Use the OpenTelemetry API to extract the context from the headers and set it as the current context.
+
+**Example Implementation (Java - Injecting Context):**
+
+```java
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.propagation.TextMapSetter;
+import okhttp3.Request;
+
+public class RequestUtils {
+
+    private static final TextMapSetter<Request.Builder> setter =
+        new TextMapSetter<Request.Builder>() {
+            @Override
+            public void set(RequestBuilder carrier, String key, String value) {
+                carrier.header(key, value);
+            }
+        };
+
+    public static Request.Builder injectContext(Request.Builder requestBuilder) {
+        GlobalOpenTelemetry.get().getPropagators().getTextMapPropagator().inject(
+            Context.current(), requestBuilder, setter);
+        return requestBuilder;
+    }
+}
+```
+
+**Example Implementation (Java - Extracting Context):**
+
+```java
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.context.Context;
+import io.opentelemetry.context.Scope;
+import io.opentelemetry.context.propagation.TextMapGetter;
+import javax.servlet.http.HttpServletRequest;
+
+public class ServletUtils {
+    private static final TextMapGetter<HttpServletRequest> getter =
+        new TextMapGetter<HttpServletRequest>() {
+          @Override
+          public String get(HttpServletRequest request, String key) {
+            return request.getHeader(key);
+          }
+
+          @Override
+          public Iterable<String> keys(HttpServletRequest request) {
+            return Collections.list(request.getHeaderNames()).stream().collect(Collectors.toList());
+          }
+        };
+
+    public static Scope getContext(HttpServletRequest request) {
+        Context context = GlobalOpenTelemetry.get().getPropagators().getTextMapPropagator().extract(Context.current(), request, getter);
+        return context.makeCurrent();
+    }
+}
+```
+
+**Technical Notes:**
+
+*   Use a consistent context propagation format across all services (e.g., B3, W3C Trace Context).
+*   Ensure that the context propagation mechanism is compatible with your application's communication channels.
+*   Consider using a framework or library that provides built-in support for context propagation.
+
+**Security Considerations:**
+
+*   Ensure that context data does not contain sensitive information.
+*   Implement access control for context propagation mechanisms to prevent unauthorized access to context data.

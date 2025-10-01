@@ -1,0 +1,138 @@
+{
+  "task_id": "FE-007-02",
+ "title": "Create Service Detail Component",
+  "description": "Develop UI component for displaying detailed service information including provider and category details",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 5,
+    "story_points": 3
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to view detailed service information so that I can make informed booking decisions",
+      "As a service provider, I want to see my service details so that I can verify accuracy"
+    ],
+    "business_rules": [
+      "Service detail view must show complete service information including category",
+      "Service detail view must follow the design system",
+      "Service detail view must handle loading states and error messages",
+      "Service detail view must display provider information"
+    ],
+    "edge_cases": [
+      "Handling loading states for service details",
+      "Managing error conditions when service data is not available",
+      "Displaying service information with proper category details",
+      "Handling services with missing or incomplete information"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002",
+      "FE-005-01"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Service Management API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Service detail component shows complete service information",
+    "Service detail component follows the design system",
+    "Service detail component handles loading states and error conditions properly",
+    "Service detail component integrates with Service Management API endpoints",
+    "Service detail component displays provider and category information"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "Angular Components",
+    "UI/UX Design",
+    "API Integration"
+  ],
+  "related_files": {
+    "will_create": [
+      "frontend/src/app/components/service/service-detail.component.ts",
+      "frontend/src/app/components/service/service-detail.component.html",
+      "frontend/src/app/components/service-detail.component.css"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/service-openapi.yaml",
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Service",
+      "ServiceCategory"
+    ],
+    "related": [
+      "User"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/services/{id}",
+        "description": "Get service by ID"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Service detail component rendering",
+      "Loading and error state handling",
+      "Category information display"
+    ],
+    "integration_tests": [
+      "Service detail integration with backend APIs",
+      "Service data display accuracy",
+      "Provider information display"
+    ],
+    "e2e_tests": [
+      "Service detail viewing",
+      "Category information display",
+      "Provider information display"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002",
+      "FE-005-01"
+    ],
+    "can_start_date": "After FE-002 and FE-005-01 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement service detail component following Angular best practices. Ensure proper integration with service management API. Display related information like category and provider details.",
+    "design_references": "docs/UI/Requirements.mmd",
+    "security_considerations": "Ensure proper authorization checks for service detail access. Protect sensitive service information. Validate data before display."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "frontend/src/app/components/service/service-detail.component.ts",
+      "frontend/src/app/components/service/service-detail.component.html",
+      "frontend/src/app/components/service-detail.component.css"
+    ]
+  },
+  "subtasks": []
+}

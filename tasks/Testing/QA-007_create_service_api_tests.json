@@ -1,0 +1,156 @@
+{
+  "task_id": "QA-007",
+  "title": "Create Unit Tests for Service Management API Endpoints",
+  "description": "Develop comprehensive unit tests for all Service Management API endpoints including service creation, retrieval, update, and deletion operations with proper validation and error handling.",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 24,
+    "story_points": 8,
+    "justification": "Creating comprehensive unit tests for service management API endpoints requires thorough testing of all CRUD operations, validation logic, and error conditions to ensure proper service management functionality."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a QA engineer, I want unit tests for service management so that I can verify API functionality",
+      "As a developer, I need service management tests so that I can validate my code changes",
+      "As a service provider, I require reliable service management so that I can offer services"
+    ],
+    "business_rules": [
+      "All service CRUD operations must be tested with proper validation",
+      "Service creation must validate required fields and uniqueness constraints",
+      "Service updates must validate all fields and maintain data integrity",
+      "Service deletion must be handled properly with related data management",
+      "All API endpoints must return appropriate HTTP status codes"
+    ],
+    "edge_cases": [
+      "Testing service creation with duplicate names",
+      "Validating service updates with invalid data",
+      "Handling service deletion with bookings",
+      "Testing API error responses with proper status codes",
+      "Validating service category associations"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "QA-001",
+      "BE-006"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Testing framework setup",
+      "Service Management API endpoints"
+    ]
+  },
+  "acceptance_criteria": [
+    "Unit tests created for all service management API endpoints",
+    "All CRUD operations tested with positive and negative scenarios",
+    "Validation logic properly tested",
+    "Error handling and status codes verified",
+    "Service category associations tested",
+    "Test coverage meets minimum requirements",
+    "All tests pass consistently in CI/CD pipeline"
+  ],
+  "assigned_team": "Testing",
+  "required_skills": [
+    "Unit Testing",
+    "API Testing",
+    "Backend Development",
+    "Test Mocking"
+  ],
+  "related_files": {
+    "will_create": [
+      "tests/ServiceController.test.ts",
+      "tests/ServiceService.test.ts",
+      "tests/ServiceValidator.test.ts",
+      "tests/ServiceRepository.test.ts"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/service-openapi.yaml",
+      "docs/Backend/BE-006_create_service_management_features.json"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Service",
+      "ServiceCategory"
+    ],
+    "related": [
+      "User",
+      "Tenant"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/services",
+        "description": "Get all services"
+      },
+      {
+        "method": "POST",
+        "path": "/services",
+        "description": "Create a new service"
+      },
+      {
+        "method": "GET",
+        "path": "/services/{id}",
+        "description": "Get service by ID"
+      },
+      {
+        "method": "PUT",
+        "path": "/services/{id}",
+        "description": "Update service"
+      },
+      {
+        "method": "DELETE",
+        "path": "/services/{id}",
+        "description": "Delete service"
+      },
+      {
+        "method": "GET",
+        "path": "/categories",
+        "description": "Get all service categories"
+      },
+      {
+        "method": "POST",
+        "path": "/categories",
+        "description": "Create a new category"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Service controller logic tests",
+      "Service service layer tests",
+      "Service validation tests",
+      "Service repository tests",
+      "Category management tests"
+    ],
+    "integration_tests": [
+      "Service API endpoint integration",
+      "Database interaction tests",
+      "Cross-entity relationship tests"
+    ],
+    "e2e_tests": [
+      "Complete service management workflows",
+      "Service creation and category assignment",
+      "Service listing and filtering"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "QA-001",
+      "BE-006"
+    ],
+    "blocking_reason": "Testing framework and service management API must be established first",
+    "can_start_date": "After QA-001 and BE-006 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Focus on testing the complete service management workflow from API endpoints through to data persistence. Pay special attention to service-category relationships and validation rules. Use mocking for database and external service interactions.",
+    "design_references": "Service management API specifications and backend service implementation",
+    "security_considerations": "Test security-related functionality including authentication, authorization, and data protection for service endpoints"
+  }
+}

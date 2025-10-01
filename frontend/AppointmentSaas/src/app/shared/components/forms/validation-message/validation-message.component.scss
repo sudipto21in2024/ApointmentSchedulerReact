@@ -1,0 +1,81 @@
+// Validation Message Component Styles
+// Uses design tokens from docs/UI/DesignTokens.json
+
+.validation-message {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xs, 4px);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 1.4;
+  margin-top: var(--spacing-xs, 4px);
+  transition: var(--transition-normal, 0.2s ease);
+
+  &__icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+  }
+
+  &__text {
+    flex: 1;
+  }
+
+  // Error message
+  &--error {
+    color: var(--color-secondary-danger, #ef4444);
+
+    .validation-message__icon {
+      color: var(--color-secondary-danger, #ef4444);
+    }
+  }
+
+  // Success message
+  &--success {
+    color: var(--color-secondary-success, #10b981);
+
+    .validation-message__icon {
+      color: var(--color-secondary-success, #10b981);
+    }
+  }
+
+  // Warning message
+  &--warning {
+    color: var(--color-secondary-warning, #f59e0b);
+
+    .validation-message__icon {
+      color: var(--color-secondary-warning, #f59e0b);
+    }
+  }
+
+  // Info message
+  &--info {
+    color: var(--color-secondary-info, #3b82f6);
+
+    .validation-message__icon {
+      color: var(--color-secondary-info, #3b82f6);
+    }
+  }
+
+  // Animation for appearance
+  animation: slideInUp 0.2s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .validation-message {
+    font-size: var(--font-size-xs, 12px);
+  }
+}

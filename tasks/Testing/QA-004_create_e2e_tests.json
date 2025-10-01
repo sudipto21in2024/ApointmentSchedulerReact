@@ -1,0 +1,117 @@
+{
+  "task_id": "QA-004",
+  "title": "Create End-to-End Tests for User Journeys",
+  "description": "Develop comprehensive end-to-end tests for all key user journeys in the Multi-Tenant Appointment Booking System. This validates complete user workflows from start to finish in realistic scenarios.",
+  "priority": "HIGH",
+  "complexity": 5,
+  "effort_estimate": {
+    "hours": 36,
+    "story_points": 13,
+    "justification": "Creating end-to-end tests for complete user journeys is a complex task that requires understanding complete application flows, setting up test environments, and validating multiple interacting components simultaneously."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a QA engineer, I want end-to-end tests so that I can validate complete user workflows",
+      "As a product owner, I need comprehensive testing so that the application meets user requirements",
+      "As a user, I want reliable application functionality so that I can complete my tasks successfully"
+    ],
+    "business_rules": [
+      "All major user journeys must be tested end-to-end",
+      "Tests must simulate real user interactions",
+      "Test scenarios must cover different user roles and permissions",
+      "Test results must be reliable and reproducible"
+    ],
+    "edge_cases": [
+      "Testing user workflows with various data inputs",
+      "Validating error handling in complete flows",
+      "Handling concurrent user scenarios",
+      "Testing with different browsers and devices"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-005",
+      "BE-005",
+      "QA-001"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "E2E testing tools (Cypress)",
+      "Test environment setup"
+    ]
+  },
+  "acceptance_criteria": [
+    "End-to-end tests created for all major user journeys",
+    "Complete user workflows are validated",
+    "Cross-component interactions are tested",
+    "Different user roles and permissions are validated",
+    "Error conditions and edge cases are covered",
+    "Tests run consistently in CI/CD pipeline",
+    "Test results are reliable and actionable"
+  ],
+  "assigned_team": "Testing",
+  "required_skills": [
+    "End-to-End Testing",
+    "User Journey Testing",
+    "Test Automation",
+    "Browser Testing"
+  ],
+  "related_files": {
+    "will_create": [
+      "e2e/tests/booking-flow.cy.ts",
+      "e2e/tests/user-auth.cy.ts",
+      "e2e/tests/provider-dashboard.cy.ts",
+      "e2e/tests/customer-search.cy.ts"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/BusinessRequirements/UserJourneys.mmd",
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "User",
+      "Service",
+      "Booking",
+      "Slot",
+      "Payment",
+      "Notification"
+    ],
+    "related": [
+      "Tenant",
+      "Review",
+      "BookingHistory"
+    ]
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [],
+    "integration_tests": [],
+    "e2e_tests": [
+      "Complete booking workflow",
+      "User authentication and registration",
+      "Service browsing and selection",
+      "Payment processing",
+      "Dashboard navigation"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-005",
+      "BE-005",
+      "QA-001"
+    ],
+    "blocking_reason": "Frontend integration, backend business logic, and testing framework must be established first",
+    "can_start_date": "After FE-005, BE-005, and QA-001 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Test the complete user journeys defined in the business requirements. Focus on realistic scenarios that users would encounter. Include tests for different user personas and roles. Ensure tests are maintainable and reliable.",
+    "design_references": "User journeys documentation and UI requirements",
+    "security_considerations": "Test complete user flows with security considerations including authentication, authorization, and data protection"
+  }
+}

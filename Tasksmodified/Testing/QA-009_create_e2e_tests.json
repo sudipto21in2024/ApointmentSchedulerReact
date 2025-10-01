@@ -1,0 +1,159 @@
+{
+  "task_id": "QA-009",
+  "title": "Create End-to-End Tests",
+  "description": "Develop comprehensive end-to-end test suite covering complete user workflows including booking, payment, notification, and dashboard flows",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 40,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a QA engineer, I want to test complete user workflows so I can ensure system functionality",
+      "As a developer, I want e2e tests to validate my changes so I can be confident in deployments",
+      "As a product owner, I want e2e tests to verify business requirements so I can ensure quality"
+    ],
+    "business_rules": [
+      "E2E tests must cover complete user workflows",
+      "E2E tests must validate business requirements",
+      "E2E tests must handle error scenarios and edge cases",
+      "E2E tests must be integrated with CI/CD pipeline",
+      "E2E tests must provide clear failure reporting"
+    ],
+    "edge_cases": [
+      "Testing error scenarios and exceptions",
+      "Testing concurrent user workflows",
+      "Testing cross-service integrations",
+      "Testing security and authentication flows",
+      "Testing performance under load"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-005",
+      "BE-006",
+      "BE-007",
+      "BE-008",
+      "BE-009",
+      "BE-010",
+      "BE-011",
+      "BE-012"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Test Environment",
+      "All Microservices"
+    ]
+  },
+  "acceptance_criteria": [
+    "E2E tests cover complete booking workflow from service discovery to confirmation",
+    "E2E tests validate payment processing workflow",
+    "E2E tests verify notification delivery",
+    "E2E tests check dashboard and analytics functionality",
+    "E2E tests handle error scenarios and edge cases",
+    "E2E tests are integrated with CI/CD pipeline",
+    "E2E tests provide clear failure reporting and debugging information"
+  ],
+  "assigned_team": "Testing",
+  "required_skills": [
+    "Playwright",
+    "Test Automation",
+    "API Testing",
+    "CI/CD Integration",
+    "Debugging"
+  ],
+  "related_files": {
+    "will_create": [
+      "tests/e2e/booking-workflow.test.js",
+      "tests/e2e/payment-workflow.test.js",
+      "tests/e2e/notification-workflow.test.js",
+      "tests/e2e/dashboard-workflow.test.js"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/ProjectSpecs/QualityGates.md",
+      "docs/BusinessRequirements/BRD.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking",
+      "Payment",
+      "Notification",
+      "Service"
+    ],
+    "related": [
+      "User",
+      "Slot",
+      "Review"
+    ]
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [],
+    "integration_tests": [],
+    "e2e_tests": [
+      "Complete booking workflow from service discovery to confirmation",
+      "Payment processing workflow including refunds",
+      "Notification delivery across all channels",
+      "Dashboard and analytics data visualization",
+      "User registration and authentication flow",
+      "Service management workflow",
+      "Slot management workflow",
+      "Subscription management workflow",
+      "Error handling and validation scenarios",
+      "Concurrent user workflow testing",
+      "Security and authentication testing"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-005",
+      "BE-006",
+      "BE-007",
+      "BE-008",
+      "BE-009",
+      "BE-010",
+      "BE-011",
+      "BE-012"
+    ],
+    "blocking_reason": "E2E tests require all backend services to be implemented",
+    "can_start_date": "After all backend service implementations are complete"
+  },
+  "additional_context": {
+    "technical_notes": "Use Playwright for browser automation. Implement proper test data setup and teardown. Use page object models for maintainable test code. Implement proper error handling and reporting. Integrate with CI/CD pipeline for automated execution.",
+    "design_references": "docs/ProjectSpecs/QualityGates.md",
+    "security_considerations": "Test authentication and authorization flows. Verify input validation. Test for security vulnerabilities. Ensure test data is properly isolated and cleaned up."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "tests/e2e/booking-workflow.test.js",
+      "tests/e2e/payment-workflow.test.js",
+      "tests/e2e/notification-workflow.test.js",
+      "tests/e2e/dashboard-workflow.test.js"
+    ]
+  },
+  "subtasks": []
+}

@@ -1,0 +1,361 @@
+# Domain Entity Models: Multi-Tenant Appointment Booking System
+
+## 1. Overview
+
+This document defines the core domain entities for the Multi-Tenant Appointment Booking System. These entities represent the fundamental business objects that drive the functionality of the platform, including users, services, bookings, and related business concepts.
+
+## 2. Core Entities
+
+### 2.1 User Entity
+
+The User entity represents all individuals interacting with the system, including service providers, customers, and administrators.
+
+```
+User
+├── Id (Guid) - Primary key
+├── Email (String) - Unique identifier for the user
+├── PasswordHash (String) - Hashed password for authentication
+├── FirstName (String) - User's first name
+├── LastName (String) - User's last name
+├── PhoneNumber (String) - Contact phone number
+├── UserType (Enum) - Type of user (Customer, Provider, Admin)
+├── IsActive (Boolean) - Account status
+├── CreatedAt (DateTime) - Account creation timestamp
+├── UpdatedAt (DateTime) - Last account update timestamp
+├── LastLoginAt (DateTime) - Timestamp of last login
+└── TenantId (Guid) - Reference to tenant (for multi-tenancy)
+```
+
+### 2.2 Tenant Entity
+
+The Tenant entity represents separate business entities that use the system, enabling multi-tenancy.
+
+```
+Tenant
+├── Id (Guid) - Primary key
+├── Name (String) - Tenant name
+├── Description (String) - Tenant description
+├── Domain (String) - Custom domain (if applicable)
+├── IsActive (Boolean) - Tenant status
+├── CreatedAt (DateTime) - Tenant creation timestamp
+├── UpdatedAt (DateTime) - Last tenant update timestamp
+├── LogoUrl (String) - Tenant logo/image URL
+└── ContactEmail (String) - Contact email for tenant
+```
+
+### 2.3 Service Entity
+
+The Service entity represents the offerings that service providers list on the platform.
+
+```
+Service
+├── Id (Guid) - Primary key
+├── Name (String) - Service name
+├── Description (String) - Detailed service description
+├── CategoryId (Guid) - Reference to service category
+├── ProviderId (Guid) - Reference to service provider (User)
+├── TenantId (Guid) - Reference to tenant
+├── Duration (Int) - Service duration in minutes
+├── Price (Decimal) - Service price
+├── Currency (String) - Currency code (USD, EUR, etc.)
+├── IsActive (Boolean) - Service status
+├── CreatedAt (DateTime) - Service creation timestamp
+├── UpdatedAt (DateTime) - Last service update timestamp
+├── IsFeatured (Boolean) - Featured service flag
+├── MaxBookingsPerDay (Int) - Maximum bookings per day
+└── AvailabilityExceptions (List<AvailabilityException>) - Special availability rules
+```
+
+### 2.4 ServiceCategory Entity
+
+The ServiceCategory entity organizes services into logical groups.
+
+```
+ServiceCategory
+├── Id (Guid) - Primary key
+├── Name (String) - Category name
+├── Description (String) - Category description
+├── ParentCategoryId (Guid) - Reference to parent category (for hierarchy)
+├── IconUrl (String) - Category icon/image URL
+├── SortOrder (Int) - Display order
+├── IsActive (Boolean) - Category status
+├── CreatedAt (DateTime) - Category creation timestamp
+└── UpdatedAt (DateTime) - Last category update timestamp
+```
+
+### 2.5 Slot Entity
+
+The Slot entity represents time slots available for booking services.
+
+```
+Slot
+├── Id (Guid) - Primary key
+├── ServiceId (Guid) - Reference to service
+├── StartDateTime (DateTime) - Slot start time
+├── EndDateTime (DateTime) - Slot end time
+├── MaxBookings (Int) - Maximum bookings allowed
+├── AvailableBookings (Int) - Remaining available bookings
+├── IsAvailable (Boolean) - Slot availability status
+├── CreatedAt (DateTime) - Slot creation timestamp
+├── UpdatedAt (DateTime) - Last slot update timestamp
+└── IsRecurring (Boolean) - Recurring slot flag
+```
+
+### 2.6 Booking Entity
+
+The Booking entity represents customer appointments for services.
+
+```
+Booking
+├── Id (Guid) - Primary key
+├── CustomerId (Guid) - Reference to customer (User)
+├── ServiceId (Guid) - Reference to service
+├── SlotId (Guid) - Reference to slot
+├── TenantId (Guid) - Reference to tenant
+├── Status (Enum) - Booking status (Pending, Confirmed, Cancelled, Completed)
+├── BookingDate (DateTime) - Date when booking was made
+├── CreatedAt (DateTime) - Booking creation timestamp
+├── UpdatedAt (DateTime) - Last booking update timestamp
+├── Notes (String) - Customer notes for booking
+├── CancelledAt (DateTime) - Timestamp when booking was cancelled
+├── CancelledBy (Guid) - Reference to user who cancelled (if applicable)
+└── PaymentId (Guid) - Reference to payment (if applicable)
+```
+
+### 2.7 Payment Entity
+
+The Payment entity handles transaction processing for bookings.
+
+```
+Payment
+├── Id (Guid) - Primary key
+├── BookingId (Guid) - Reference to booking
+├── Amount (Decimal) - Payment amount
+├── Currency (String) - Currency code
+├── PaymentMethod (Enum) - Payment method used
+├── PaymentStatus (Enum) - Payment status (Pending, Completed, Failed, Refunded)
+├── TransactionId (String) - External transaction identifier
+├── PaymentGateway (String) - Payment gateway used
+├── PaidAt (DateTime) - Payment completion timestamp
+├── CreatedAt (DateTime) - Payment creation timestamp
+├── UpdatedAt (DateTime) - Last payment update timestamp
+└── RefundAmount (Decimal) - Refunded amount (if applicable)
+```
+
+### 2.8 Review Entity
+
+The Review entity captures customer feedback on services.
+
+```
+Review
+├── Id (Guid) - Primary key
+├── ServiceId (Guid) - Reference to service
+├── CustomerId (Guid) - Reference to customer (User)
+├── Rating (Int) - Star rating (1-5)
+├── Title (String) - Review title
+├── Comment (String) - Detailed review comment
+├── IsVerified (Boolean) - Verified booking flag
+├── CreatedAt (DateTime) - Review creation timestamp
+├── UpdatedAt (DateTime) - Last review update timestamp
+└── IsActive (Boolean) - Review visibility status
+```
+
+### 2.9 Notification Entity
+
+The Notification entity manages system-generated notifications.
+
+```
+Notification
+├── Id (Guid) - Primary key
+├── UserId (Guid) - Reference to recipient user
+├── Title (String) - Notification title
+├── Message (String) - Notification content
+├── Type (Enum) - Notification type (Email, SMS, Push)
+├── IsRead (Boolean) - Read status
+├── SentAt (DateTime) - Timestamp when sent
+├── CreatedAt (DateTime) - Notification creation timestamp
+├── ExpiresAt (DateTime) - Expiration timestamp
+└── RelatedEntityId (Guid) - Reference to related entity (booking, service, etc.)
+```
+
+### 2.10 BookingHistory Entity
+
+The BookingHistory entity tracks changes to booking records.
+
+```
+BookingHistory
+├── Id (Guid) - Primary key
+├── BookingId (Guid) - Reference to booking
+├── OldStatus (Enum) - Previous booking status
+├── NewStatus (Enum) - New booking status
+├── ChangedBy (Guid) - Reference to user who made change
+├── ChangeReason (String) - Reason for status change
+├── ChangedAt (DateTime) - Timestamp of change
+└── Notes (String) - Additional notes about change
+```
+
+## 3. Relationship Diagram
+
+```
+User
+├── 1..* (has) → Booking (Customer)
+├── 1..* (provides) → Service (Provider)
+└── 1..* (manages) → Review (Customer)
+
+Tenant
+├── 1..* (contains) → Service
+├── 1..* (contains) → User
+├── 1..* (contains) → Booking
+└── 1..* (contains) → Notification
+
+Service
+├── 1 (belongs to) → Category
+├── 1 (provided by) → User (Provider)
+├── 1..* (has) → Slot
+├── 1..* (has) → Review
+└── 1..* (has) → Booking
+
+Slot
+├── 1 (belongs to) → Service
+└── 1..* (part of) → Booking
+
+Booking
+├── 1 (made by) → User (Customer)
+├── 1 (for) → Service
+├── 1 (uses) → Slot
+├── 1 (related to) → Payment
+└── 1..* (has) → BookingHistory
+
+Payment
+├── 1 (associated with) → Booking
+└── 1..* (has) → Booking (for tracking)
+
+Review
+├── 1 (written by) → User (Customer)
+├── 1 (about) → Service
+└── 1..* (has) → Notification (when posted)
+
+Notification
+├── 1 (sent to) → User
+└── 1..* (relates to) → Booking (or other entities)
+```
+
+## 4. Entity Attributes Details
+
+### 4.1 User Attributes
+
+| Attribute | Type | Description | Constraints |
+|-----------|------|-------------|-------------|
+| Id | Guid | Unique identifier | Required |
+| Email | String | Unique email address | Required, Unique |
+| PasswordHash | String | Hashed password | Required |
+| FirstName | String | User's first name | Required |
+| LastName | String | User's last name | Required |
+| PhoneNumber | String | Contact phone number | Optional |
+| UserType | Enum | Type of user | Required |
+| IsActive | Boolean | Account status | Required |
+| CreatedAt | DateTime | Account creation timestamp | Required |
+| UpdatedAt | DateTime | Last account update timestamp | Required |
+| LastLoginAt | DateTime | Timestamp of last login | Optional |
+| TenantId | Guid | Reference to tenant | Required for non-admin users |
+
+### 4.2 Service Attributes
+
+| Attribute | Type | Description | Constraints |
+|-----------|------|-------------|-------------|
+| Id | Guid | Unique identifier | Required |
+| Name | String | Service name | Required |
+| Description | String | Detailed service description | Required |
+| CategoryId | Guid | Reference to service category | Required |
+| ProviderId | Guid | Reference to service provider | Required |
+| TenantId | Guid | Reference to tenant | Required |
+| Duration | Int | Service duration in minutes | Required |
+| Price | Decimal | Service price | Required |
+| Currency | String | Currency code | Required |
+| IsActive | Boolean | Service status | Required |
+| CreatedAt | DateTime | Service creation timestamp | Required |
+| UpdatedAt | DateTime | Last service update timestamp | Required |
+| IsFeatured | Boolean | Featured service flag | Optional |
+| MaxBookingsPerDay | Int | Maximum bookings per day | Optional |
+| AvailabilityExceptions | List | Special availability rules | Optional |
+
+### 4.3 Booking Attributes
+
+| Attribute | Type | Description | Constraints |
+|-----------|------|-------------|-------------|
+| Id | Guid | Unique identifier | Required |
+| CustomerId | Guid | Reference to customer | Required |
+| ServiceId | Guid | Reference to service | Required |
+| SlotId | Guid | Reference to slot | Required |
+| TenantId | Guid | Reference to tenant | Required |
+| Status | Enum | Booking status | Required |
+| BookingDate | DateTime | Date when booking was made | Required |
+| CreatedAt | DateTime | Booking creation timestamp | Required |
+| UpdatedAt | DateTime | Last booking update timestamp | Required |
+| Notes | String | Customer notes for booking | Optional |
+| CancelledAt | DateTime | Timestamp when booking was cancelled | Optional |
+| CancelledBy | Guid | Reference to user who cancelled | Optional |
+| PaymentId | Guid | Reference to payment | Optional |
+
+### 4.4 Payment Attributes
+
+| Attribute | Type | Description | Constraints |
+|-----------|------|-------------|-------------|
+| Id | Guid | Unique identifier | Required |
+| BookingId | Guid | Reference to booking | Required |
+| Amount | Decimal | Payment amount | Required |
+| Currency | String | Currency code | Required |
+| PaymentMethod | Enum | Payment method used | Required |
+| PaymentStatus | Enum | Payment status | Required |
+| TransactionId | String | External transaction identifier | Optional |
+| PaymentGateway | String | Payment gateway used | Optional |
+| PaidAt | DateTime | Payment completion timestamp | Optional |
+| CreatedAt | DateTime | Payment creation timestamp | Required |
+| UpdatedAt | DateTime | Last payment update timestamp | Required |
+| RefundAmount | Decimal | Refunded amount | Optional |
+
+## 5. Entity Validation Rules
+
+### 5.1 User Validation
+- Email must be unique across all tenants
+- Password must meet complexity requirements
+- First and last names must not be empty
+- User type must be one of predefined values
+
+### 5.2 Service Validation
+- Service name must be unique within a tenant
+- Price must be non-negative
+- Duration must be positive integer
+- Category must exist and be active
+
+### 5.3 Booking Validation
+- Customer must have sufficient balance if required
+- Slot must be available at booking time
+- Booking date must be in the future
+- Customer cannot book same service twice in same slot
+
+### 5.4 Payment Validation
+- Amount must match booking amount
+- Payment status must be valid enum value
+- Transaction ID must be unique per payment gateway
+- Currency must be supported by payment gateway
+
+## 6. Entity Lifecycle Management
+
+### 6.1 Creation
+- All entities must be validated before creation
+- Timestamps must be set during creation
+- Required relationships must be established
+
+### 6.2 Updates
+- Timestamps must be updated on modification
+- Validation rules apply to updates
+- Audit trails must be maintained for sensitive fields
+
+### 6.3 Deletion
+- Soft delete pattern implemented for most entities
+- Hard delete for audit and compliance requirements
+- Cascade delete for dependent entities
+- Cleanup of related data (notifications, history, etc.)
+
+This entity model provides a solid foundation for the Multi-Tenant Appointment Booking System, supporting all core functionalities described in the project requirements while ensuring data integrity and business rule enforcement.

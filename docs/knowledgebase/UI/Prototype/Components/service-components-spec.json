@@ -1,0 +1,154 @@
+{
+  "component_library": "service_components",
+  "version": "1.0.0",
+  "components": {
+    "ServiceCreationComponent": {
+      "template_id": "dashboard_form_card",
+      "required_structure": {
+        "root": {
+          "element": "div",
+          "classes": ["form-card-container", "p-8", "bg-neutral-50"],
+          "children": ["form_card"]
+        },
+        "form_card": {
+          "element": "div",
+          "classes": ["form-card", "max-w-2xl", "mx-auto", "bg-white", "rounded-lg", "shadow-md", "p-8"],
+          "children": ["card_header", "service_form"]
+        },
+        "card_header": {
+          "element": "div",
+          "classes": ["card-header", "mb-6", "border-b", "pb-4"],
+          "children": ["title", "subtitle"]
+        },
+        "title": {
+          "element": "h2",
+          "classes": ["text-2xl", "font-bold", "text-gray-900"],
+          "content": "Create a New Service"
+        },
+        "subtitle": {
+          "element": "p",
+          "classes": ["text-sm", "text-gray-600", "mt-1"],
+          "content": "Define the details of the service you want to offer."
+        },
+        "service_form": {
+          "element": "form",
+          "classes": ["service-form", "space-y-6"],
+          "children": ["service_name_field", "service_category_field", "service_description_field", "duration_price_row", "submit_button"]
+        },
+        "service_name_field": {
+          "element": "div",
+          "children": ["service_name_label", "service_name_input"]
+        },
+        "service_name_label": {
+          "element": "label",
+          "classes": ["block", "text-sm", "font-medium", "text-gray-700", "mb-2"],
+          "attributes": {"for": "serviceName"},
+          "content": "Service Name"
+        },
+        "service_name_input": {
+          "element": "input",
+          "classes": ["w-full", "px-3", "py-2", "border", "border-gray-300", "rounded-md", "focus:outline-none", "focus:ring-2", "focus:ring-primary"],
+          "attributes": { "type": "text", "id": "serviceName", "name": "serviceName", "placeholder": "e.g., Deep Tissue Massage" }
+        },
+        "service_category_field": {
+          "element": "div",
+          "children": ["service_category_label", "service_category_select"]
+        },
+        "service_category_label": {
+            "element": "label",
+            "classes": ["block", "text-sm", "font-medium", "text-gray-700", "mb-2"],
+            "attributes": {"for": "serviceCategory"},
+            "content": "Service Category"
+        },
+        "service_category_select": {
+            "element": "select",
+            "classes": ["w-full", "px-3", "py-2", "border", "border-gray-300", "rounded-md", "focus:outline-none", "focus:ring-2", "focus:ring-primary"],
+            "attributes": { "id": "serviceCategory", "name": "serviceCategory" }
+        },
+        "service_description_field": {
+          "element": "div",
+          "children": ["service_description_label", "service_description_textarea"]
+        },
+        "service_description_label": {
+          "element": "label",
+          "classes": ["block", "text-sm", "font-medium", "text-gray-700", "mb-2"],
+          "attributes": {"for": "serviceDescription"},
+          "content": "Service Description"
+        },
+        "service_description_textarea": {
+          "element": "textarea",
+          "classes": ["w-full", "px-3", "py-2", "border", "border-gray-300", "rounded-md", "focus:outline-none", "focus:ring-2", "focus:ring-primary"],
+          "attributes": { "id": "serviceDescription", "name": "serviceDescription", "rows": "4", "placeholder": "Provide a detailed description of the service..." }
+        },
+        "duration_price_row": {
+            "element": "div",
+            "classes": ["grid", "grid-cols-1", "md:grid-cols-2", "gap-6"],
+            "children": ["duration_field", "price_field"]
+        },
+        "duration_field": {
+            "element": "div",
+            "children": ["duration_label", "duration_input_group"]
+        },
+        "duration_label": {
+            "element": "label",
+            "classes": ["block", "text-sm", "font-medium", "text-gray-700", "mb-2"],
+            "attributes": {"for": "duration"},
+            "content": "Duration"
+        },
+        "duration_input_group": {
+            "element": "div",
+            "classes": ["flex", "items-center"],
+            "children": ["duration_input", "duration_unit"]
+        },
+        "duration_input": {
+            "element": "input",
+            "classes": ["w-full", "px-3", "py-2", "border", "border-gray-300", "rounded-l-md", "focus:outline-none", "focus:ring-2", "focus:ring-primary"],
+            "attributes": { "type": "number", "id": "duration", "name": "duration", "placeholder": "60" }
+        },
+        "duration_unit": {
+            "element": "span",
+            "classes": ["inline-flex", "items-center", "px-3", "text-sm", "text-gray-900", "bg-gray-200", "border", "border-l-0", "border-gray-300", "rounded-r-md"],
+            "content": "minutes"
+        },
+        "price_field": {
+            "element": "div",
+            "children": ["price_label", "price_input_group"]
+        },
+        "price_label": {
+            "element": "label",
+            "classes": ["block", "text-sm", "font-medium", "text-gray-700", "mb-2"],
+            "attributes": {"for": "price"},
+            "content": "Price"
+        },
+        "price_input_group": {
+            "element": "div",
+            "classes": ["flex", "items-center"],
+            "children": ["price_currency_symbol", "price_input"]
+        },
+        "price_currency_symbol": {
+            "element": "span",
+            "classes": ["inline-flex", "items-center", "px-3", "text-sm", "text-gray-900", "bg-gray-200", "border", "border-r-0", "border-gray-300", "rounded-l-md"],
+            "content": "$"
+        },
+        "price_input": {
+            "element": "input",
+            "classes": ["w-full", "px-3", "py-2", "border", "border-gray-300", "rounded-r-md", "focus:outline-none", "focus:ring-2", "focus:ring-primary"],
+            "attributes": { "type": "number", "id": "price", "name": "price", "placeholder": "100.00" }
+        },
+        "submit_button": {
+          "element": "button",
+          "classes": ["w-full", "bg-primary", "text-white", "py-3", "px-4", "rounded-md", "hover:bg-primary-hover", "focus:outline-none", "focus:ring-2", "focus:ring-primary", "focus:ring-offset-2", "font-medium", "mt-4"],
+          "attributes": {"type": "submit"},
+          "content": "Create Service"
+        }
+      },
+      "validation_rules": {
+        "serviceName": ["required", "minLength:3", "maxLength:100"],
+        "serviceCategory": ["required"],
+        "serviceDescription": ["required", "minLength:10", "maxLength:1000"],
+        "duration": ["required", "integer", "min:15"],
+        "price": ["required", "decimal", "min:0"]
+      }
+    }
+  }
+}

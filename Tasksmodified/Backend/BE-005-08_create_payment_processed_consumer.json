@@ -1,0 +1,134 @@
+{
+  "task_id": "BE-005-08",
+ "title": "Create PaymentProcessed Consumer",
+  "description": "Create a PaymentProcessedConsumer to handle payment processed events and update booking status accordingly",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 6,
+    "story_points": 3
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a system, I need to handle payment processed events",
+      "As a system, I need to update booking status after payment processing"
+    ],
+    "business_rules": [
+      "Payment processed events must update booking status",
+      "Payment processed events must trigger notification sending",
+      "Payment processed events must be handled idempotently"
+    ],
+    "edge_cases": [
+      "Handling failed payment processed events",
+      "Handling duplicate payment processed events",
+      "Handling payment refunds"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Payment Service",
+      "Notification Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "PaymentProcessedConsumer properly handles payment processed events",
+    "Booking status is updated after successful payment processing",
+    "Notifications are sent to customers and providers",
+    "Error handling is implemented for failed operations",
+    "Consumer is idempotent for duplicate events"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "MassTransit",
+    "Event-Driven Architecture",
+    "Error Handling"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/BookingService/Consumers/PaymentProcessedConsumer.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Events/PaymentEvents.md",
+      "shared/Events/PaymentEvents.cs"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking",
+      "Payment"
+    ],
+    "related": [
+      "Notification"
+    ]
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "PaymentProcessedConsumer handles valid events",
+      "PaymentProcessedConsumer handles failed payment processing",
+      "PaymentProcessedConsumer handles refund events"
+    ],
+    "integration_tests": [
+      "PaymentProcessedConsumer processes events with NotificationService"
+    ],
+    "e2e_tests": []
+  },
+  "blocking_information": {
+    "is_blocked": false,
+    "blocking_tasks": [],
+    "can_start_date": "Immediately"
+  },
+  "additional_context": {
+    "technical_notes": "Implement proper error handling and logging. Ensure idempotency for duplicate events.",
+    "design_references": "BookingService/Consumers/BookingCreatedConsumer.cs",
+    "security_considerations": "Validate event data to prevent injection attacks. Implement proper authentication for service calls."
+  },
+  "implementation_guidance": {
+    "method_signatures": [
+      "public async Task Consume(ConsumeContext<PaymentProcessedEvent> context)"
+    ],
+    "implementation_logic": [
+      "Consume: Extract payment event data, validate event, update booking status, send notifications, handle errors, log operations",
+      "ValidateEvent: Validate payment event data, check for duplicate events, verify tenant and user information",
+      "UpdateBookingStatus: Update booking status to confirmed after successful payment, save changes to database",
+      "SendNotifications: Call NotificationService to send payment confirmation to customer and provider, handle notification success and failure scenarios",
+      "HandleErrors: Implement proper error handling for booking updates and notification failures, log errors, implement retry logic where appropriate"
+    ],
+    "file_structure": [
+      "backend/services/BookingService/Consumers/PaymentProcessedConsumer.cs"
+    ],
+    "dependencies": [
+      "MassTransit",
+      "Microsoft.Extensions.Logging",
+      "Shared.Events",
+      "System.Threading.Tasks"
+    ],
+    "error_handling": [
+      "BookingUpdateException: When booking status update fails",
+      "NotificationSendingException: When notification sending fails",
+      "EventValidationException: When event data is invalid",
+      "Implement retry logic for transient failures",
+      "Log all errors with appropriate detail for debugging"
+    ],
+    "testing_guidance": [
+      "Consume_WithValidEvent_UpdatesBookingAndSendsNotifications",
+      "Consume_WithBookingUpdateFailure_HandlesErrorGracefully",
+      "Consume_WithNotificationFailure_HandlesErrorGracefully",
+      "Consume_WithInvalidEvent_ThrowsValidationException",
+      "Consume_WithDuplicateEvent_HandledIdempotently"
+    ]
+  }
+}

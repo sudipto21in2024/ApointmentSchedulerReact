@@ -1,0 +1,17 @@
+graph LR
+    A[Analyze Task INF-005-D] --> B(Configure APM Server);
+    B --> C{Verify APM Server service in docker-compose.yml};
+    C --> D(Configure Application Instrumentation);
+    D --> E{Create apm/application-instrumentation.txt};
+    E --> F(Setup Service Maps);
+    F --> G{Create apm/service-maps.txt};
+    G --> H(Setup Performance Baselines);
+    H --> I{Create apm/performance-baselines.txt};
+    I --> J(Test APM Setup);
+    J --> K{Verify APM Server is collecting data};
+    K --> L{Verify Service Maps are created};
+    L --> M{Verify Performance Baselines are established};
+    M --> N(Document Setup);
+    N --> O{Document APM Server configuration};
+    O --> P{Document Application Instrumentation};
+    P --> Q(Complete Task INF-005-D);

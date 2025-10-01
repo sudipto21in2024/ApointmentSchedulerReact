@@ -1,0 +1,472 @@
+---
+openapi: 3.0.3
+info:
+  title: Dashboard Analytics API
+  description: API for dashboard analytics data for tenant and system administrators
+  version: 1.0.0
+
+servers:
+  - url: https://api.appointmentsystem.com/v1
+    description: Production server
+
+paths:
+  /tenant-admin/dashboard/overview:
+    get:
+      summary: Get tenant dashboard overview
+      description: Retrieve aggregated dashboard data for a tenant administrator
+      tags:
+        - Tenant Dashboard
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: End date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully retrieved tenant dashboard overview
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantDashboardOverviewDto'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /system-admin/dashboard/overview:
+    get:
+      summary: Get system dashboard overview
+      description: Retrieve aggregated dashboard data for system administrators
+      tags:
+        - System Dashboard
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: End date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully retrieved system dashboard overview
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemDashboardOverviewDto'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /analytics/tenant/bookings:
+    get:
+      summary: Get tenant booking analytics
+      description: Retrieve booking analytics data for a tenant
+      tags:
+        - Analytics
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: End date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully retrieved tenant booking analytics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingAnalyticsDto'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /analytics/tenant/revenue:
+    get:
+      summary: Get tenant revenue analytics
+      description: Retrieve revenue analytics data for a tenant
+      tags:
+        - Analytics
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: End date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully retrieved tenant revenue analytics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueAnalyticsDto'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /analytics/global/bookings:
+    get:
+      summary: Get global booking analytics
+      description: Retrieve global booking analytics data
+      tags:
+        - Analytics
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: End date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully retrieved global booking analytics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingAnalyticsDto'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /analytics/global/revenue:
+    get:
+      summary: Get global revenue analytics
+      description: Retrieve global revenue analytics data
+      tags:
+        - Analytics
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: End date for filtering (optional)
+          required: false
+          schema:
+            type: string
+            format: date-time
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully retrieved global revenue analytics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueAnalyticsDto'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    TenantDashboardOverviewDto:
+      type: object
+      properties:
+        totalBookings:
+          type: integer
+          description: Total number of bookings
+        totalRevenue:
+          type: number
+          format: decimal
+          description: Total revenue
+        activeStaff:
+          type: integer
+          description: Number of active staff
+        totalServices:
+          type: integer
+          description: Total number of services
+        newCustomers:
+          type: integer
+          description: Number of new customers
+        averageBookingValue:
+          type: number
+          format: decimal
+          description: Average booking value
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Last update timestamp
+
+    SystemDashboardOverviewDto:
+      type: object
+      properties:
+        totalTenants:
+          type: integer
+          description: Total number of tenants
+        totalUsers:
+          type: integer
+          description: Total number of users
+        totalBookings:
+          type: integer
+          description: Total number of bookings
+        totalRevenue:
+          type: number
+          format: decimal
+          description: Total revenue
+        activeServices:
+          type: integer
+          description: Number of active services
+        systemHealthScore:
+          type: number
+          format: decimal
+          description: System health score
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Last update timestamp
+
+    BookingAnalyticsDto:
+      type: object
+      properties:
+        bookingTrends:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingTrendDto'
+        bookingsByService:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingByServiceDto'
+        bookingsByStatus:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingByStatusDto'
+        statistics:
+          $ref: '#/components/schemas/BookingStatisticsDto'
+
+    BookingTrendDto:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        totalBookings:
+          type: integer
+        confirmedBookings:
+          type: integer
+        cancelledBookings:
+          type: integer
+        pendingBookings:
+          type: integer
+
+    BookingByServiceDto:
+      type: object
+      properties:
+        serviceId:
+          type: string
+          format: uuid
+        serviceName:
+          type: string
+        totalBookings:
+          type: integer
+        totalRevenue:
+          type: number
+          format: decimal
+
+    BookingByStatusDto:
+      type: object
+      properties:
+        status:
+          type: string
+        count:
+          type: integer
+        revenue:
+          type: number
+          format: decimal
+
+    BookingStatisticsDto:
+      type: object
+      properties:
+        totalBookings:
+          type: integer
+        averageBookingsPerDay:
+          type: number
+          format: float
+        peakBookingDay:
+          type: integer
+        cancellationRate:
+          type: number
+          format: float
+
+    RevenueAnalyticsDto:
+      type: object
+      properties:
+        revenueTrends:
+          type: array
+          items:
+            $ref: '#/components/schemas/RevenueTrendDto'
+        revenueByService:
+          type: array
+          items:
+            $ref: '#/components/schemas/RevenueByServiceDto'
+        statistics:
+          $ref: '#/components/schemas/RevenueStatisticsDto'
+
+    RevenueTrendDto:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        totalRevenue:
+          type: number
+          format: decimal
+        commission:
+          type: number
+          format: decimal
+        netRevenue:
+          type: number
+          format: decimal
+
+    RevenueByServiceDto:
+      type: object
+      properties:
+        serviceId:
+          type: string
+          format: uuid
+        serviceName:
+          type: string
+        totalRevenue:
+          type: number
+          format: decimal
+        commission:
+          type: number
+          format: decimal
+        netRevenue:
+          type: number
+          format: decimal
+
+    RevenueStatisticsDto:
+      type: object
+      properties:
+        totalRevenue:
+          type: number
+          format: decimal
+        totalCommission:
+          type: number
+          format: decimal
+        netRevenue:
+          type: number
+          format: decimal
+        averageRevenuePerBooking:
+          type: number
+          format: float
+        peakRevenueDay:
+          type: number
+          format: decimal
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,61 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#2563EB", "secondaryColor": "#1D4ED8", "lineColor": "#6B7280"}}}%%
+graph TD
+    %% Application Root
+    AppRoot[Container: fluid=true, padding="0"]
+
+    %% Global Navigation (Header)
+    AppRoot --> GlobalNavWrapper[Box:]
+    GlobalNavWrapper --> GlobalNav[Navbar: brand="AppointmentScheduler", items=["Dashboard", "Services", "Bookings", "Profile"]]
+
+    %% Main Content Wrapper
+    AppRoot --> MainContentWrapper[Flex: direction="row", align="start", gap="0"]
+    MainContentWrapper --> SidebarNav[Sidebar: items=["Dashboard", "Services", "Bookings", "Customers", "Settings", "Help", "Logout"]]
+    MainContentWrapper --> PrimaryContentArea[Container: maxWidth="1200px", padding="24px"]
+
+    %% Page Header
+    PrimaryContentArea --> HeaderSection[Flex: direction="row", justify="space-between", align="center"]
+    HeaderSection --> PageHeading[Heading: level=1, text="Provider Dashboard"]
+    HeaderSection --> AddServiceButton[Button: variant="primary", text="Add Service"]
+
+    %% Content Sections
+    PrimaryContentArea --> StatsSection[Grid: columns={desktop: 4, tablet: 2, mobile: 1}, gap="16px"]
+    StatsSection --> StatCard1[StatCard: label="Total Bookings", value=124, trend="up", icon="booking"]
+    StatsSection --> StatCard2[StatCard: label="Revenue", value="$12,40", trend="up", icon="revenue"]
+    StatsSection --> StatCard3[StatCard: label="Upcoming", value=8, trend="none", icon="calendar"]
+    StatsSection --> StatCard4[StatCard: label="Reviews", value=4.8, trend="up", icon="review"]
+
+    PrimaryContentArea --> ControlsSection[Flex: direction="row", justify="space-between", align="center"]
+    ControlsSection --> FilterBar[FilterBar: filters=["This Week", "This Month", "Custom Range"]]
+    ControlsSection --> SearchBox[SearchBox: placeholder="Search services..."]
+
+    PrimaryContentArea --> ServicesSection[Tabs: items=["All Services", "Active", "Draft"], activeTab="All Services"]
+    ServicesSection --> ServicesTable[Table: columns=["Service", "Duration", "Price", "Bookings", "Status", "Actions"]]
+
+    %% Global Footer
+    AppRoot --> GlobalFooter[Box: padding="24px", background="#F3F4F6"]
+    GlobalFooter --> FooterText[Text: content="© 2025 AppointmentScheduler. All rights reserved.", align="center"]
+
+    %% Styling for new components
+    style AppRoot fill:#F3F4F6,stroke:none
+    style GlobalNavWrapper fill:#FFFFFF,stroke:none
+    style GlobalNav fill:#FFFFFF,stroke:none,border-bottom:1px solid #E5E7EB
+    style MainContentWrapper fill:none,stroke:none
+    style SidebarNav fill:#FFFFFF,stroke:none,width:200px,border-right:1px solid #E5E7EB
+    style GlobalFooter fill:#F3F4F6,stroke:none
+    style FooterText fill:#6B7280,stroke:none,font-size:12px
+
+    %% Styling for existing components, adjusted to new structure
+    style PrimaryContentArea fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style HeaderSection fill:#FFFFFF,stroke:none
+    style PageHeading fill:#111827,stroke:none
+    style AddServiceButton fill:#2563EB,stroke:#2563EB,stroke-width:1px,color:#FFFFFF
+    style StatsSection fill:#FFFFFF,stroke:none
+    style StatCard1 fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style StatCard2 fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style StatCard3 fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style StatCard4 fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style ControlsSection fill:#FFFFFF,stroke:none
+    style FilterBar fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style SearchBox fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style ServicesSection fill:#FFFFFF,stroke:none
+    style ServicesTable fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px

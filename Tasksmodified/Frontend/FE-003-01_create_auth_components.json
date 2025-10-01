@@ -1,0 +1,198 @@
+{
+  "task_id": "FE-003-01",
+  "title": "Create Authentication UI Components",
+  "description": "Develop UI components for general user authentication including login, registration, and password reset forms. Service provider registration is handled separately.",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 6,
+    "story_points": 5
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a user, I want to authenticate securely so that I can access my account",
+      "As a developer, I need reusable auth components so that I can implement authentication flows quickly"
+    ],
+    "business_rules": [
+      "Auth components must validate user input",
+      "Auth components must handle error states properly",
+      "Auth components must be secure and not expose sensitive information",
+      "Auth components must follow the design system"
+    ],
+    "edge_cases": [
+      "Handling invalid credentials during login",
+      "Managing password validation requirements",
+      "Handling network errors during authentication",
+      "Ensuring secure storage of authentication tokens"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Authentication API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Login form validates user credentials",
+    "Registration form validates required fields",
+    "Password reset form handles email validation",
+    "All auth components follow the design system",
+    "Auth components handle error states properly",
+    "Auth components are secure and don't expose sensitive information"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "Angular Components",
+    "Form Handling",
+    "Security Best Practices"
+  ],
+  "related_files": {
+    "will_create": [
+      "frontend/AppointmentSaas/src/app/components/auth/login/login.component.ts",
+      "frontend/AppointmentSaas/src/app/components/auth/register/register.component.ts",
+      "frontend/AppointmentSaas/src/app/components/auth/password-reset/password-reset.component.ts"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/auth-openapi.yaml",
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "User"
+    ],
+    "related": []
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/auth/login",
+        "description": "Authenticate user credentials"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/register",
+        "description": "Register a new user"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/forgot-password",
+        "description": "Initiate password reset process"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/auth-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Form validation for login component",
+      "Form validation for registration component",
+      "Form validation for password reset component",
+      "Error handling for auth components"
+    ],
+    "integration_tests": [
+      "Auth flow integration with backend APIs",
+      "Token storage and retrieval",
+      "Form submission and validation"
+    ],
+    "e2e_tests": [
+      "Complete authentication workflow",
+      "Error handling for invalid credentials",
+      "Password reset flow"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "can_start_date": "After FE-002 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Follow Angular best practices form handling. Implement proper validation and error handling. Ensure secure communication with authentication APIs.",
+    "design_references": "docs/UI/Requirements.mmd",
+    "security_considerations": "Implement proper input validation, secure token storage, and protection against common authentication vulnerabilities"
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": ["FE-003-01.1"],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "frontend/AppointmentSaas/src/app/components/auth/login/login.component.ts",
+      "frontend/AppointmentSaas/src/app/components/auth/register/register.component.ts",
+      "frontend/AppointmentSaas/src/app/components/auth/password-reset/password-reset.component.ts",
+      "frontend/AppointmentSaas/src/app/components/auth/service-provider-register/service-provider-register.component.ts"
+    ]
+  },
+  "subtasks": [
+    {
+      "task_id": "FE-003-01.1",
+      "title": "Create Service Provider Registration UI Component",
+      "description": "Develop UI component for service provider registration, including multi-step form for account details, business information, subscription selection, and payment details.",
+      "priority": "HIGH",
+      "complexity": 4,
+      "effort_estimate": {
+        "hours": 16,
+        "story_points": 8
+      },
+      "status": "NOT_STARTED",
+      "progress": 0,
+      "blocking_information": {
+        "is_blocked": true,
+        "blocking_tasks": ["FE-002", "FE-005-01", "BE-XXX-01"],
+        "can_start_date": "After FE-002, FE-005-01, and BE-XXX-01 completion"
+      },
+      "related_files": {
+        "will_create": [
+          "frontend/AppointmentSaas/src/app/components/auth/service-provider-register/service-provider-register.component.ts",
+          "frontend/AppointmentSaas/src/app/components/auth/service-provider-register/service-provider-register.component.html",
+          "frontend/AppointmentSaas/src/app/components/auth/service-provider-register/service-provider-register.component.scss"
+        ],
+        "dependencies": [
+          "docs/UI/Requirements.mmd",
+          "docs/knowledgebase/UiFlow/ServiceProvider_Registration_Flow.md"
+        ]
+      },
+      "api_information": {
+        "endpoints": [
+          {
+            "method": "POST",
+            "path": "/auth/register/provider",
+            "description": "Register a new service provider, including tenant creation and initial subscription."
+          }
+        ],
+        "data_contracts": "docs/API/OpenAPI/auth-openapi.yaml"
+      },
+      "acceptance_criteria": [
+        "Multi-step form guides user through account, business, subscription, and payment details.",
+        "Form validates all required fields and displays errors.",
+        "Subscription plan selection is clearly presented.",
+        "Component integrates with backend API for service provider registration.",
+        "Component follows design system and is responsive."
+      ],
+      "additional_context": {
+        "technical_notes": "Implement using Angular Reactive Forms. Use stepper component for navigation. Handle conditional display of payment step based on plan selection. Integrate with new /auth/register/provider endpoint.",
+        "design_references": "docs/knowledgebase/UiFlow/ServiceProvider_Registration_Flow.md",
+        "security_considerations": "Ensure secure handling of all registration data, especially payment information and new tenant details. Implement CAPTCHA or similar for bot protection."
+      }
+    }
+  ]
+}

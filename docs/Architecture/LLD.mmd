@@ -1,0 +1,250 @@
+# Low-Level System Design: Multi-Tenant Appointment Booking System
+
+## 1. Component Architecture
+
+### 1.1 Service Layer Components
+
+#### User Service
+- **User Repository**: Manages user data persistence using Entity Framework Core
+- **Authentication Handler**: Implements JWT token generation and validation
+- **Authorization Manager**: Handles role-based access control and permission checks
+- **Tenant Manager**: Manages tenant isolation and multi-tenancy aspects
+- **Profile Service**: Handles user profile data and preferences
+
+#### Booking Service
+- **Booking Repository**: Manages booking data and relationships
+- **Slot Manager**: Handles time slot creation, validation, and conflict detection
+- **Booking Validator**: Validates booking requests against business rules
+- **Approval Workflow Engine**: Manages booking approval processes
+- **Booking Scheduler**: Coordinates appointment scheduling with calendar systems
+
+#### Service Management Service
+- **Service Repository**: Manages service definitions and configurations
+- **Pricing Calculator**: Handles dynamic pricing calculations and plans
+- **Category Manager**: Manages service categories and hierarchies
+- **Availability Manager**: Handles service availability rules and exceptions
+- **Service Publisher**: Manages service publishing and visibility states
+
+#### Payment Service
+- **Payment Gateway Adapter**: Interfaces with external payment providers
+- **Transaction Processor**: Handles payment transaction lifecycle
+- **Billing Manager**: Manages subscription billing and invoices
+- **Refund Handler**: Processes refund requests and approvals
+- **Payment Repository**: Stores payment-related data and transaction logs
+
+#### Notification Service
+- **Notification Dispatcher**: Routes notifications to appropriate channels via **Hangfire** for asynchronous delivery
+- **Template Engine**: Manages notification templates and personalization using **RazorLight** for mail merge
+- **Channel Manager**: Handles different notification channels (email, SMS, push)
+- **Notification Repository**: Stores notification history and delivery status
+- **Queue Processor**: Processes notification queue asynchronously (now integrated with Hangfire's job processing)
+- **Template Notification Consumer**: Consumes `TemplateNotificationEvent` to trigger template rendering and notification dispatch
+
+#### Reporting Service
+- **Analytics Engine**: Processes and aggregates business data
+- **Dashboard Generator**: Creates visualization-ready data for dashboards
+- **Report Builder**: Generates detailed reports and exportable formats
+- **Metric Collector**: Gathers system and business metrics
+- **Data Warehouse Interface**: Interfaces with data storage for reporting
+
+#### Configuration Service
+- **Configuration Repository**: Stores system and tenant configurations
+- **Feature Toggle Manager**: Manages feature flags and rollouts
+- **Settings Manager**: Handles system-wide and tenant-specific settings
+- **Configuration Cache**: Caches frequently accessed configuration data
+- **Change Tracker**: Monitors configuration changes for audit purposes
+
+### 1.2 Infrastructure Components
+
+#### Authentication & Authorization Service
+- **Identity Provider**: Implements OAuth2 and OpenID Connect
+- **Token Service**: Generates and validates JWT tokens
+- **Permission Service**: Manages user permissions and access levels
+- **Session Manager**: Handles user session lifecycle
+- **Audit Logger**: Logs authentication and authorization events
+
+#### Cache Service
+- **Distributed Cache**: Redis-based caching for session and data
+- **Cache Invalidation**: Implements cache invalidation strategies
+- **Cache Statistics**: Monitors cache hit/miss ratios and performance
+- **Cache Tier Manager**: Manages cache tiers and eviction policies
+
+#### Search Service
+- **Index Manager**: Manages Elasticsearch indices and mappings
+- **Search Engine**: Implements search queries and ranking algorithms
+- **Autocomplete Engine**: Provides real-time search suggestions
+- **Facet Processor**: Handles faceted search and filtering
+- **Search Cache**: Caches frequent search queries
+
+#### Monitoring & Logging Service
+- **Log Aggregator**: Collects and centralizes application logs
+- **Metrics Collector**: Gathers system performance metrics
+- **Alert Manager**: Manages alerting rules and notifications
+- **Dashboard Service**: Provides real-time monitoring dashboards
+- **Trace Service**: Implements distributed tracing for request flows
+
+## 2. Data Flow Details
+
+### 2.1 Booking Creation Flow
+1. Customer initiates booking request via frontend
+2. Booking Service validates slot availability
+3. Payment Service processes payment if required
+4. Booking Service creates booking record
+5. Notification Service publishes `TemplateNotificationEvent` (containing template name and data)
+6. Notification Service's `TemplateNotificationConsumer` processes the event, renders the template using the Template Engine, and enqueues the notification for dispatch via Hangfire.
+6. Event is published to event store for audit trail
+7. Reporting Service updates analytics
+
+### 2.2 Service Creation Flow
+1. Service provider creates service via frontend
+2. Service Management Service validates service data
+3. Service Repository stores service definition
+4. Search Service indexes service for discoverability
+5. Event is published to event store
+6. Configuration Service updates tenant settings
+
+### 2.3 Payment Processing Flow
+1. Customer selects payment method
+2. Payment Service validates payment details
+3. Payment Gateway Adapter communicates with external provider
+4. Transaction processed and confirmed
+5. Payment Repository stores transaction details
+6. Notification Service publishes `TemplateNotificationEvent` for payment confirmation (contains template name and data)
+7. Notification Service's `TemplateNotificationConsumer` processes the event, renders the template, and enqueues the notification for dispatch via Hangfire.
+
+## 3. Data Models and Relationships
+
+### 3.1 Core Data Entities
+- **User**: Customer and service provider accounts
+- **Tenant**: Isolated environment for service providers
+- **Service**: Service offerings with configurations
+- **Slot**: Available time slots for service bookings
+- **Booking**: Appointment reservations
+- **Payment**: Transaction records and billing
+- **Notification**: Communication history
+- **Report**: Analytics and business intelligence data
+
+### 3.2 Entity Relationships
+- One-to-Many: Tenant → Services, Services → Slots, Users → Bookings
+- Many-to-Many: Users ↔ Services (for provider relationships)
+- One-to-One: Booking ↔ Payment
+- One-to-Many: Service → Reviews, Users → Reviews
+
+## 4. API Design Patterns
+
+### 4.1 RESTful API Endpoints
+- Standard CRUD operations for all entities
+- Resource-based URL structure
+- Consistent HTTP status codes
+- JSON-based request/response format
+
+### 4.2 Command Query Responsibility Segregation (CQRS)
+- Separate APIs for command (write) and query (read) operations
+- Optimized data models for each purpose
+- Event-driven updates for consistency
+
+### 4.3 Event Sourcing Implementation
+- All state changes are stored as events
+- Event store serves as the single source of truth
+- Events can be replayed for system reconstruction
+
+## 5. Communication Patterns
+
+### 5.1 Synchronous Communication
+- REST API calls between services
+- Direct database queries within service boundaries
+- GraphQL for complex data retrieval needs
+
+### 5.2 Asynchronous Communication
+- Message queues for decoupled service communication
+- Event streaming for audit trails and notifications
+- Background job processing for long-running tasks
+
+### 5.3 Service Discovery
+- DNS-based service discovery
+- Load balancing across service instances
+- Health check endpoints for service monitoring
+
+## 6. Database Design Details
+
+### 6.1 Database Schema Structure
+- SQL Server with Entity Framework Core
+- Separate schemas for tenants to ensure data isolation
+- Partitioning strategy for large datasets
+- Indexing strategy for common query patterns
+
+### 6.2 Data Partitioning
+- Tenant-based partitioning for user and booking data
+- Time-based partitioning for historical data
+- Geographic partitioning for global deployments
+
+### 6.3 Data Access Patterns
+- Read-heavy queries optimized with indexed views
+- Write-heavy operations with batch processing
+- Caching strategies for frequently accessed data
+
+## 7. Security Implementation Details
+
+### 7.1 Authentication Flow
+- JWT-based authentication with refresh tokens
+- OAuth2 integration for social login
+- Session management with secure cookies
+- Token expiration and renewal mechanisms
+
+### 7.2 Authorization Implementation
+- Role-based access control (RBAC)
+- Attribute-based access control (ABAC) for fine-grained permissions
+- Permission inheritance for hierarchical roles
+- Audit logging for access control events
+
+### 7.3 Data Protection
+- Encryption at rest for sensitive data
+- TLS encryption for data in transit
+- Secure password hashing with salt
+- PCI DSS compliance for payment data
+
+## 8. Performance Optimization
+
+### 8.1 Caching Strategy
+- Redis-based distributed caching
+- Multi-tier caching approach (application, CDN, browser)
+- Cache warming strategies for critical data
+- Cache invalidation based on data changes
+
+### 8.2 Database Optimization
+- Connection pooling for database access
+- Query optimization and indexing
+- Read replicas for reporting queries
+- Stored procedures for complex operations
+
+### 8.3 Asynchronous Processing
+- Background jobs for non-critical operations
+- Message queues for reliable task delivery
+- Batch processing for bulk operations
+- Retry mechanisms with exponential backoff
+
+## 9. Deployment Details
+
+### 9.1 Containerization
+- Docker containers for each microservice
+- Container orchestration with Kubernetes
+- Health check endpoints for container monitoring
+- Resource limits and requests for container management
+
+### 9.2 CI/CD Pipeline
+- Automated build and test processes
+- Deployment automation with blue-green strategy
+- Rollback procedures for failed deployments
+- Environment-specific configuration management
+
+### 9.3 Monitoring and Observability
+- Distributed tracing for request flows
+- Metric collection and alerting
+- Log aggregation and analysis
+- Performance monitoring and profiling
+
+## 10. Change Log
+### 2025-09-17
+- **Change Description:** Enhanced Notification Service with Hangfire for asynchronous processing and Mail Merge for template-based notifications. Updated associated data flow and technology stack. Integrated new `TemplateNotificationEvent` and consumer.
+- **Reason:** To improve API responsiveness, reliability of notification delivery, and enable dynamic, personalized notification content.
+- **Affected Components:** Notification Service, Booking Service (event publishing), Payment Service (event publishing), Shared Events, Core Data Flow.

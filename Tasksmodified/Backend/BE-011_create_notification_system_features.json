@@ -1,0 +1,172 @@
+{
+  "task_id": "BE-011",
+  "title": "Create Notification System Features",
+  "description": "Implement notification system functionality including email, SMS, and push notifications for booking confirmations, reminders, and updates",
+  "priority": "MEDIUM",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 32,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to receive booking confirmations so I know my appointment is scheduled",
+      "As a service provider, I want to receive booking notifications so I can prepare for appointments",
+      "As a user, I want to receive reminders so I don't forget my appointments",
+      "As a user, I want to customize my notification preferences so I only receive what I want"
+    ],
+    "business_rules": [
+      "Notification system must support multiple channels (email, SMS, push)",
+      "Booking confirmations must be sent immediately after booking",
+      "Appointment reminders must be sent at configurable intervals",
+      "Notification preferences must be customizable by user",
+      "Notification delivery status must be tracked and logged"
+    ],
+    "edge_cases": [
+      "Handling failed notification deliveries",
+      "Managing notification preferences changes",
+      "Handling high volume notification bursts",
+      "Managing unsubscribe requests",
+      "Handling different time zones for reminders"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-005"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Database Schema",
+      "Email/SMS Gateway Integration",
+      "Booking Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "Notification system supports multiple delivery channels",
+    "Booking confirmations are sent immediately after booking",
+    "Appointment reminders are sent at configurable intervals",
+    "Notification preferences are customizable by user",
+    "Notification delivery status is tracked and logged",
+    "Failed notification deliveries are retried appropriately"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "Email/SMS Gateway Integration",
+    "Message Queuing"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/NotificationService/Controllers/NotificationController.cs",
+      "backend/services/NotificationService/Services/INotificationService.cs",
+      "backend/services/NotificationService/Services/NotificationService.cs",
+      "backend/services/NotificationService/Validators/INotificationValidator.cs",
+      "backend/services/NotificationService/Validators/NotificationValidator.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Entities/DatabaseSchema.mmd",
+      "docs/API/OpenAPI/notification-openapi.yaml"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Notification"
+    ],
+    "related": [
+      "User",
+      "Booking",
+      "NotificationPreference"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/notifications/send",
+        "description": "Send a notification"
+      },
+      {
+        "method": "GET",
+        "path": "/notifications/preferences",
+        "description": "Get notification preferences"
+      },
+      {
+        "method": "PUT",
+        "path": "/notifications/preferences",
+        "description": "Update notification preferences"
+      },
+      {
+        "method": "GET",
+        "path": "/notifications/history",
+        "description": "Get notification history"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/notification-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "NotificationService.SendNotificationAsync delivers messages",
+      "NotificationService.GetPreferencesAsync retrieves user preferences",
+      "NotificationService.UpdatePreferencesAsync updates preferences",
+      "NotificationValidator validates notification requests",
+      "NotificationValidator validates preference updates"
+    ],
+    "integration_tests": [
+      "Notification API sends emails through gateway",
+      "Notification API sends SMS through gateway",
+      "Notification API manages user preferences",
+      "Notification API tracks delivery status",
+      "Notification API handles failed deliveries"
+    ],
+    "e2e_tests": [
+      "Complete notification delivery workflow",
+      "Notification preference management",
+      "Notification history retrieval",
+      "Error handling for failed deliveries",
+      "Performance with high volume notifications"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-005"
+    ],
+    "blocking_reason": "Notification system depends on booking implementation",
+    "can_start_date": "After BE-005 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement reliable message queuing for notification delivery. Integrate with email services like SendGrid and SMS services like Twilio. Implement proper retry mechanisms for failed deliveries. Use templates for consistent notification formatting.",
+    "design_references": "docs/BusinessRequirements/BRD.mmd",
+    "security_considerations": "Ensure sensitive user information is not exposed in notifications. Implement proper authentication and authorization for preference management. Validate all input data to prevent injection attacks. Use HTTPS for all notification-related communications."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/NotificationService/Controllers/NotificationController.cs",
+      "backend/services/NotificationService/Services/INotificationService.cs",
+      "backend/services/NotificationService/Services/NotificationService.cs",
+      "backend/services/NotificationService/Validators/INotificationValidator.cs",
+      "backend/services/NotificationService/Validators/NotificationValidator.cs"
+    ]
+  },
+  "subtasks": []
+}

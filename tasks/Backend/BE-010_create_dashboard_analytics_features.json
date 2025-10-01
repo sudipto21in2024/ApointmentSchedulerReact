@@ -1,0 +1,137 @@
+{
+  "task_id": "BE-010",
+  "title": "Implement Dashboard and Analytics Features",
+  "description": "Develop comprehensive dashboard and analytics functionality for service providers including earnings tracking, booking patterns, customer insights, and performance metrics.",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 28,
+    "story_points": 13,
+    "justification": "Creating dashboard and analytics features requires implementing data aggregation, reporting capabilities, and visualization-ready data structures for service providers."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a service provider, I want to monitor earnings so that I can track my business performance",
+      "As a service provider, I need to analyze booking patterns so that I can optimize my schedule",
+      "As a service provider, I want customer insights so that I can improve service quality"
+    ],
+    "business_rules": [
+      "Earnings data must be aggregated from payment records",
+      "Booking patterns must be analyzed by time periods and services",
+      "Customer insights must be derived from booking and review data",
+      "Performance metrics must be calculated and presented accurately",
+      "Dashboard data must be filtered by tenant context"
+    ],
+    "edge_cases": [
+      "Handling large datasets for performance reporting",
+      "Calculating earnings with different currency conversions",
+      "Analyzing booking patterns across multiple time periods",
+      "Generating customer insights from review data",
+      "Ensuring dashboard data privacy and tenant isolation"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-008"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Data aggregation service",
+      "Analytics engine"
+    ]
+  },
+  "acceptance_criteria": [
+    "Earnings tracking dashboard with payment data",
+    "Booking patterns analysis by service and time",
+    "Customer insights from reviews and booking history",
+    "Performance metrics for service providers",
+    "Tenant-specific dashboard views",
+    "Data filtering and sorting capabilities",
+    "Exportable report generation"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "Analytics Development",
+    "Data Aggregation",
+    "Dashboard Creation",
+    "Reporting Systems"
+  ],
+  "related_files": {
+    "will_create": [
+      "controllers/ReportController.cs",
+      "services/ReportService.cs",
+      "models/ReportData.cs",
+      "processors/AnalyticsProcessor.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd#5.1.4",
+      "docs/BusinessRequirements/UserJourneys.mmd#Stage 3: Booking Management"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking",
+      "Payment",
+      "Review"
+    ],
+    "related": [
+      "User",
+      "Service"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/reports/earnings",
+        "description": "Get earnings report"
+      },
+      {
+        "method": "GET",
+        "path": "/reports/bookings",
+        "description": "Get booking patterns report"
+      },
+      {
+        "method": "GET",
+        "path": "/reports/customers",
+        "description": "Get customer insights report"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/report-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Earnings calculation logic",
+      "Booking pattern analysis",
+      "Customer insight generation",
+      "Performance metric calculation",
+      "Data aggregation processes"
+    ],
+    "integration_tests": [
+      "Complete reporting workflow",
+      "Dashboard data aggregation",
+      "Report generation and filtering",
+      "Tenant data isolation"
+    ],
+    "e2e_tests": [
+      "Dashboard analytics workflow",
+      "Report generation and export",
+      "Performance metrics viewing",
+      "Customer insights analysis"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-008"
+    ],
+    "blocking_reason": "Booking and payment data must be available to generate meaningful analytics",
+    "can_start_date": "After BE-008 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement dashboard and analytics features as defined in FR-4.1 to FR-4.4 of the BRD. Include comprehensive reporting capabilities for service providers. Ensure data privacy and tenant isolation in all dashboard views.",
+    "design_references": "Dashboard and analytics requirements from BRD and service provider journey from User Journeys",
+    "security_considerations": "Ensure dashboard data is properly filtered by tenant context and that sensitive financial data is protected"
+  }
+}

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reportingservice
+  labels:
+    app: reportingservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reportingservice
+  template:
+    metadata:
+      labels:
+        app: reportingservice
+    spec:
+      containers:
+        - name: reportingservice
+          image: reportingservice:latest # Replace with your actual image name and tag
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: ASPNETCORE_HTTP_PORT
+              value: "80"
+            - name: Consul__Host
+              value: "http://consul:8500" # Referencing the Consul service
+            - name: Consul__ServiceName
+              value: "ReportingService"

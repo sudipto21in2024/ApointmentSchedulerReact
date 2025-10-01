@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Appointment Booking System</title>
+    <link rel="stylesheet" href="../styles/styles.scss">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles to integrate SCSS variables with Tailwind-like classes */
+        /* These are defined in styles.scss, but repeated here for clarity in HTML mockup */
+        :root {
+            --color-primary-main: #2563EB;
+            --color-primary-dark: #1D4ED8;
+            --color-neutral-gray900: #111827;
+            --color-neutral-gray700: #374151;
+            --color-neutral-gray300: #D1D5DB;
+            --color-neutral-gray100: #F3F4F6;
+            --color-neutral-white: #FFFFFF;
+            --color-secondary-danger: #EF4444;
+
+            --font-family-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            --font-size-heading2: 24px;
+            --font-size-body-medium: 14px;
+            --font-size-body-small: 12px;
+            --font-weight-bold: 700;
+            --font-weight-medium: 500;
+
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --card-border-radius: 8px;
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --card-padding: 24px;
+            --button-height: 40px;
+            --button-padding: 12px 24px;
+            --button-border-radius: 6px;
+            --button-font-weight: 600;
+            --button-transition: 0.2s ease;
+            --form-label-spacing: 8px;
+            --form-input-height: 40px;
+            --form-input-padding: 12px;
+            --form-border-radius: 6px;
+            --form-focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.3);
+        }
+
+        body {
+            font-family: var(--font-family-inter);
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-neutral-gray100);
+            color: var(--color-neutral-gray900);
+        }
+        .text-primary { color: var(--color-primary-main); }
+        .text-gray-600 { color: var(--color-neutral-gray700); }
+        .text-gray-900 { color: var(--color-neutral-gray900); }
+        .bg-gray-50 { background-color: var(--color-neutral-gray100); }
+        .bg-primary { background-color: var(--color-primary-main); }
+        .hover\:bg-primary-hover:hover { background-color: var(--color-primary-dark); }
+        .text-sm { font-size: var(--font-size-body-medium); }
+        .text-2xl { font-size: var(--font-size-heading2); }
+        .font-bold { font-weight: var(--font-weight-bold); }
+        .font-medium { font-weight: var(--font-weight-medium); }
+        .rounded-lg { border-radius: var(--card-border-radius); }
+        .shadow-md { box-shadow: var(--card-shadow); }
+        .p-8 { padding: var(--card-padding); }
+        .mb-8 { margin-bottom: var(--spacing-xl); }
+        .mb-2 { margin-bottom: var(--spacing-sm); }
+        .mt-1 { margin-top: var(--spacing-xs); }
+        .mt-6 { margin-top: var(--spacing-lg); }
+        .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: var(--spacing-lg); }
+        .grid { display: grid; }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .gap-4 { gap: var(--spacing-md); }
+        .w-full { width: 100%; }
+        .min-h-screen { min-height: 100vh; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .block { display: block; }
+        .border { border-width: 1px; border-style: solid; }
+        .border-gray-300 { border-color: var(--color-neutral-gray300); }
+        .rounded-md { border-radius: var(--form-border-radius); }
+        .focus\:outline-none:focus { outline: none; }
+        .focus\:ring-2:focus { box-shadow: var(--form-focus-ring); }
+        .focus\:ring-primary:focus { box-shadow: var(--form-focus-ring); }
+        .focus\:border-transparent:focus { border-color: transparent; }
+        .focus\:ring-offset-2:focus { box-shadow: 0 0 0 2px var(--color-neutral-white), var(--form-focus-ring); }
+        .text-center { text-align: center; }
+        .hidden { display: none; }
+        .max-w-md { max-width: 28rem; }
+        .field-group { margin-bottom: var(--spacing-md); }
+        .text-red-600 { color: var(--color-secondary-danger); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header (Minimal for Public-Facing Layout) -->
+    <header class="w-full py-4 text-center">
+        <h1 class="text-2xl font-bold text-gray-900">Appointment System</h1>
+    </header>
+
+    <div class="auth-container min-h-screen flex items-center justify-center bg-gray-50">
+        <div class="auth-card max-w-md w-full bg-white rounded-lg shadow-md p-8">
+            <div class="auth-header text-center mb-8">
+                <h1 class="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h1>
+                <p class="text-sm text-gray-600">Sign in to your account</p>
+            </div>
+            <form class="auth-form space-y-6">
+                <div class="field-group">
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <div class="text-red-600 text-sm mt-1 hidden" role="alert"></div>
+                </div>
+                <div class="field-group">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <div class="text-red-600 text-sm mt-1 hidden" role="alert"></div>
+                </div>
+                <button type="submit" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-medium">Sign In</button>
+            </form>
+            <div class="auth-footer text-center mt-6 space-y-4">
+                <a href="forgot-password.html" class="text-primary hover:text-primary-hover text-sm font-medium">Forgot your password?</a>
+                <p class="text-sm text-gray-600">Don't have an account? <a href='register.html' class='text-primary hover:text-primary-hover font-medium'>Sign up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer (Minimal for Public-Facing Layout) -->
+    <footer class="w-full py-4 text-center text-sm text-gray-600">
+        &copy; 2023 Appointment System. All rights reserved.
+    </footer>
+</body>
+</html>

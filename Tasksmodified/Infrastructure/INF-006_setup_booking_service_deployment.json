@@ -1,0 +1,130 @@
+{
+  "task_id": "INF-006",
+  "title": "Setup Booking Service Deployment",
+  "description": "Configure and deploy the Booking Service microservice including Docker configuration, Kubernetes deployment, and CI/CD pipeline integration",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 24,
+    "story_points": 5
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a DevOps engineer, I want to deploy the Booking Service so it can be accessed by other services",
+      "As a developer, I want the service to be containerized so it can run consistently across environments",
+      "As an operations team member, I want the service to be monitored so I can track its performance"
+    ],
+    "business_rules": [
+      "Booking Service must be deployed as a containerized application",
+      "Service must be configured for high availability",
+      "Service must be integrated with monitoring and logging systems",
+      "Service must be deployed through CI/CD pipeline"
+    ],
+    "edge_cases": [
+      "Handling deployment failures",
+      "Managing service scaling",
+      "Configuring environment-specific settings",
+      "Setting up health checks and readiness probes"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-005"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Azure Container Registry",
+      "Kubernetes Cluster",
+      "CI/CD Pipeline"
+    ]
+  },
+  "acceptance_criteria": [
+    "Booking Service Docker image is built and pushed to registry",
+    "Kubernetes deployment configuration is created",
+    "Service is deployed to Kubernetes cluster",
+    "Health checks and monitoring are configured",
+    "CI/CD pipeline deploys service on code changes",
+    "Service is accessible through load balancer"
+  ],
+  "assigned_team": "Infrastructure",
+  "required_skills": [
+    "Docker",
+    "Kubernetes",
+    "Azure DevOps",
+    "CI/CD Pipeline Management",
+    "Infrastructure as Code"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/BookingService/Dockerfile",
+      "k8s/booking-service-deployment.yaml",
+      "k8s/booking-service-service.yaml"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Architecture/TechnologyStack.md",
+      "backend/services/BookingService/BookingService.csproj"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "BookingService"
+    ],
+    "related": []
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [],
+    "integration_tests": [
+      "Service deployment succeeds without errors",
+      "Service responds to health check requests",
+      "Service can communicate with other services"
+    ],
+    "e2e_tests": [
+      "Complete deployment workflow from code commit to service availability",
+      "Rolling updates work correctly",
+      "Service scaling functions properly"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-005"
+    ],
+    "blocking_reason": "Booking service implementation must be completed before deployment",
+    "can_start_date": "After BE-005 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Follow existing patterns for Docker and Kubernetes configurations. Ensure proper resource limits and health checks. Configure environment variables for different deployment environments.",
+    "design_references": "docs/Architecture/TechnologyStack.md",
+    "security_considerations": "Ensure secure container configuration. Implement proper network policies. Configure secrets management for sensitive configuration."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/BookingService/Dockerfile",
+      "k8s/booking-service-deployment.yaml",
+      "k8s/booking-service-service.yaml"
+    ]
+  },
+  "subtasks": []
+}

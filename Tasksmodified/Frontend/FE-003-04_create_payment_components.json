@@ -1,0 +1,224 @@
+{
+  "task_id": "FE-003-04",
+  "title": "Create Payment Management UI Components",
+  "description": "Develop UI components for payment management including payment processing, history, status tracking, and saved payment method management.",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 8,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to pay securely for services so that I can complete bookings",
+      "As a service provider, I need to track payment status so that I can manage my earnings",
+      "As a user, I want to view payment history so that I can track my transactions"
+    ],
+    "business_rules": [
+      "Payment components must handle secure payment information",
+      "Payment history must display transaction details clearly",
+      "Payment status tracking must be accurate and real-time",
+      "Payment components must follow the design system"
+    ],
+    "edge_cases": [
+      "Handling payment processing with various payment methods",
+      "Managing payment status updates and notifications",
+      "Processing payment history with pagination",
+      "Displaying payment errors and retry options"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Payment Management API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Payment processing form handles secure payment submission",
+    "Payment history component displays transactions with filtering",
+    "Payment status tracking displays current payment status",
+    "Payment components follow the design system",
+    "Payment components handle error states properly"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "Angular Components",
+    "Secure Form Handling",
+    "API Integration",
+    "Payment Processing UI"
+  ],
+  "related_files": {
+    "will_create": [
+      "frontend/AppointmentSaas/src/app/components/payment/payment-form.component.ts",
+      "frontend/AppointmentSaas/src/app/components/payment/payment-history.component.ts",
+      "frontend/AppointmentSaas/src/app/components/payment/payment-status.component.ts",
+      "frontend/AppointmentSaas/src/app/components/payment/payment-method-management/payment-method-management.component.ts"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/payment-openapi.yaml",
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Payment"
+    ],
+    "related": [
+      "Booking",
+      "User"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/payments",
+        "description": "Get all payments with optional filtering"
+      },
+      {
+        "method": "POST",
+        "path": "/payments",
+        "description": "Create a new payment"
+      },
+      {
+        "method": "PUT",
+        "path": "/payments/{id}",
+        "description": "Update an existing payment"
+      },
+      {
+        "method": "POST",
+        "path": "/payments/{id}/refund",
+        "description": "Process a refund for a payment"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/payment-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Payment form validation and submission",
+      "Payment history component rendering",
+      "Payment status component display"
+    ],
+    "integration_tests": [
+      "Payment workflow with backend APIs",
+      "Form submission and validation",
+      "Payment status updates",
+      "Refund processing"
+    ],
+    "e2e_tests": [
+      "Complete payment workflow from booking to payment",
+      "Payment processing with different payment methods",
+      "Payment history viewing with filtering",
+      "Refund processing workflow"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "can_start_date": "After FE-002 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Follow Angular best practices for component development. Implement proper form handling and validation. Ensure secure handling of payment information.",
+    "design_references": "docs/UI/Requirements.mmd",
+    "security_considerations": "Ensure PCI compliance for payment information handling. Implement proper authorization checks for payment management actions. Validate all user inputs to prevent injection attacks."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "frontend/src/app/components/payment/payment-form.component.ts",
+      "frontend/src/app/components/payment/payment-history.component.ts",
+      "frontend/src/app/components/payment/payment-status.component.ts"
+    ]
+  },
+  "subtasks": [
+    {
+      "task_id": "FE-003-04.1",
+      "title": "Create Payment Method Management Component",
+      "description": "Develop UI component for managing saved payment methods (listing, adding, deleting, setting default) for customer and tenant admin profiles.",
+      "priority": "HIGH",
+      "complexity": 3,
+      "effort_estimate": {
+        "hours": 12,
+        "story_points": 5
+      },
+      "status": "NOT_STARTED",
+      "progress": 0,
+      "blocking_information": {
+        "is_blocked": true,
+        "blocking_tasks": ["FE-002", "FE-005-01", "BE-XXX-03"],
+        "can_start_date": "After FE-002, FE-005-01, and BE-XXX-03 completion"
+      },
+      "related_files": {
+        "will_create": [
+          "frontend/AppointmentSaas/src/app/components/payment/payment-method-management/payment-method-management.component.ts",
+          "frontend/AppointmentSaas/src/app/components/payment/payment-method-management/payment-method-management.component.html",
+          "frontend/AppointmentSaas/src/app/components/payment/payment-method-management/payment-method-management.component.scss"
+        ],
+        "dependencies": [
+          "docs/UI/Requirements.mmd",
+          "docs/knowledgebase/UiFlow/Customer_ProfileManagement_Flow.md",
+          "docs/knowledgebase/UiFlow/TenantAdmin_SubscriptionBillingManagement_Flow.md"
+        ]
+      },
+      "api_information": {
+        "endpoints": [
+          {
+            "method": "GET",
+            "path": "/payment-methods",
+            "description": "List saved payment methods for a user/tenant."
+          },
+          {
+            "method": "POST",
+            "path": "/payment-methods",
+            "description": "Add a new payment method."
+          },
+          {
+            "method": "DELETE",
+            "path": "/payment-methods/{id}",
+            "description": "Remove a saved payment method."
+          },
+          {
+            "method": "PUT",
+            "path": "/payment-methods/{id}/default",
+            "description": "Set a payment method as default."
+          }
+        ],
+        "data_contracts": "docs/API/OpenAPI/payment-openapi.yaml"
+      },
+      "acceptance_criteria": [
+        "Component displays a list of saved payment methods.",
+        "Allows adding new payment methods securely.",
+        "Provides options to delete and set default payment methods.",
+        "Integrates with backend API for payment method management.",
+        "Component follows design system and is responsive."
+      ],
+      "additional_context": {
+        "technical_notes": "Implement using Angular Reactive Forms. Integrate with payment gateway for secure tokenization of card details. Ensure proper display of masked card numbers. Handle error states and success messages.",
+        "design_references": "docs/knowledgebase/UiFlow/Customer_ProfileManagement_Flow.md, docs/knowledgebase/UiFlow/TenantAdmin_SubscriptionBillingManagement_Flow.md",
+        "security_considerations": "Ensure PCI compliance for handling payment information. Use tokenization to avoid storing sensitive card data directly. Implement proper authorization checks for managing payment methods."
+      }
+    }
+  ]
+}

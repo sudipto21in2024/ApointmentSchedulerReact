@@ -1,0 +1,13 @@
+graph LR
+    A[Analyze Task INF-004] --> B(Choose CI/CD Platform);
+    B --> C{Create .github/workflows directory};
+    C --> D{Create build.yml workflow};
+    D --> E{Create deploy.yml workflow};
+    E --> F{Create scripts/deploy.sh script};
+    F --> G{Create scripts/test.sh script};
+    G --> H{Create pipeline-config.json file};
+    H --> I{Configure Artifact Storage};
+    I --> J{Configure Environment Variables};
+    J --> K{Implement Security Scanning};
+    K --> L{Test and Monitor Pipeline};
+    L --> M(Complete Task INF-004);

@@ -1,0 +1,150 @@
+{
+  "task_id": "FE-005-05",
+ "title": "Implement Payment Management Service",
+  "description": "Create service for handling payment processing and history API interactions",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 7,
+    "story_points": 5
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to pay securely for services so that I can complete bookings",
+      "As a service provider, I need to track payment status so that I can manage my earnings",
+      "As a user, I want to view payment history so that I can track my transactions"
+    ],
+    "business_rules": [
+      "Payment service must handle payment processing operations",
+      "Payment service must handle refund processing",
+      "Payment service must provide payment history retrieval",
+      "Payment service must integrate with payment API endpoints"
+    ],
+    "edge_cases": [
+      "Handling payment processing with various payment methods",
+      "Managing payment status updates and notifications",
+      "Dealing with payment failures and retries",
+      "Handling refund processing and tracking"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-005-01"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Payment Management API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Payment service handles payment processing operations",
+    "Payment service handles refund processing",
+    "Payment service provides payment history retrieval",
+    "Payment service integrates properly with payment API",
+    "Service handles error cases appropriately"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "API Integration",
+    "Secure Data Handling",
+    "Payment Processing"
+  ],
+  "related_files": {
+    "will_create": [
+      "frontend/src/app/services/payment.service.ts"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/payment-openapi.yaml"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Payment"
+    ],
+    "related": [
+      "Booking",
+      "User"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/payments",
+        "description": "Get all payments with optional filtering"
+      },
+      {
+        "method": "POST",
+        "path": "/payments",
+        "description": "Create a new payment"
+      },
+      {
+        "method": "PUT",
+        "path": "/payments/{id}",
+        "description": "Update an existing payment"
+      },
+      {
+        "method": "POST",
+        "path": "/payments/{id}/refund",
+        "description": "Process a refund for a payment"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/payment-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Payment service processing operations",
+      "Refund processing functionality",
+      "Payment history retrieval",
+      "Error handling for payment operations"
+    ],
+    "integration_tests": [
+      "Payment management integration with backend APIs",
+      "Refund processing workflow",
+      "Payment status updates",
+      "Pagination handling for large datasets"
+    ],
+    "e2e_tests": [
+      "Complete payment workflow from booking to payment",
+      "Payment processing with different payment methods",
+      "Refund processing workflow",
+      "Payment history viewing"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-005-01"
+    ],
+    "can_start_date": "After FE-005-01 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Follow best practices for API service implementation with focus on security. Ensure proper error handling and data transformation. Implement secure handling of payment information. Include methods for payment method CRUD operations.",
+    "design_references": "docs/API/OpenAPI/payment-openapi.yaml",
+    "security_considerations": "Ensure PCI compliance for payment information handling. Implement proper authorization checks for payment management operations. Validate all user inputs to prevent injection attacks. Protect sensitive payment information. Ensure secure storage and transmission of payment method details."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "frontend/src/app/services/payment.service.ts"
+    ]
+  },
+  "subtasks": []
+}

@@ -1,0 +1,136 @@
+{
+  "task_id": "BE-003",
+  "title": "Create Entity Models and Data Access Layer for Core Entities",
+  "description": "Implement the complete entity models and data access layer for all core entities in the Multi-Tenant Appointment Booking System. This includes defining models, repositories, and implementing Entity Framework Core mappings.",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 20,
+    "story_points": 8,
+    "justification": "Creating comprehensive entity models and data access layer requires mapping all database entities, implementing proper repository patterns, and ensuring EF Core integration. This forms the foundation for all data operations."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a developer, I want strongly-typed entity models so that I can work with data safely",
+      "As a backend engineer, I need a robust data access layer so that database operations are efficient and maintainable"
+    ],
+    "business_rules": [
+      "All entities must map to the database schema accurately",
+      "Repository pattern must be implemented for data access",
+      "Entity relationships must be properly configured",
+      "Data validation rules must be enforced at model level",
+      "Multi-tenancy requirements must be implemented in entity relationships"
+    ],
+    "edge_cases": [
+      "Handling multi-tenancy in entity relationships",
+      "Implementing proper data isolation between tenants",
+      "Managing complex entity relationships",
+      "Ensuring performance optimization for large datasets",
+      "Supporting database migrations and schema evolution"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "INF-002",
+      "BE-001"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Entity Framework Core",
+      "SQL Server connection"
+    ]
+  },
+  "acceptance_criteria": [
+    "All entity models are created according to database schema with proper relationships",
+    "Repository pattern is implemented for all entities with proper interfaces",
+    "Entity Framework Core mappings are configured correctly with proper indexing",
+    "Data validation rules are implemented at model level with proper attributes",
+    "Entity relationships are properly defined with foreign key constraints",
+    "Database context is configured and functional with proper connection strings",
+    "Migration scripts are created for schema changes with proper versioning"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "Entity Framework Core",
+    "Database Modeling",
+    "Repository Pattern",
+    "C# Programming"
+  ],
+  "related_files": {
+    "will_create": [
+      "models/User.cs",
+      "models/Tenant.cs",
+      "models/Service.cs",
+      "models/Slot.cs",
+      "models/Booking.cs",
+      "models/Payment.cs",
+      "models/Review.cs",
+      "models/Notification.cs",
+      "models/ServiceCategory.cs",
+      "models/BookingHistory.cs",
+      "repositories/IUserRepository.cs",
+      "repositories/UserRepository.cs",
+      "data/AppDbContext.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Entities/DatabaseSchema.mmd",
+      "docs/Architecture/LLD.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "User",
+      "Tenant",
+      "Service",
+      "Slot",
+      "Booking",
+      "Payment",
+      "Review",
+      "Notification"
+    ],
+    "related": [
+      "ServiceCategory",
+      "BookingHistory"
+    ]
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Entity model validation with proper attributes",
+      "Repository data access operations with mock data",
+      "Database context configuration and connection testing",
+      "Entity relationship mapping validation",
+      "Migration script generation and execution"
+    ],
+    "integration_tests": [
+      "Database connectivity and connection pooling",
+      "CRUD operations with actual database",
+      "Relationship queries with proper joins",
+      "Transaction handling and rollback scenarios"
+    ],
+    "e2e_tests": [
+      "Complete data access workflow",
+      "Entity creation, update, and deletion",
+      "Cross-entity relationship queries",
+      "Database performance under load"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "INF-002",
+      "BE-001"
+    ],
+    "blocking_reason": "Database schema and API framework must be established first to implement entity models",
+    "can_start_date": "After INF-002 and BE-001 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Follow the exact database schema definition from the DatabaseSchema document. Implement proper repository patterns for data access with interfaces for testability. Ensure multi-tenancy is considered in all entity relationships and queries. Implement proper indexing strategy for performance.",
+    "design_references": "Database schema documentation and LLD architecture",
+    "security_considerations": "Ensure data access is properly secured and tenant isolation is enforced at data layer. Implement proper parameterized queries to prevent SQL injection."
+  }
+}

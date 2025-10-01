@@ -1,0 +1,185 @@
+{
+  "task_id": "BE-007",
+  "title": "Create Slot Management Features",
+  "description": "Implement slot management functionality including slot creation, availability management, and scheduling for service providers",
+ "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 32,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+ "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a service provider, I want to create time slots so customers can book my services",
+      "As a service provider, I want to manage slot availability so I can control my schedule",
+      "As a service provider, I want to set up recurring slots so I don't have to create them manually",
+      "As a service provider, I want to block specific time slots so I can manage my availability"
+    ],
+    "business_rules": [
+      "Slots must be associated with a valid service",
+      "Slot times must not conflict with existing slots for the same service",
+      "Slot capacity must be managed to prevent overbooking",
+      "Slot availability must be updated in real-time",
+      "Recurring slots must follow defined patterns"
+    ],
+    "edge_cases": [
+      "Handling slot conflicts during creation",
+      "Managing slot availability with concurrent bookings",
+      "Validating slot times and durations",
+      "Handling recurring slot exceptions"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-004",
+      "BE-006"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Database Schema",
+      "Service Management Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "Slot creation API validates all required fields",
+    "Slot availability is managed correctly with real-time updates",
+    "Slot conflicts are prevented during creation",
+    "Recurring slot patterns are implemented correctly",
+    "Slot blocking functionality works as expected",
+    "All APIs enforce proper authorization checks"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "REST API Design",
+    "Concurrency Management"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/ServiceManagementService/Controllers/SlotController.cs",
+      "backend/services/ServiceManagementService/Services/ISlotService.cs",
+      "backend/services/ServiceManagementService/Services/SlotService.cs",
+      "backend/services/ServiceManagementService/Validators/ISlotValidator.cs",
+      "backend/services/ServiceManagementService/Validators/SlotValidator.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Entities/DatabaseSchema.mmd",
+      "docs/API/OpenAPI/service-openapi.yaml"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Slot"
+    ],
+    "related": [
+      "Service",
+      "Booking",
+      "User",
+      "Tenant"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/slots",
+        "description": "Create a new slot"
+      },
+      {
+        "method": "GET",
+        "path": "/slots/{id}",
+        "description": "Get slot by ID"
+      },
+      {
+        "method": "PUT",
+        "path": "/slots/{id}",
+        "description": "Update slot"
+      },
+      {
+        "method": "DELETE",
+        "path": "/slots/{id}",
+        "description": "Delete slot"
+      },
+      {
+        "method": "GET",
+        "path": "/slots",
+        "description": "List slots with filtering"
+      },
+      {
+        "method": "POST",
+        "path": "/slots/recurring",
+        "description": "Create recurring slots"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "SlotService.CreateSlotAsync validates slot information",
+      "SlotService.UpdateSlotAsync updates slot properties",
+      "SlotService.DeleteSlotAsync removes slots properly",
+      "SlotService.CheckSlotAvailabilityAsync verifies availability",
+      "SlotValidator validates slot creation requests",
+      "SlotValidator validates slot update requests"
+    ],
+    "integration_tests": [
+      "Slot API creates slots in database",
+      "Slot API retrieves slots from database",
+      "Slot API updates slots in database",
+      "Slot API deletes slots in database",
+      "Slot API prevents slot conflicts",
+      "Slot API manages availability correctly"
+    ],
+    "e2e_tests": [
+      "Complete slot management workflow",
+      "Slot creation with validation errors",
+      "Slot editing and deletion",
+      "Slot availability management",
+      "Recurring slot creation"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-004",
+      "BE-006"
+    ],
+    "blocking_reason": "Basic CRUD operations and service management must be implemented first",
+    "can_start_date": "After BE-004 and BE-006 completion"
+  },
+ "additional_context": {
+    "technical_notes": "Implement proper concurrency handling for slot availability updates. Use database-level constraints to prevent conflicts. Follow existing patterns for API design and implementation. Consider timezone handling for slot times.",
+    "design_references": "docs/BusinessRequirements/BRD.mmd",
+    "security_considerations": "Validate all input data. Implement proper authentication and authorization. Ensure tenant isolation for multi-tenancy. Prevent unauthorized access to slot management."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/ServiceManagementService/Controllers/SlotController.cs",
+      "backend/services/ServiceManagementService/Services/ISlotService.cs",
+      "backend/services/ServiceManagementService/Services/SlotService.cs",
+      "backend/services/ServiceManagementService/Validators/ISlotValidator.cs",
+      "backend/services/ServiceManagementService/Validators/SlotValidator.cs"
+    ]
+  },
+  "subtasks": []
+}

@@ -1,0 +1,142 @@
+{
+  "task_id": "BE-005-06",
+ "title": "Implement Booking Validator",
+ "description": "Implement the BookingValidator class with all validation logic for booking operations",
+  "priority": "MEDIUM",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 8,
+    "story_points": 3
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a system, I need to validate booking requests before processing"
+    ],
+    "business_rules": [
+      "All booking requests must be validated before processing",
+      "Business rules must be enforced during validation"
+    ],
+    "edge_cases": [
+      "Handling invalid booking requests",
+      "Enforcing business rule violations"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-005-05"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Shared Models",
+      "Database Context"
+    ]
+  },
+  "acceptance_criteria": [
+    "BookingValidator implements IBookingValidator interface",
+    "All booking requests are properly validated",
+    "Business rules are enforced during validation",
+    "Validation errors are properly reported"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "FluentValidation",
+    "Business Rule Implementation"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/BookingService/Validators/BookingValidator.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Entities/DatabaseSchema.mmd",
+      "shared/Models/Booking.cs",
+      "backend/services/BookingService/Validators/IBookingValidator.cs"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking"
+    ],
+    "related": [
+      "Slot",
+      "Service",
+      "User"
+    ]
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Booking creation validation with valid data",
+      "Booking creation validation with invalid data",
+      "Business rule validation",
+      "Validation error reporting"
+    ],
+    "integration_tests": [
+      "Booking validation with database constraints"
+    ],
+    "e2e_tests": []
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-005-05"
+    ],
+    "can_start_date": "After BE-005-05 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Use FluentValidation for consistent validation patterns. Implement proper error handling and logging.",
+    "design_references": "UserService/Validators/UserValidator.cs",
+    "security_considerations": "Validate all input data to prevent injection attacks."
+  },
+  "implementation_guidance": {
+    "method_signatures": [
+      "public async Task<ValidationResult> ValidateCreateBookingAsync(CreateBookingRequest request)",
+      "public async Task<ValidationResult> ValidateUpdateBookingAsync(Guid bookingId, UpdateBookingRequest request)",
+      "public async Task<ValidationResult> ValidateCancelBookingAsync(Guid bookingId, CancelBookingRequest request)",
+      "public async Task<ValidationResult> ValidateRescheduleBookingAsync(Guid bookingId, RescheduleBookingRequest request)",
+      "public async Task<ValidationResult> ValidateBookingBusinessRulesAsync(Booking booking)"
+    ],
+    "implementation_logic": [
+      "ValidateCreateBookingAsync: Validate request parameters, check business rules, verify slot availability",
+      "ValidateUpdateBookingAsync: Validate update parameters, check business rules, verify booking status",
+      "ValidateCancelBookingAsync: Validate cancellation parameters, check business rules, verify cancellation policies",
+      "ValidateRescheduleBookingAsync: Validate rescheduling parameters, check business rules, verify new slot availability",
+      "ValidateBookingBusinessRulesAsync: Validate all business rules for a booking entity"
+    ],
+    "file_structure": [
+      "backend/services/BookingService/Validators/BookingValidator.cs",
+      "backend/services/BookingService/Validators/IBookingValidator.cs"
+    ],
+    "dependencies": [
+      "FluentValidation",
+      "Microsoft.Extensions.Logging",
+      "Shared.Data",
+      "Shared.Models",
+      "System.Threading.Tasks",
+      "System.Linq"
+    ],
+    "error_handling": [
+      "ValidationException: When validation fails",
+      "BusinessRuleViolationException: When business rules are violated",
+      "EntityNotFoundException: When referenced entities are not found"
+    ],
+    "testing_guidance": [
+      "ValidateCreateBookingAsync_WithValidRequest_ReturnsSuccess",
+      "ValidateCreateBookingAsync_WithInvalidRequest_ReturnsFailure",
+      "ValidateUpdateBookingAsync_WithValidRequest_ReturnsSuccess",
+      "ValidateCancelBookingAsync_WithValidRequest_ReturnsSuccess",
+      "ValidateRescheduleBookingAsync_WithValidRequest_ReturnsSuccess",
+      "ValidateBookingBusinessRulesAsync_WithValidBooking_ReturnsSuccess"
+    ]
+  }
+}

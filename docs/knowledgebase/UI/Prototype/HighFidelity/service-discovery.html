@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Services</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* Custom styles based on the themeVariables and component properties */
+        :root {
+            --primary-color: #2563EB;
+            --secondary-color: #1D4ED8;
+            --line-color: #6B7280;
+        }
+
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6; /* Light gray background */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Global Layout */
+        .app-header {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            padding: 16px 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .app-header .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .app-header .nav-item {
+            margin-left: 20px;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .main-content-wrapper {
+            display: flex;
+            flex-grow: 1;
+            background-color: #f3f4f6;
+        }
+
+        .primary-content-area {
+            flex-grow: 1;
+            padding: 24px; /* Padding for the content area */
+        }
+
+        .app-footer {
+            background-color: #374151;
+            color: #D1D5DB;
+            padding: 24px;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        /* Component specific styles */
+        .container-component {
+            max-width: 1200px;
+            padding: 24px;
+            background-color: #FFFFFF;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .button-primary {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .button-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .button-secondary {
+            background-color: #FFFFFF;
+            color: #374151;
+            border: 1px solid #D1D5DB;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .button-secondary:hover {
+            background-color: #F3F4F6;
+            border-color: #9CA3AF;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+        }
+        .filter-bar button {
+            padding: 8px 16px;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            background-color: #FFFFFF;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .filter-bar button:hover {
+            background-color: #F3F4F6;
+        }
+
+        .service-card {
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background-color: #FFFFFF;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .service-card img {
+            max-width: 100%;
+            height: 150px; /* Fixed height for image consistency */
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        .service-card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        .service-card-description {
+            font-size: 0.875rem;
+            color: #6B7280;
+            flex-grow: 1; /* Allows description to take available space */
+        }
+        .service-card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #374151;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        .service-card-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #FBBF24; /* Yellow for stars */
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            background-color: #FFFFFF;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .pagination button:hover {
+            background-color: #F3F4F6;
+        }
+        .pagination button.active {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Global Navigation (Header) -->
+    <header class="app-header">
+        <div class="logo">AppointmentScheduler</div>
+        <nav>
+            <a href="#" class="nav-item">Dashboard</a>
+            <a href="#" class="nav-item">Services</a>
+            <a href="#" class="nav-item">Bookings</a>
+            <a href="#" class="nav-item">Profile</a>
+        </nav>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content-wrapper">
+        <!-- Primary Content Area -->
+        <main class="primary-content-area">
+            <div class="container-component">
+                <div class="flex flex-col gap-6">
+                    <!-- Page Header -->
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-3xl font-bold text-gray-900">Find Services</h1>
+                        <button class="button-primary">
+                            <span class="material-icons text-lg">event_available</span>
+                            Book Appointment
+                        </button>
+                    </div>
+
+                    <!-- Search and Filter Section -->
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="search-box flex-grow">
+                            <input type="text" placeholder="Search services...">
+                        </div>
+                        <div class="filter-bar flex-wrap">
+                            <button>Category</button>
+                            <button>Price Range</button>
+                            <button>Rating</button>
+                            <button>Availability</button>
+                        </div>
+                        <button class="button-secondary">
+                            <span class="material-icons text-lg">sort</span>
+                            Sort
+                        </button>
+                    </div>
+
+                    <!-- Service Listings -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="service-card">
+                            <img src="/images/haircut.jpg" alt="Haircut">
+                            <div class="service-card-title">Haircut</div>
+                            <div class="service-card-description">Professional haircut with styling</div>
+                            <div class="service-card-details">
+                                <span>30 min</span>
+                                <span>$25</span>
+                                <div class="service-card-rating">
+                                    <span>4.8</span>
+                                    <span class="material-icons text-base">star</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="service-card">
+                            <img src="/images/beard-trim.jpg" alt="Beard Trim">
+                            <div class="service-card-title">Beard Trim</div>
+                            <div class="service-card-description">Precision beard trimming and styling</div>
+                            <div class="service-card-details">
+                                <span>15 min</span>
+                                <span>$15</span>
+                                <div class="service-card-rating">
+                                    <span>4.9</span>
+                                    <span class="material-icons text-base">star</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="service-card">
+                            <img src="/images/hair-coloring.jpg" alt="Hair Coloring">
+                            <div class="service-card-title">Hair Coloring</div>
+                            <div class="service-card-description">Full hair coloring service</div>
+                            <div class="service-card-details">
+                                <span>2 hours</span>
+                                <span>$80</span>
+                                <div class="service-card-rating">
+                                    <span>4.7</span>
+                                    <span class="material-icons text-base">star</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="service-card">
+                            <img src="/images/manicure.jpg" alt="Manicure">
+                            <div class="service-card-title">Manicure</div>
+                            <div class="service-card-description">Complete nail care service</div>
+                            <div class="service-card-details">
+                                <span>45 min</span>
+                                <span>$30</span>
+                                <div class="service-card-rating">
+                                    <span>4.9</span>
+                                    <span class="material-icons text-base">star</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <button>&laquo;</button>
+                        <button class="active">1</button>
+                        <button>2</button>
+                        <button>3</button>
+                        <button>...</button>
+                        <button>4</button>
+                        <button>&raquo;</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Global Footer -->
+    <footer class="app-footer">
+        &copy; 2025 AppointmentScheduler. All rights reserved.
+    </footer>
+</body>
+</html>

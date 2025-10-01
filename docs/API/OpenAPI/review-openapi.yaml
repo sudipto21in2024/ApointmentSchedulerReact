@@ -1,0 +1,414 @@
+---
+openapi: 3.0.3
+info:
+  title: Review Management API
+  description: API for managing customer reviews
+  version: 1.0.0
+
+servers:
+  - url: https://api.appointmentsystem.com/v1
+    description: Production server
+
+paths:
+  /reviews:
+    get:
+      summary: Get all reviews
+      description: Retrieve a paginated list of reviews with optional filtering
+      tags:
+        - Reviews
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sort
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            default: createdAt
+        - name: order
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: serviceId
+          in: query
+          description: Filter by service ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: customerId
+          in: query
+          description: Filter by customer ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: isActive
+          in: query
+          description: Filter by active status
+          required: false
+          schema:
+            type: boolean
+        - name: isVerified
+          in: query
+          description: Filter by verified status
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved reviews
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewListResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Create a new review
+      description: Create a new customer review for a service
+      tags:
+        - Reviews
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReviewRequest'
+      responses:
+        '201':
+          description: Review created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /reviews/{id}:
+    get:
+      summary: Get review by ID
+      description: Retrieve detailed information about a specific review
+      tags:
+        - Reviews
+      parameters:
+        - name: id
+          in: path
+          description: Review ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved review
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update review
+      description: Update information for an existing review
+      tags:
+        - Reviews
+      parameters:
+        - name: id
+          in: path
+          description: Review ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateReviewRequest'
+      responses:
+        '200':
+          description: Review updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete review
+      description: Remove a review (soft delete)
+      tags:
+        - Reviews
+      parameters:
+        - name: id
+          in: path
+          description: Review ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Review deleted successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Review:
+      type: object
+      required:
+        - id
+        - serviceId
+        - customerId
+        - rating
+        - title
+        - comment
+        - createdAt
+        - updatedAt
+        - isActive
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the review
+        serviceId:
+          type: string
+          format: uuid
+          description: Reference to service
+        customerId:
+          type: string
+          format: uuid
+          description: Reference to customer (User)
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Star rating (1-5)
+        title:
+          type: string
+          description: Review title
+        comment:
+          type: string
+          description: Detailed review comment
+        isVerified:
+          type: boolean
+          description: Verified booking flag
+        createdAt:
+          type: string
+          format: date-time
+          description: Review creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last review update timestamp
+        isActive:
+          type: boolean
+          description: Review visibility status
+
+    CreateReviewRequest:
+      type: object
+      required:
+        - serviceId
+        - customerId
+        - rating
+        - title
+        - comment
+      properties:
+        serviceId:
+          type: string
+          format: uuid
+          description: Reference to service
+        customerId:
+          type: string
+          format: uuid
+          description: Reference to customer (User)
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Star rating (1-5)
+        title:
+          type: string
+          description: Review title
+        comment:
+          type: string
+          description: Detailed review comment
+        isVerified:
+          type: boolean
+          description: Verified booking flag
+
+    UpdateReviewRequest:
+      type: object
+      properties:
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Star rating (1-5)
+        title:
+          type: string
+          description: Review title
+        comment:
+          type: string
+          description: Detailed review comment
+        isVerified:
+          type: boolean
+          description: Verified booking flag
+        isActive:
+          type: boolean
+          description: Review visibility status
+
+    ReviewResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Review'
+
+    ReviewListResponse:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
+        meta:
+          $ref: '../common/pagination.yaml#/components/schemas/Pagination'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            first:
+              type: string
+            last:
+              type: string
+            prev:
+              type: string
+            next:
+              type: string
+
+    ErrorResponse:
+      $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

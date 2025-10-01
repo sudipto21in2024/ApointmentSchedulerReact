@@ -1,0 +1,20 @@
+graph LR
+    A[Analyze Task INF-002] --> B(Install SQL Server);
+    B --> C{Configure Database Instance};
+    C --> D{Design Database Schema};
+    D --> E{Implement setup.sql Script};
+    E --> F{Create database-scripts/migrations/ directory};
+    F --> G{Create database-scripts/views/ directory};
+    G --> H{Create database-scripts/stored-procedures/ directory};
+    H --> I{Implement Indexing Strategy};
+    I --> J{Implement Data Partitioning Strategy};
+    J --> K{Define Constraints and Validation Rules};
+    K --> L{Document Backup and Recovery};
+    L --> M(Complete Task INF-002);
+
+subgraph Implementation Details
+    C --> C1(Configured docker-compose to start SQL Server with a persistent volume and initialization script);
+    D --> D1(Designed database schema based on Entities documentation);
+    E --> E2(Created setup.sql with table definitions, indexes, constraints, and initial seed data);
+    C --> C2(Added SQL initialization command to docker-compose.yml);
+end

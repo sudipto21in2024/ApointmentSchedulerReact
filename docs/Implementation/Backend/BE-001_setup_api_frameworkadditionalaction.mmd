@@ -1,0 +1,17 @@
+graph LR
+    A[Analyze Task BE-001] --> B(Establish Project Structure);
+    B --> C{Implement CQRS Pattern};
+    C --> D{Set up Event Sourcing};
+    D --> E{Define Service Communication Patterns};
+    E --> F{Create Base Service Classes and Utilities};
+    F --> G(Document Implementation);
+    G --> H(Complete Task BE-001);
+
+subgraph Implementation Details
+    B --> B1(Created microservice folders and shared folder);
+    C --> C1(Implemented MediatR for command and query handling);
+    D --> D1(Configured event sourcing capabilities);
+    E --> E1(Established communication patterns);
+    F --> F1(Developed base service and utility classes);
+    G --> G1(Documented service structure, communication patterns, and framework usage);
+end

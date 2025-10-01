@@ -1,0 +1,27 @@
+---
+openapi: 3.0.3
+info:
+  title: Common Pagination Definitions
+  version: 1.0.0
+
+components:
+  schemas:
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: Current page number
+          example: 1
+        pageSize:
+          type: integer
+          description: Number of items per page
+          example: 10
+        total:
+          type: integer
+          description: Total number of items
+          example: 100
+        totalPages:
+          type: integer
+          description: Total number of pages
+          example: 10

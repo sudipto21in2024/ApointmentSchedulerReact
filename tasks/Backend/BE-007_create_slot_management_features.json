@@ -1,0 +1,136 @@
+{
+  "task_id": "BE-007",
+  "title": "Implement Slot Management and Availability Features",
+  "description": "Develop comprehensive slot management functionality including time slot creation, availability configuration, and parallel slot handling for service providers.",
+  "priority": "HIGH",
+  "complexity": 5,
+  "effort_estimate": {
+    "hours": 32,
+    "story_points": 13,
+    "justification": "Implementing slot management is a complex feature requiring handling of time-based scheduling, parallel slots, recurrence patterns, and conflict detection for multiple service providers."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a service provider, I want to configure time slots so that customers can book appointments at convenient times",
+      "As a service provider, I need to manage parallel slots so that multiple customers can be served simultaneously",
+      "As a service provider, I want to set recurring availability patterns so that I don't have to manually configure each week"
+    ],
+    "business_rules": [
+      "Time slots must be created with proper start/end datetime validation",
+      "Parallel slot configuration must respect service capacity limits",
+      "Recurring patterns must be properly defined and stored",
+      "Slot availability must be checked before booking",
+      "Conflicting slot creation must be prevented"
+    ],
+    "edge_cases": [
+      "Handling slot creation with overlapping time periods",
+      "Managing parallel slots for different service types",
+      "Processing recurring slot patterns with exceptions",
+      "Validating slot availability against existing bookings",
+      "Managing slot deletion with associated bookings"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-006"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Timezone handling library",
+      "Slot conflict detection service"
+    ]
+  },
+  "acceptance_criteria": [
+    "Slot creation with proper datetime validation",
+    "Parallel slot configuration for services",
+    "Recurring slot patterns support",
+    "Slot availability checking before booking",
+    "Conflict detection for slot creation",
+    "Slot update and deletion functionality",
+    "Slot listing by service and date range"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "Time-based Scheduling",
+    "Slot Management",
+    "Conflict Detection",
+    "DateTime Handling"
+  ],
+  "related_files": {
+    "will_create": [
+      "controllers/SlotController.cs",
+      "services/SlotService.cs",
+      "validators/SlotValidator.cs",
+      "models/Slot.cs",
+      "processors/SlotProcessor.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd#5.1.2",
+      "docs/BusinessRequirements/UserJourneys.mmd#Stage 2: Service Management"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Slot",
+      "Service"
+    ],
+    "related": [
+      "Booking",
+      "User"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/slots",
+        "description": "Create time slots for a service"
+      },
+      {
+        "method": "GET",
+        "path": "/slots/service/{serviceId}",
+        "description": "Get available slots for a service"
+      },
+      {
+        "method": "PUT",
+        "path": "/slots/{id}",
+        "description": "Update slot details"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Slot creation validation",
+      "Slot availability checking",
+      "Parallel slot configuration",
+      "Recurring pattern processing",
+      "Conflict detection logic"
+    ],
+    "integration_tests": [
+      "Complete slot creation workflow",
+      "Slot availability validation",
+      "Slot conflict detection",
+      "Recurring slot pattern processing"
+    ],
+    "e2e_tests": [
+      "Slot management workflow",
+      "Booking availability checking",
+      "Recurring slot setup and usage"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-006"
+    ],
+    "blocking_reason": "Service management must be implemented first to associate slots with services",
+    "can_start_date": "After BE-006 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement slot management features as defined in FR-2.1 to FR-2.5 of the BRD. Support for 1-35 parallel time slots based on subscription plan as mentioned. Include proper recurrence handling for recurring availability patterns.",
+    "design_references": "Slot management requirements from BRD and service management journey from User Journeys",
+    "security_considerations": "Ensure slot data is properly validated and sanitized to prevent injection attacks and maintain data integrity"
+  }
+}

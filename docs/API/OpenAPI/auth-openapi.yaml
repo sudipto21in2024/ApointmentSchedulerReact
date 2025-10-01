@@ -1,0 +1,349 @@
+---
+openapi: 3.0.3
+info:
+  title: Authentication API
+  description: API for user authentication and authorization
+  version: 1.0.0
+
+servers:
+  - url: https://api.appointmentsystem.com/v1
+    description: Production server
+
+paths:
+  /auth/login:
+    post:
+      summary: User login
+      description: Authenticate user with username and password. The request must come from a tenant-specific URL (e.g., `[tenant].yourdomain.com`) or the SuperAdmin URL (e.g., `admin.yourdomain.com`).
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/register:
+    post:
+      summary: Register new user
+      description: Create a new user account. Requires TenantId in the request body for non-SuperAdmin users.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/refresh:
+    post:
+      summary: Refresh access token
+      description: Get a new access token using refresh token
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid or expired refresh token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/register/provider:
+    post:
+      summary: Register new service provider
+      description: Create a new service provider account with tenant and subscription. This endpoint handles the complete registration process for service providers including tenant creation, user creation, and subscription association.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterProviderRequest'
+      responses:
+        '201':
+          description: Provider registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationResult'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict (subdomain or email already exists)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/logout:
+    post:
+      summary: Logout user
+      description: Invalidate current session
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: Logout successful
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: User's username (typically email address)
+        password:
+          type: string
+          description: User's password
+          
+    LoginResponse:
+      type: object
+      required:
+        - accessToken
+        - refreshToken
+        - user
+      properties:
+        accessToken:
+          type: string
+          description: JWT access token. Contains `UserRole` and `TenantId` claims (for non-SuperAdmins).
+        refreshToken:
+          type: string
+          description: Refresh token for obtaining new access tokens
+        user:
+          $ref: '../user-openapi.yaml#/components/schemas/User'
+          
+    RegisterRequest:
+      type: object
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+        - userType
+        - tenantId
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+        password:
+          type: string
+          description: User's password
+        firstName:
+          type: string
+          description: User's first name
+        lastName:
+          type: string
+          description: User's last name
+        phoneNumber:
+          type: string
+          description: User's phone number (optional)
+        userType:
+          $ref: '../common/enums.yaml#/components/schemas/UserType'
+        tenantId:
+          type: string
+          format: uuid
+          description: Tenant ID for the user (required for non-SuperAdmin users)
+          
+    RefreshRequest:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+          description: Refresh token to exchange for new access token
+          
+    RefreshResponse:
+      type: object
+      required:
+        - accessToken
+        - refreshToken
+      properties:
+        accessToken:
+          type: string
+          description: New JWT access token
+        refreshToken:
+          type: string
+          description: New refresh token
+          
+    UserResponse:
+      type: object
+      required:
+        - user
+      properties:
+        user:
+          $ref: '../user-openapi.yaml#/components/schemas/User'
+          
+    RegisterProviderRequest:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+        - tenantName
+        - subdomain
+        - pricingPlanId
+      properties:
+        firstName:
+          type: string
+          description: Provider's first name
+        lastName:
+          type: string
+          description: Provider's last name
+        email:
+          type: string
+          format: email
+          description: Provider's email address
+        password:
+          type: string
+          description: Provider's password (minimum 8 characters)
+        phoneNumber:
+          type: string
+          description: Provider's phone number (optional)
+        tenantName:
+          type: string
+          description: Name of the provider's business/tenant
+        subdomain:
+          type: string
+          description: Subdomain for the provider's tenant (e.g., 'myclinic' for myclinic.yourdomain.com)
+        description:
+          type: string
+          description: Description of the provider's business (optional)
+        contactEmail:
+          type: string
+          format: email
+          description: Contact email for the provider's business (optional)
+        domain:
+          type: string
+          description: Custom domain for the provider's business (optional)
+        logoUrl:
+          type: string
+          description: URL to the provider's business logo (optional)
+        pricingPlanId:
+          type: string
+          format: uuid
+          description: ID of the selected pricing plan
+        paymentMethod:
+          type: string
+          description: Payment method for paid plans (optional)
+        cardToken:
+          type: string
+          description: Tokenized card information from payment gateway (optional)
+          
+    RegistrationResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if registration was successful
+        message:
+          type: string
+          description: Message describing the result of the registration
+        user:
+          $ref: '../user-openapi.yaml#/components/schemas/User'
+        tenant:
+          $ref: '../tenant-openapi.yaml#/components/schemas/Tenant'
+        subscription:
+          $ref: '../subscription-openapi.yaml#/components/schemas/Subscription'
+        accessToken:
+          type: string
+          description: JWT access token for the newly registered user
+        refreshToken:
+          type: string
+          description: Refresh token for the newly registered user
+          
+    ErrorResponse:
+      $ref: './common/errors.yaml#/components/schemas/ErrorResponse'
+      
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

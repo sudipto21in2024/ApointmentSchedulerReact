@@ -1,0 +1,25 @@
+---
+openapi: 3.0.3
+info:
+  title: Common Audit Definitions
+  version: 1.0.0
+
+components:
+  schemas:
+    AuditInfo:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the resource was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the resource was last updated
+        createdBy:
+          type: string
+          description: Identifier of the user who created the resource
+        updatedBy:
+          type: string
+          description: Identifier of the user who last updated the resource

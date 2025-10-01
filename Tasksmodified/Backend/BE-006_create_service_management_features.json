@@ -1,0 +1,174 @@
+{
+  "task_id": "BE-006",
+  "title": "Create Service Management Features",
+  "description": "Implement service management functionality including service creation, editing, deletion, and categorization for providers",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 32,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a service provider, I want to create services so I can offer them to customers",
+      "As a service provider, I want to edit my services so I can keep information up to date",
+      "As a service provider, I want to delete services so I can remove outdated offerings",
+      "As a service provider, I want to categorize my services so customers can find them easily"
+    ],
+    "business_rules": [
+      "Only service providers can create, edit, and delete their own services",
+      "Service names must be unique within a tenant",
+      "Services must have valid pricing and duration information",
+      "Services must be associated with a valid category",
+      "Deleted services must be soft deleted to maintain booking history"
+    ],
+    "edge_cases": [
+      "Handling service deletion with existing bookings",
+      "Managing service updates that affect existing bookings",
+      "Validating service information during creation",
+      "Handling category management"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-004"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Database Schema",
+      "Authentication Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "Service creation API validates all required fields",
+    "Service editing API updates service information correctly",
+    "Service deletion API soft deletes services properly",
+    "Service categorization API manages categories correctly",
+    "All APIs enforce proper authorization checks",
+    "Services are properly associated with providers and tenants"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "REST API Design"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/ServiceManagementService/Controllers/ServiceController.cs",
+      "backend/services/ServiceManagementService/Services/IServiceService.cs",
+      "backend/services/ServiceManagementService/Services/ServiceService.cs",
+      "backend/services/ServiceManagementService/Validators/IServiceValidator.cs",
+      "backend/services/ServiceManagementService/Validators/ServiceValidator.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Entities/DatabaseSchema.mmd",
+      "docs/API/OpenAPI/service-openapi.yaml"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Service",
+      "ServiceCategory"
+    ],
+    "related": [
+      "User",
+      "Tenant",
+      "Booking"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/services",
+        "description": "Create a new service"
+      },
+      {
+        "method": "GET",
+        "path": "/services/{id}",
+        "description": "Get service by ID"
+      },
+      {
+        "method": "PUT",
+        "path": "/services/{id}",
+        "description": "Update service"
+      },
+      {
+        "method": "DELETE",
+        "path": "/services/{id}",
+        "description": "Delete service"
+      },
+      {
+        "method": "GET",
+        "path": "/services",
+        "description": "List services with filtering"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "ServiceService.CreateServiceAsync validates service information",
+      "Service.UpdateServiceAsync updates service properties",
+      "ServiceService.DeleteServiceAsync soft deletes services",
+      "ServiceValidator validates service creation requests",
+      "ServiceValidator validates service update requests"
+    ],
+    "integration_tests": [
+      "Service API creates services in database",
+      "Service API retrieves services from database",
+      "Service API updates services in database",
+      "Service API deletes services in database",
+      "Service API enforces authorization correctly"
+    ],
+    "e2e_tests": [
+      "Complete service management workflow",
+      "Service creation with validation errors",
+      "Service editing and deletion",
+      "Service listing with filtering"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-004"
+    ],
+    "blocking_reason": "Basic CRUD operations must be implemented first",
+    "can_start_date": "After BE-004 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement proper authorization checks to ensure providers can only manage their own services. Use soft deletion to maintain data integrity for existing bookings. Follow existing patterns for API design and implementation.",
+    "design_references": "docs/BusinessRequirements/BRD.mmd",
+    "security_considerations": "Validate all input data. Implement proper authentication and authorization. Ensure tenant isolation for multi-tenancy."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/ServiceManagementService/Controllers/ServiceController.cs",
+      "backend/services/ServiceManagementService/Services/IServiceService.cs",
+      "backend/services/ServiceManagementService/Services/ServiceService.cs",
+      "backend/services/ServiceManagementService/Validators/IServiceValidator.cs",
+      "backend/services/ServiceManagementService/Validators/ServiceValidator.cs"
+    ]
+  },
+  "subtasks": []
+}

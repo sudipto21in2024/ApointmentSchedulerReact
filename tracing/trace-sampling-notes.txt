@@ -1,0 +1,35 @@
+# Trace Sampling Strategies
+
+This file provides notes on how to implement trace sampling strategies in the application.
+
+**Trace Sampling:**
+
+Trace sampling is a technique used to reduce the volume of trace data collected by distributed tracing systems. It involves selectively collecting traces based on certain criteria.
+
+**Sampling Strategies:**
+
+1.  **Head-Based Sampling:** The sampling decision is made at the beginning of the trace, at the root service. This decision is then propagated to all downstream services.
+    *   **Probability Sampling:** Sample a fixed percentage of traces (e.g., 10%).
+    *   **Rate Limiting:** Limit the number of traces per second.
+2.  **Tail-Based Sampling:** The sampling decision is made after the trace has completed, allowing for more informed decisions based on the entire trace data.
+    *   **Error-Based Sampling:** Sample traces that contain errors or exceptions.
+    *   **Latency-Based Sampling:** Sample traces that exceed a certain latency threshold.
+
+**Implementation Notes:**
+
+*   Implement sampling in the application code using the OpenTelemetry SDK.
+*   Configure the sampling ratio or rate based on the desired balance between trace data volume and observability.
+*   Consider using adaptive sampling techniques to dynamically adjust the sampling rate based on system load or error rates.
+*   Ensure that the sampling decision is propagated across services using context propagation.
+
+**Example OpenTelemetry Configuration (Java):**
+
+```java
+SdkTracerProviderBuilder tracerProviderBuilder = SdkTracerProvider.builder()
+    .setSampler(SamplingDecision.probability(0.1)); // Sample 10% of traces
+```
+
+**Security Considerations:**
+
+*   Ensure that sampling decisions are not based on sensitive data.
+*   Protect the sampling configuration from unauthorized modification.

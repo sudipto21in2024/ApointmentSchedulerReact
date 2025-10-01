@@ -1,0 +1,151 @@
+{
+  "task_id": "FE-007",
+  "title": "Create Service Management UI Components",
+  "description": "Develop comprehensive UI components for service management including service listing, category browsing, service creation forms, and service detail views that integrate with the Service Management API endpoints.",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 24,
+    "story_points": 8,
+    "justification": "Creating comprehensive service management UI components requires developing multiple related components with complex data binding, form handling, and API integration for service CRUD operations and category management."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a service provider, I want to create and manage services so that customers can book my offerings",
+      "As a customer, I need to browse services by category so that I can find what I need",
+      "As a service provider, I want to update service details so that my offerings stay current"
+    ],
+    "business_rules": [
+      "Service listing must display key service information with filtering and sorting",
+      "Service creation form must validate all required fields",
+      "Service detail view must show complete service information including categories",
+      "Category browsing must support hierarchical navigation",
+      "All service interactions must be secured with proper authentication"
+    ],
+    "edge_cases": [
+      "Handling empty service lists and loading states",
+      "Managing complex service creation with multiple fields",
+      "Processing service updates with validation",
+      "Displaying hierarchical service categories",
+      "Handling API errors during service operations"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Service Management API endpoints",
+      "Category Management API endpoints"
+    ]
+  },
+  "acceptance_criteria": [
+    "Service listing component displays services with filtering and sorting",
+    "Service creation form validates all required fields and displays errors",
+    "Service detail view shows complete service information",
+    "Category browsing component supports hierarchical navigation",
+    "All components integrate with Service Management API endpoints",
+    "UI handles loading states and error conditions properly",
+    "Components follow the established design system and accessibility standards"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "Angular Components",
+    "Form Handling",
+    "API Integration",
+    "UI/UX Design"
+  ],
+  "related_files": {
+    "will_create": [
+      "src/app/components/service/service-list.component.ts",
+      "src/app/components/service/service-detail.component.ts",
+      "src/app/components/service/service-form.component.ts",
+      "src/app/components/category/category-list.component.ts",
+      "src/app/components/category/category-form.component.ts"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/service-openapi.yaml",
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Service",
+      "ServiceCategory"
+    ],
+    "related": [
+      "User",
+      "Tenant"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/services",
+        "description": "Get all services"
+      },
+      {
+        "method": "POST",
+        "path": "/services",
+        "description": "Create a new service"
+      },
+      {
+        "method": "GET",
+        "path": "/services/{id}",
+        "description": "Get service by ID"
+      },
+      {
+        "method": "PUT",
+        "path": "/services/{id}",
+        "description": "Update service"
+      },
+      {
+        "method": "GET",
+        "path": "/categories",
+        "description": "Get all service categories"
+      },
+      {
+        "method": "POST",
+        "path": "/categories",
+        "description": "Create a new category"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Service list component rendering",
+      "Service form validation",
+      "Service detail component display",
+      "Category list component rendering",
+      "API integration for service operations"
+    ],
+    "integration_tests": [
+      "Complete service management workflow",
+      "Form submission and validation",
+      "API call integration",
+      "Data binding with service models"
+    ],
+    "e2e_tests": [
+      "Service creation and management",
+      "Category browsing and management",
+      "Service listing and filtering"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "blocking_reason": "Design system must be implemented first to provide consistent UI components",
+    "can_start_date": "After FE-002 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement UI components that directly map to the service management API endpoints. Include category hierarchy support. Follow the design system established in the design system task.",
+    "design_references": "Service management requirements from BRD and UI requirements documentation",
+    "security_considerations": "Ensure all service data is properly sanitized and that sensitive fields are handled securely"
+  }
+}

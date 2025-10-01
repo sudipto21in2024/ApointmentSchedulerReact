@@ -1,0 +1,138 @@
+{
+  "task_id": "BE-008",
+  "title": "Implement Booking Workflow and Management Features",
+  "description": "Develop the complete booking workflow including booking creation, approval processes, cancellation handling, and booking management for service providers and customers.",
+  "priority": "HIGH",
+  "complexity": 5,
+  "effort_estimate": {
+    "hours": 36,
+    "story_points": 13,
+    "justification": "Creating a complete booking workflow involves multiple interconnected processes including booking creation, approval workflows, cancellation policies, and booking status management."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to book appointments so that I can receive services at convenient times",
+      "As a service provider, I need to approve or reject booking requests so that I can manage my schedule",
+      "As a customer, I want to cancel bookings so that I can adjust my plans when needed"
+    ],
+    "business_rules": [
+      "Booking requests must be validated against slot availability",
+      "Booking approvals must be processed by service providers",
+      "Cancellation policies must be enforced based on timing",
+      "Booking status must be properly tracked and updated",
+      "Booking conflicts must be detected and handled"
+    ],
+    "edge_cases": [
+      "Handling simultaneous booking requests for same slot",
+      "Processing cancellations with different policies",
+      "Managing booking approvals and rejections",
+      "Tracking booking status changes and history",
+      "Handling booking modifications with availability checks"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-007"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Booking approval workflow service",
+      "Cancellation policy engine"
+    ]
+  },
+  "acceptance_criteria": [
+    "Booking creation with slot availability validation",
+    "Booking approval/rejection workflow",
+    "Cancellation processing with policy enforcement",
+    "Booking status tracking and history",
+    "Booking modification functionality",
+    "Booking listing by customer and provider",
+    "Booking conflict detection and resolution"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "Workflow Management",
+    "Booking Systems",
+    "Status Tracking",
+    "Policy Enforcement"
+  ],
+  "related_files": {
+    "will_create": [
+      "controllers/BookingController.cs",
+      "services/BookingService.cs",
+      "validators/BookingValidator.cs",
+      "models/Booking.cs",
+      "processors/BookingProcessor.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd#5.1.3",
+      "docs/BusinessRequirements/UserJourneys.mmd#Stage 3: Booking Management"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking",
+      "Slot",
+      "Service"
+    ],
+    "related": [
+      "User",
+      "Payment"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/bookings",
+        "description": "Create a new booking"
+      },
+      {
+        "method": "PUT",
+        "path": "/bookings/{id}/approve",
+        "description": "Approve a booking request"
+      },
+      {
+        "method": "PUT",
+        "path": "/bookings/{id}/cancel",
+        "description": "Cancel a booking"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/booking-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Booking creation validation",
+      "Slot availability checking",
+      "Booking approval workflow",
+      "Cancellation policy enforcement",
+      "Booking status management"
+    ],
+    "integration_tests": [
+      "Complete booking workflow",
+      "Booking approval and rejection",
+      "Cancellation processing",
+      "Booking status tracking"
+    ],
+    "e2e_tests": [
+      "Complete booking journey",
+      "Approval/rejection workflow",
+      "Cancellation with different policies",
+      "Booking history and status tracking"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-007"
+    ],
+    "blocking_reason": "Slot management must be implemented first to validate slot availability for bookings",
+    "can_start_date": "After BE-007 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement the booking workflow features as defined in FR-3.1 to FR-3.4 of the BRD. Include approval processes for service providers as mentioned in the user journeys. Handle different cancellation policies and booking status tracking.",
+    "design_references": "Booking workflow requirements from BRD and booking management journey from User Journeys",
+    "security_considerations": "Ensure booking data is properly validated and protected from unauthorized access or manipulation"
+  }
+}

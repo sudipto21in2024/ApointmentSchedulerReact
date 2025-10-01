@@ -1,0 +1,831 @@
+---
+openapi: 3.0.3
+info:
+  title: Payment Management API
+  description: API for managing payment transactions
+  version: 1.0.0
+
+servers:
+  - url: https://api.appointmentsystem.com/v1
+    description: Production server
+
+paths:
+  /payments:
+    get:
+      summary: Get all payments
+      description: Retrieve a paginated list of payments with optional filtering
+      tags:
+        - Payments
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sort
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            default: createdAt
+        - name: order
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: status
+          in: query
+          description: Filter by payment status
+          required: false
+          schema:
+            $ref: '../common/enums.yaml#/components/schemas/PaymentStatus'
+        - name: bookingId
+          in: query
+          description: Filter by booking ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: customerId
+          in: query
+          description: Filter by customer ID (requires admin access)
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          description: Filter by start date
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Filter by end date
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successfully retrieved payments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentListResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Create a new payment
+      description: Process a payment for a booking
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentRequest'
+      responses:
+        '201':
+          description: Payment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '409':
+          description: Payment conflict
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /payments/{id}:
+    get:
+      summary: Get payment by ID
+      description: Retrieve detailed information about a specific payment
+      tags:
+        - Payments
+      parameters:
+        - name: id
+          in: path
+          description: Payment ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update payment
+      description: Update information for an existing payment
+      tags:
+        - Payments
+      parameters:
+        - name: id
+          in: path
+          description: Payment ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePaymentRequest'
+      responses:
+        '200':
+          description: Payment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /payments/{id}/refund:
+    post:
+      summary: Refund payment
+      description: Process a refund for a completed payment
+      tags:
+        - Payments
+      parameters:
+        - name: id
+          in: path
+          description: Payment ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundRequest'
+      responses:
+        '200':
+          description: Refund processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '409':
+          description: Cannot process refund
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /payment-methods:
+    get:
+      summary: Get payment methods
+      description: Retrieve saved payment methods for a user or tenant
+      tags:
+        - Payment Methods
+      parameters:
+        - name: userId
+          in: query
+          description: User ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: tenantId
+          in: query
+          description: Tenant ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved payment methods
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodListResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Add payment method
+      description: Add a new saved payment method
+      tags:
+        - Payment Methods
+      parameters:
+        - name: userId
+          in: query
+          description: User ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: tenantId
+          in: query
+          description: Tenant ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentMethodRequest'
+      responses:
+        '201':
+          description: Payment method created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /payment-methods/{id}:
+    delete:
+      summary: Delete payment method
+      description: Remove a saved payment method
+      tags:
+        - Payment Methods
+      parameters:
+        - name: id
+          in: path
+          description: Payment method ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: query
+          description: User ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: tenantId
+          in: query
+          description: Tenant ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Payment method deleted successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Payment method not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update payment method
+      description: Update a saved payment method
+      tags:
+        - Payment Methods
+      parameters:
+        - name: id
+          in: path
+          description: Payment method ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: query
+          description: User ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: tenantId
+          in: query
+          description: Tenant ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePaymentMethodRequest'
+      responses:
+        '204':
+          description: Payment method updated successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Payment method not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /payment-methods/{id}/default:
+    put:
+      summary: Set default payment method
+      description: Set a payment method as the default
+      tags:
+        - Payment Methods
+      parameters:
+        - name: id
+          in: path
+          description: Payment method ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: query
+          description: User ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: tenantId
+          in: query
+          description: Tenant ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Payment method set as default successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Payment method not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Payment:
+      type: object
+      required:
+        - id
+        - bookingId
+        - amount
+        - currency
+        - paymentMethod
+        - paymentStatus
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the payment
+        bookingId:
+          type: string
+          format: uuid
+          description: Reference to booking
+        amount:
+          type: number
+          format: decimal
+          description: Payment amount
+        currency:
+          type: string
+          description: Currency code
+        paymentMethod:
+          $ref: '../common/enums.yaml#/components/schemas/PaymentMethod'
+        paymentStatus:
+          $ref: '../common/enums.yaml#/components/schemas/PaymentStatus'
+        transactionId:
+          type: string
+          description: External transaction identifier
+        paymentGateway:
+          type: string
+          description: Payment gateway used
+        paidAt:
+          type: string
+          format: date-time
+          description: Payment completion timestamp
+        createdAt:
+          type: string
+          format: date-time
+          description: Payment creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last payment update timestamp
+        refundAmount:
+          type: number
+          format: decimal
+          description: Refunded amount (if applicable)
+
+    CreatePaymentRequest:
+      type: object
+      required:
+        - bookingId
+        - amount
+        - currency
+        - paymentMethod
+      properties:
+        bookingId:
+          type: string
+          format: uuid
+          description: Reference to booking
+        amount:
+          type: number
+          format: decimal
+          description: Payment amount
+        currency:
+          type: string
+          description: Currency code
+        paymentMethod:
+          $ref: '../common/enums.yaml#/components/schemas/PaymentMethod'
+        paymentGateway:
+          type: string
+          description: Payment gateway to use (optional, system defaults if not provided)
+        transactionId:
+          type: string
+          description: External transaction identifier (if already known)
+
+    UpdatePaymentRequest:
+      type: object
+      properties:
+        paymentStatus:
+          $ref: '../common/enums.yaml#/components/schemas/PaymentStatus'
+        transactionId:
+          type: string
+          description: External transaction identifier
+        paidAt:
+          type: string
+          format: date-time
+          description: Payment completion timestamp
+
+    RefundRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: decimal
+          description: Refund amount (optional, full refund if not specified)
+        reason:
+          type: string
+          description: Reason for refund
+
+    PaymentResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Payment'
+
+    PaymentListResponse:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        meta:
+          $ref: '../common/pagination.yaml#/components/schemas/Pagination'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            first:
+              type: string
+            last:
+              type: string
+            prev:
+              type: string
+            next:
+              type: string
+
+    ErrorResponse:
+      $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    PaymentMethod:
+      type: object
+      required:
+        - id
+        - type
+        - lastFourDigits
+        - expiryMonth
+        - expiryYear
+        - isDefault
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the payment method
+        type:
+          type: string
+          description: Payment method type (e.g., CreditCard, DebitCard)
+        lastFourDigits:
+          type: string
+          description: Last four digits of the card
+        expiryMonth:
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: Expiry month
+        expiryYear:
+          type: integer
+          minimum: 2023
+          maximum: 2050
+          description: Expiry year
+        isDefault:
+          type: boolean
+          description: Whether this is the default payment method
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+
+    CreatePaymentMethodRequest:
+      type: object
+      required:
+        - type
+        - cardNumber
+        - expiryMonth
+        - expiryYear
+        - cvv
+      properties:
+        type:
+          type: string
+          description: Payment method type
+        cardNumber:
+          type: string
+          description: Card number
+        expiryMonth:
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: Expiry month
+        expiryYear:
+          type: integer
+          minimum: 2023
+          maximum: 2050
+          description: Expiry year
+        cvv:
+          type: string
+          description: CVV code
+        cardholderName:
+          type: string
+          description: Cardholder name
+
+    UpdatePaymentMethodRequest:
+      type: object
+      properties:
+        expiryMonth:
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: Expiry month
+        expiryYear:
+          type: integer
+          minimum: 2023
+          maximum: 2050
+          description: Expiry year
+        cardholderName:
+          type: string
+          description: Cardholder name
+
+    PaymentMethodResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/PaymentMethod'
+
+    PaymentMethodListResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethod'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

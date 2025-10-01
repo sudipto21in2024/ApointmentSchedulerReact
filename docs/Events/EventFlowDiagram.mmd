@@ -1,0 +1,100 @@
+graph TD
+    %% Core Services
+    UserService[User Service]
+    BookingService[Booking Service]
+    ServiceManagementService[Service Management Service]
+    PaymentService[Payment Service]
+    NotificationService[Notification Service]
+    ReportingService[Reporting Service]
+    SearchService[Search Service]
+    
+    %% User Management Events
+    UserService -- UserRegisteredEvent --> NotificationService
+    UserService -- UserRegisteredEvent --> ReportingService
+    UserService -- UserUpdatedEvent --> ReportingService
+    UserService -- UserDeletedEvent --> ReportingService
+    UserService -- UserProfileUpdatedEvent --> NotificationService
+    UserService -- UserProfileUpdatedEvent --> ReportingService
+    
+    %% Service Management Events
+    ServiceManagementService -- ServiceCreatedEvent --> SearchService
+    ServiceManagementService -- ServiceCreatedEvent --> NotificationService
+    ServiceManagementService -- ServiceCreatedEvent --> ReportingService
+    ServiceManagementService -- ServiceUpdatedEvent --> SearchService
+    ServiceManagementService -- ServiceUpdatedEvent --> ReportingService
+    ServiceManagementService -- ServiceDeletedEvent --> SearchService
+    ServiceManagementService -- ServiceDeletedEvent --> NotificationService
+    ServiceManagementService -- ServicePublishedEvent --> SearchService
+    ServiceManagementService -- ServicePublishedEvent --> NotificationService
+    ServiceManagementService -- ServicePublishedEvent --> ReportingService
+    ServiceManagementService -- ServiceUnpublishedEvent --> SearchService
+    ServiceManagementService -- ServiceUnpublishedEvent --> BookingService
+    ServiceManagementService -- ServiceUnpublishedEvent --> NotificationService
+    
+    %% Booking Events
+    BookingService -- BookingCreatedEvent --> PaymentService
+    BookingService -- BookingCreatedEvent --> NotificationService
+    BookingService -- BookingCreatedEvent --> ReportingService
+    BookingService -- BookingCreatedEvent --> ServiceManagementService
+    BookingService -- BookingConfirmedEvent --> NotificationService
+    BookingService -- BookingConfirmedEvent --> ReportingService
+    BookingService -- BookingConfirmedEvent --> ServiceManagementService
+    BookingService -- BookingCancelledEvent --> PaymentService
+    BookingService -- BookingCancelledEvent --> NotificationService
+    BookingService -- BookingCancelledEvent --> ReportingService
+    BookingService -- BookingCancelledEvent --> ServiceManagementService
+    BookingService -- BookingRescheduledEvent --> NotificationService
+    BookingService -- BookingRescheduledEvent --> ReportingService
+    BookingService -- BookingRescheduledEvent --> ServiceManagementService
+    BookingService -- BookingReminderEvent --> NotificationService
+    
+    %% Payment Events
+    PaymentService -- PaymentProcessedEvent --> BookingService
+    PaymentService -- PaymentProcessedEvent --> NotificationService
+    PaymentService -- PaymentProcessedEvent --> ReportingService
+    PaymentService -- PaymentRefundedEvent --> BookingService
+    PaymentService -- PaymentRefundedEvent --> NotificationService
+    PaymentService -- PaymentRefundedEvent --> ReportingService
+    PaymentService -- PaymentFailedEvent --> BookingService
+    PaymentService -- PaymentFailedEvent --> NotificationService
+    PaymentService -- PaymentFailedEvent --> ReportingService
+    
+    %% Notification Events
+    NotificationService -- NotificationSentEvent --> ReportingService
+    NotificationService -- NotificationFailedEvent --> ReportingService
+    
+    %% Slot Management Events
+    ServiceManagementService -- SlotCreatedEvent --> BookingService
+    ServiceManagementService -- SlotCreatedEvent --> NotificationService
+    ServiceManagementService -- SlotCreatedEvent --> ReportingService
+    ServiceManagementService -- SlotUpdatedEvent --> BookingService
+    ServiceManagementService -- SlotUpdatedEvent --> NotificationService
+    ServiceManagementService -- SlotUpdatedEvent --> ReportingService
+    ServiceManagementService -- SlotDeletedEvent --> BookingService
+    ServiceManagementService -- SlotDeletedEvent --> NotificationService
+    ServiceManagementService -- SlotDeletedEvent --> ReportingService
+    
+    %% Review Events
+    ServiceManagementService -- ReviewCreatedEvent --> NotificationService
+    ServiceManagementService -- ReviewCreatedEvent --> ReportingService
+    ServiceManagementService -- ReviewCreatedEvent --> SearchService
+    ServiceManagementService -- ReviewUpdatedEvent --> NotificationService
+    ServiceManagementService -- ReviewUpdatedEvent --> ReportingService
+    ServiceManagementService -- ReviewUpdatedEvent --> SearchService
+    ServiceManagementService -- ReviewDeletedEvent --> NotificationService
+    ServiceManagementService -- ReviewDeletedEvent --> ReportingService
+    ServiceManagementService -- ReviewDeletedEvent --> SearchService
+    
+    %% Legend
+    style UserService fill:#e1f5fe
+    style BookingService fill:#e8f5e8
+    style ServiceManagementService fill:#fff3e0
+    style PaymentService fill:#fce4ec
+    style NotificationService fill:#f3e5f5
+    style ReportingService fill:#efebe9
+    style SearchService fill:#e0f2f1
+    
+    classDef service fill:#f5f5f5,stroke:#333,stroke-width:1px;
+    classDef event fill:#fff,stroke:#666,stroke-width:1px,stroke-dasharray: 5 5;
+    
+    class UserService,BookingService,ServiceManagementService,PaymentService,NotificationService,ReportingService,SearchService service;

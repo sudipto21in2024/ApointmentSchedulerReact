@@ -1,0 +1,459 @@
+# Database Schema: Multi-Tenant Appointment Booking System
+
+## 1. Overview
+
+This document defines the relational database schema for the Multi-Tenant Appointment Booking System. The schema is designed to support the domain entities while ensuring data integrity, performance, and scalability.
+
+## 2. Database Design Principles
+
+### 2.1 Multi-Tenancy
+- Tenant isolation through schema separation or tenant ID columns
+- Shared database with tenant ID for smaller tenants
+- Dedicated databases for larger enterprise tenants
+- Cross-tenant data access restrictions
+
+### 2.2 Performance Optimization
+- Proper indexing for frequently queried columns
+- Partitioning for large datasets
+- Denormalization where appropriate for read performance
+- Efficient join strategies
+
+### 2.3 Data Integrity
+- Primary key constraints for all tables
+- Foreign key relationships with cascading actions
+- Check constraints for data validation
+- Unique constraints for business rules
+
+## 3. Schema Structure
+
+### 3.1 Core Tables
+
+#### 3.1.1 Users Table
+```sql
+CREATE TABLE Users (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    Email NVARCHAR(255) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(255) NOT NULL,
+    FirstName NVARCHAR(100) NOT NULL,
+    LastName NVARCHAR(100) NOT NULL,
+    PhoneNumber NVARCHAR(20),
+    UserType NVARCHAR(50) NOT NULL,
+    IsActive BIT NOT NULL DEFAULT 1,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    LastLoginAt DATETIME2,
+    TenantId UNIQUEIDENTIFIER NOT NULL,
+    
+    CONSTRAINT FK_Users_Tenant FOREIGN KEY (TenantId) REFERENCES Tenants(Id)
+);
+```
+
+#### 3.1.2 Tenants Table
+```sql
+CREATE TABLE Tenants (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    Name NVARCHAR(255) NOT NULL,
+    Description NVARCHAR(MAX),
+    Domain NVARCHAR(255),
+    IsActive BIT NOT NULL DEFAULT 1,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    LogoUrl NVARCHAR(500),
+    ContactEmail NVARCHAR(255)
+);
+```
+
+#### 3.1.3 ServiceCategories Table
+```sql
+CREATE TABLE ServiceCategories (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    Name NVARCHAR(255) NOT NULL,
+    Description NVARCHAR(MAX),
+    ParentCategoryId UNIQUEIDENTIFIER,
+    IconUrl NVARCHAR(500),
+    SortOrder INT NOT NULL DEFAULT 0,
+    IsActive BIT NOT NULL DEFAULT 1,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    
+    CONSTRAINT FK_ServiceCategories_Parent FOREIGN KEY (ParentCategoryId) REFERENCES ServiceCategories(Id)
+);
+```
+
+#### 3.1.4 Services Table
+```sql
+CREATE TABLE Services (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    Name NVARCHAR(255) NOT NULL,
+    Description NVARCHAR(MAX) NOT NULL,
+    CategoryId UNIQUEIDENTIFIER NOT NULL,
+    ProviderId UNIQUEIDENTIFIER NOT NULL,
+    TenantId UNIQUEIDENTIFIER NOT NULL,
+    Duration INT NOT NULL,
+    Price DECIMAL(18,2) NOT NULL,
+    Currency NVARCHAR(3) NOT NULL DEFAULT 'USD',
+    IsActive BIT NOT NULL DEFAULT 1,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    IsFeatured BIT NOT NULL DEFAULT 0,
+    MaxBookingsPerDay INT NOT NULL DEFAULT 10,
+    
+    CONSTRAINT FK_Services_Category FOREIGN KEY (CategoryId) REFERENCES ServiceCategories(Id),
+    CONSTRAINT FK_Services_Provider FOREIGN KEY (ProviderId) REFERENCES Users(Id),
+    CONSTRAINT FK_Services_Tenant FOREIGN KEY (TenantId) REFERENCES Tenants(Id)
+);
+```
+
+#### 3.1.5 Slots Table
+```sql
+CREATE TABLE Slots (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    ServiceId UNIQUEIDENTIFIER NOT NULL,
+    StartDateTime DATETIME2 NOT NULL,
+    EndDateTime DATETIME2 NOT NULL,
+    MaxBookings INT NOT NULL DEFAULT 1,
+    AvailableBookings INT NOT NULL DEFAULT 1,
+    IsAvailable BIT NOT NULL DEFAULT 1,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    IsRecurring BIT NOT NULL DEFAULT 0,
+    
+    CONSTRAINT FK_Slots_Service FOREIGN KEY (ServiceId) REFERENCES Services(Id)
+);
+```
+
+#### 3.1.6 Bookings Table
+```sql
+CREATE TABLE Bookings (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    CustomerId UNIQUEIDENTIFIER NOT NULL,
+    ServiceId UNIQUEIDENTIFIER NOT NULL,
+    SlotId UNIQUEIDENTIFIER NOT NULL,
+    TenantId UNIQUEIDENTIFIER NOT NULL,
+    Status NVARCHAR(50) NOT NULL DEFAULT 'Pending',
+    BookingDate DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    Notes NVARCHAR(MAX),
+    CancelledAt DATETIME2,
+    CancelledBy UNIQUEIDENTIFIER,
+    PaymentId UNIQUEIDENTIFIER,
+    
+    CONSTRAINT FK_Bookings_Customer FOREIGN KEY (CustomerId) REFERENCES Users(Id),
+    CONSTRAINT FK_Bookings_Service FOREIGN KEY (ServiceId) REFERENCES Services(Id),
+    CONSTRAINT FK_Bookings_Slot FOREIGN KEY (SlotId) REFERENCES Slots(Id),
+    CONSTRAINT FK_Bookings_Tenant FOREIGN KEY (TenantId) REFERENCES Tenants(Id),
+    CONSTRAINT FK_Bookings_CancelledBy FOREIGN KEY (CancelledBy) REFERENCES Users(Id),
+    CONSTRAINT FK_Bookings_Payment FOREIGN KEY (PaymentId) REFERENCES Payments(Id)
+);
+```
+
+#### 3.1.7 Payments Table
+```sql
+CREATE TABLE Payments (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    BookingId UNIQUEIDENTIFIER NOT NULL,
+    Amount DECIMAL(18,2) NOT NULL,
+    Currency NVARCHAR(3) NOT NULL DEFAULT 'USD',
+    PaymentMethod NVARCHAR(50) NOT NULL,
+    PaymentStatus NVARCHAR(50) NOT NULL DEFAULT 'Pending',
+    TransactionId NVARCHAR(255),
+    PaymentGateway NVARCHAR(100),
+    PaidAt DATETIME2,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    RefundAmount DECIMAL(18,2) DEFAULT 0,
+    
+    CONSTRAINT FK_Payments_Booking FOREIGN KEY (BookingId) REFERENCES Bookings(Id)
+);
+```
+
+#### 3.1.8 Reviews Table
+```sql
+CREATE TABLE Reviews (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    ServiceId UNIQUEIDENTIFIER NOT NULL,
+    CustomerId UNIQUEIDENTIFIER NOT NULL,
+    Rating INT NOT NULL CHECK (Rating >= 1 AND Rating <= 5),
+    Title NVARCHAR(255),
+    Comment NVARCHAR(MAX),
+    IsVerified BIT NOT NULL DEFAULT 0,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    IsActive BIT NOT NULL DEFAULT 1,
+    
+    CONSTRAINT FK_Reviews_Service FOREIGN KEY (ServiceId) REFERENCES Services(Id),
+    CONSTRAINT FK_Reviews_Customer FOREIGN KEY (CustomerId) REFERENCES Users(Id)
+);
+```
+
+#### 3.1.9 Notifications Table
+```sql
+CREATE TABLE Notifications (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    UserId UNIQUEIDENTIFIER NOT NULL,
+    Title NVARCHAR(255) NOT NULL,
+    Message NVARCHAR(MAX) NOT NULL,
+    Type NVARCHAR(50) NOT NULL,
+    IsRead BIT NOT NULL DEFAULT 0,
+    SentAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    ExpiresAt DATETIME2,
+    RelatedEntityId UNIQUEIDENTIFIER,
+    
+    CONSTRAINT FK_Notifications_User FOREIGN KEY (UserId) REFERENCES Users(Id)
+);
+```
+
+#### 3.1.10 BookingHistories Table
+```sql
+CREATE TABLE BookingHistories (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    BookingId UNIQUEIDENTIFIER NOT NULL,
+    OldStatus NVARCHAR(50),
+    NewStatus NVARCHAR(50) NOT NULL,
+    ChangedBy UNIQUEIDENTIFIER NOT NULL,
+    ChangeReason NVARCHAR(MAX),
+    ChangedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    Notes NVARCHAR(MAX),
+    
+    CONSTRAINT FK_BookingHistories_Booking FOREIGN KEY (BookingId) REFERENCES Bookings(Id),
+    CONSTRAINT FK_BookingHistories_ChangedBy FOREIGN KEY (ChangedBy) REFERENCES Users(Id)
+);
+```
+
+## 4. Indexes and Performance Optimizations
+
+### 4.1 Primary Indexes
+```sql
+-- Primary key indexes are automatically created for primary keys
+-- Additional composite indexes for frequently queried combinations
+```
+
+### 4.2 Recommended Indexes
+```sql
+-- For faster user lookups by email
+CREATE INDEX IX_Users_Email ON Users(Email);
+
+-- For tenant-based queries
+CREATE INDEX IX_Users_TenantId ON Users(TenantId);
+CREATE INDEX IX_Services_TenantId ON Services(TenantId);
+CREATE INDEX IX_Services_ProviderId ON Services(ProviderId);
+CREATE INDEX IX_Slots_ServiceId ON Slots(ServiceId);
+CREATE INDEX IX_Bookings_CustomerId ON Bookings(CustomerId);
+CREATE INDEX IX_Bookings_ServiceId ON Bookings(ServiceId);
+CREATE INDEX IX_Bookings_SlotId ON Bookings(SlotId);
+CREATE INDEX IX_Bookings_Status ON Bookings(Status);
+CREATE INDEX IX_Payments_BookingId ON Payments(BookingId);
+CREATE INDEX IX_Reviews_ServiceId ON Reviews(ServiceId);
+CREATE INDEX IX_Reviews_CustomerId ON Reviews(CustomerId);
+CREATE INDEX IX_Notifications_UserId ON Notifications(UserId);
+CREATE INDEX IX_Notifications_IsRead ON Notifications(IsRead);
+CREATE INDEX IX_BookingHistories_BookingId ON BookingHistories(BookingId);
+```
+
+### 4.3 Partitioning Strategy
+```sql
+-- Partitioning by date ranges for large tables like Bookings and Payments
+-- Example for Bookings table partitioning by BookingDate
+-- This would be implemented at the table level with partition schemes
+```
+
+## 5. Constraints and Validation
+
+### 5.1 Check Constraints
+```sql
+-- Price validation
+ALTER TABLE Services ADD CONSTRAINT CHK_Services_Price CHECK (Price >= 0);
+
+-- Duration validation
+ALTER TABLE Services ADD CONSTRAINT CHK_Services_Duration CHECK (Duration > 0);
+
+-- Rating validation
+ALTER TABLE Reviews ADD CONSTRAINT CHK_Reviews_Rating CHECK (Rating >= 1 AND Rating <= 5);
+
+-- Positive amount validation
+ALTER TABLE Payments ADD CONSTRAINT CHK_Payments_Amount CHECK (Amount >= 0);
+```
+
+### 5.2 Unique Constraints
+```sql
+-- Unique email per tenant
+ALTER TABLE Users ADD CONSTRAINT UK_Users_Email_Tenant UNIQUE (Email, TenantId);
+
+-- Unique service name per tenant
+ALTER TABLE Services ADD CONSTRAINT UK_Services_Name_Tenant UNIQUE (Name, TenantId);
+
+-- Unique transaction ID per payment gateway
+ALTER TABLE Payments ADD CONSTRAINT UK_Payments_TransactionId UNIQUE (TransactionId, PaymentGateway);
+```
+
+## 6. Views for Common Queries
+
+### 6.1 Service Availability View
+```sql
+CREATE VIEW ServiceAvailability AS
+SELECT 
+    s.Id as ServiceId,
+    s.Name as ServiceName,
+    s.Duration,
+    COUNT(sl.Id) as AvailableSlots,
+    MIN(sl.StartDateTime) as NextAvailableSlot
+FROM Services s
+LEFT JOIN Slots sl ON s.Id = sl.ServiceId AND sl.IsAvailable = 1 AND sl.EndDateTime > GETUTCDATE()
+WHERE s.IsActive = 1
+GROUP BY s.Id, s.Name, s.Duration;
+```
+
+### 6.2 Booking Summary View
+```sql
+CREATE VIEW BookingSummary AS
+SELECT 
+    b.Id as BookingId,
+    u.FirstName + ' ' + u.LastName as CustomerName,
+    s.Name as ServiceName,
+    sl.StartDateTime,
+    sl.EndDateTime,
+    b.Status,
+    p.Amount as PaymentAmount
+FROM Bookings b
+JOIN Users u ON b.CustomerId = u.Id
+JOIN Services s ON b.ServiceId = s.Id
+JOIN Slots sl ON b.SlotId = sl.Id
+LEFT JOIN Payments p ON b.PaymentId = p.Id;
+```
+
+## 7. Stored Procedures for Business Logic
+
+### 7.1 Create Booking Procedure
+```sql
+CREATE PROCEDURE CreateBooking
+    @CustomerId UNIQUEIDENTIFIER,
+    @ServiceId UNIQUEIDENTIFIER,
+    @SlotId UNIQUEIDENTIFIER,
+    @Notes NVARCHAR(MAX) = NULL,
+    @BookingId UNIQUEIDENTIFIER OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    BEGIN TRANSACTION;
+    
+    DECLARE @TenantId UNIQUEIDENTIFIER;
+    DECLARE @BookingDate DATETIME2 = GETUTCDATE();
+    
+    -- Get tenant from service
+    SELECT @TenantId = TenantId FROM Services WHERE Id = @ServiceId;
+    
+    -- Check slot availability
+    IF EXISTS (SELECT 1 FROM Slots WHERE Id = @SlotId AND IsAvailable = 0)
+    BEGIN
+        RAISERROR('Slot is not available', 16, 1);
+        RETURN;
+    END
+    
+    -- Create booking
+    INSERT INTO Bookings (CustomerId, ServiceId, SlotId, TenantId, Notes, BookingDate)
+    VALUES (@CustomerId, @ServiceId, @SlotId, @TenantId, @Notes, @BookingDate);
+    
+    SET @BookingId = SCOPE_IDENTITY();
+    
+    -- Update slot availability
+    UPDATE Slots 
+    SET AvailableBookings = AvailableBookings - 1,
+        UpdatedAt = GETUTCDATE()
+    WHERE Id = @SlotId AND AvailableBookings > 0;
+    
+    COMMIT TRANSACTION;
+END
+```
+
+### 7.2 Get Available Slots Procedure
+```sql
+CREATE PROCEDURE GetAvailableSlots
+    @ServiceId UNIQUEIDENTIFIER,
+    @StartDate DATETIME2,
+    @EndDate DATETIME2
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    SELECT 
+        Id,
+        StartDateTime,
+        EndDateTime,
+        AvailableBookings
+    FROM Slots
+    WHERE ServiceId = @ServiceId
+        AND StartDateTime >= @StartDate
+        AND EndDateTime <= @EndDate
+        AND IsAvailable = 1
+        AND AvailableBookings > 0
+    ORDER BY StartDateTime;
+END
+```
+
+## 8. Triggers for Audit and Business Logic
+
+### 8.1 Booking Status Change Trigger
+```sql
+CREATE TRIGGER trg_BookingStatusChange
+ON Bookings
+AFTER UPDATE
+AS
+BEGIN
+    IF UPDATE(Status)
+    BEGIN
+        INSERT INTO BookingHistories (BookingId, OldStatus, NewStatus, ChangedBy, ChangeReason)
+        SELECT 
+            i.Id,
+            DELETED.Status,
+            i.Status,
+            i.CancelledBy,
+            'Status changed'
+        FROM inserted i
+        INNER JOIN deleted ON i.Id = deleted.Id
+        WHERE i.Status != deleted.Status;
+    END
+END
+```
+
+## 9. Data Partitioning Strategy
+
+### 9.1 Booking Partitioning
+For large-scale deployments, bookings can be partitioned by date:
+```sql
+-- Create partition function
+CREATE PARTITION FUNCTION pf_BookingsDate (DATETIME2)
+AS RANGE RIGHT FOR VALUES 
+('2024-01-01', '2025-01-01', '2026-01-01');
+
+-- Create partition scheme
+CREATE PARTITION SCHEME ps_BookingsDate
+AS PARTITION pf_BookingsDate
+ALL TO ([PRIMARY]);
+```
+
+### 9.2 Payment Partitioning
+Similar approach for payments:
+```sql
+-- Partition payments by date for better query performance
+CREATE PARTITION FUNCTION pf_PaymentsDate (DATETIME2)
+AS RANGE RIGHT FOR VALUES 
+('2024-01-01', '2025-01-01', '2026-01-01');
+```
+
+## 10. Schema Evolution Considerations
+
+### 10.1 Migration Strategy
+- Use SQL Server's built-in migration tools
+- Implement versioning in schema
+- Backward compatibility for existing data
+- Rollback procedures for failed migrations
+
+### 10.2 Data Archiving
+- Archive old bookings and payments to separate tables
+- Move inactive services to archive tables
+- Implement automated archiving jobs
+
+This database schema provides a robust foundation for the Multi-Tenant Appointment Booking System, with proper relationships, constraints, and optimizations for performance and scalability while maintaining data integrity and supporting the multi-tenancy requirements.

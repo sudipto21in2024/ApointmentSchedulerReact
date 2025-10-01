@@ -1,0 +1,136 @@
+{
+  "task_id": "BE-XXX-01",
+  "title": "Implement Service Provider Self-Registration API",
+  "description": "Implement a new API endpoint for service provider self-registration that can create a new tenant and user, and associate a subscription plan.",
+  "priority": "HIGH",
+  "complexity": 5,
+  "effort_estimate": {
+    "hours": 40,
+    "story_points": 13
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a new service provider, I want to register for the platform with my business details and select a subscription plan."
+    ],
+    "business_rules": [
+      "Registration must create a new user account (UserType: Provider).",
+      "Registration must create a new tenant account with the provided business details (e.g., tenant id).",
+      "The selected subscription plan must be associated with the new tenant.",
+      "User email must be unique within the new tenant.",
+      "Initial payment processing for paid plans must be handled."
+    ],
+    "edge_cases": [
+      "Handling duplicate email within the same tenant.",
+      "Managing failed payment processing during registration.",
+      "Ensuring transactional consistency for user, tenant, and subscription creation."
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [],
+    "blocked_by": [],
+    "external_dependencies": [
+      "User Management Service",
+      "Tenant Management Service",
+      "Subscription Management Service",
+      "Payment Processing Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "New API endpoint `POST /auth/register/provider` is implemented and functional.",
+    "A new user (UserType: Provider) is created.",
+    "A new tenant is created with the provided business details.",
+    "The selected subscription plan is successfully associated with the new tenant.",
+    "Initial payment (if applicable) is processed correctly.",
+    "Proper error responses are returned for invalid or conflicting data."
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "API Design",
+    "Transaction Management",
+    "Domain-Driven Design"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/AuthService/Controllers/AuthController.cs",
+      "backend/services/AuthService/Requests/RegisterProviderRequest.cs",
+      "backend/services/AuthService/Services/IAuthService.cs"
+    ],
+    "will_modify": [
+      "docs/API/OpenAPI/auth-openapi.yaml",
+      "backend/services/AuthService/Services/AuthService.cs"
+    ],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd",
+      "docs/API/OpenAPI/user-openapi.yaml",
+      "docs/API/OpenAPI/tenant-openapi.yaml",
+      "docs/API/OpenAPI/payment-openapi.yaml",
+      "docs/API/OpenAPI/subscription-openapi.yaml"
+    ]
+  },
+  "entities": {
+    "primary": ["User", "Tenant", "Subscription"],
+    "related": ["PricingPlan", "Payment"]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/auth/register/provider",
+        "description": "Register a new service provider, including tenant creation and initial subscription."
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/auth-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Validate successful registration with new tenant and free plan.",
+      "Validate successful registration with new tenant and paid plan (mock payment).",
+      "Test registration with duplicate email.",
+      "Test transactional integrity for all associated creations."
+    ],
+    "integration_tests": [
+      "End-to-end registration flow with database interactions.",
+      "Integration with payment gateway (mock/sandbox)."
+    ],
+    "e2e_tests": [
+      "Simulate service provider registration through UI."
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": false,
+    "blocking_tasks": [],
+    "can_start_date": ""
+  },
+  "additional_context": {
+    "technical_notes": "Ensure atomic creation of user, tenant, and subscription. Utilize existing services for user, tenant, and subscription management. Implement robust validation for  email uniqueness within a tenant. Integrate with payment processing service for initial billing.",
+    "design_references": "docs/BusinessRequirements/BRD.mmd, docs/knowledgebase/UiFlow/ServiceProvider_Registration_Flow.md",
+    "security_considerations": "Securely handle all registration data. Implement rate limiting to prevent abuse. Ensure proper logging and auditing of registration attempts."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/AuthService/Controllers/AuthController.cs",
+      "backend/services/AuthService/Requests/RegisterProviderRequest.cs"
+    ]
+  },
+  "subtasks": []
+}

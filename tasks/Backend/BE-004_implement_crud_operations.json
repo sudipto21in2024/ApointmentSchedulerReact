@@ -1,0 +1,146 @@
+{
+  "task_id": "BE-004",
+  "title": "Implement Core CRUD Operations for User Entities",
+  "description": "Develop comprehensive CRUD (Create, Read, Update, Delete) operations for user management entities including user registration, profile management, and account administration.",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 16,
+    "story_points": 5,
+    "justification": "Implementing CRUD operations for user entities requires development of multiple API endpoints, proper validation, and integration with authentication services."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a service provider, I want to manage my user accounts so that I can access the platform",
+      "As a customer, I need to maintain my profile information so that I can receive services",
+      "As an administrator, I want to manage user accounts so that the system operates properly"
+    ],
+    "business_rules": [
+      "All user CRUD operations must enforce proper validation",
+      "User email uniqueness must be validated",
+      "User profiles must be maintained with proper validation",
+      "Tenant isolation must be maintained for all operations",
+      "Soft delete patterns must be implemented where appropriate"
+    ],
+    "edge_cases": [
+      "Handling concurrent access to same user records",
+      "Managing user profile updates with validation",
+      "Implementing proper error handling and status codes",
+      "Enforcing data consistency across related entities",
+      "Handling user account deactivation and deletion"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-003",
+      "BE-002"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "API framework setup",
+      "Authentication service"
+    ]
+  },
+  "acceptance_criteria": [
+    "Complete CRUD operations implemented for User entity",
+    "API endpoints follow REST conventions",
+    "Proper validation and error handling implemented",
+    "Business rules enforced during operations",
+    "Tenant isolation maintained in all operations",
+    "API documentation is complete",
+    "Unit tests cover all CRUD operations"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "REST API Development",
+    "C# Programming",
+    "ASP.NET Core Web API",
+    "Business Logic Implementation"
+  ],
+  "related_files": {
+    "will_create": [
+      "controllers/UserController.cs",
+      "services/UserService.cs",
+      "validators/UserValidator.cs",
+      "handlers/CreateUserHandler.cs",
+      "handlers/GetUserHandler.cs",
+      "handlers/UpdateUserHandler.cs",
+      "handlers/DeleteUserHandler.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/user-openapi.yaml",
+      "docs/Entities/DatabaseSchema.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "User"
+    ],
+    "related": [
+      "Tenant"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/users",
+        "description": "Get all users"
+      },
+      {
+        "method": "POST",
+        "path": "/users",
+        "description": "Create a new user"
+      },
+      {
+        "method": "GET",
+        "path": "/users/{id}",
+        "description": "Get user by ID"
+      },
+      {
+        "method": "PUT",
+        "path": "/users/{id}",
+        "description": "Update user"
+      },
+      {
+        "method": "DELETE",
+        "path": "/users/{id}",
+        "description": "Delete user"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/user-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "User CRUD operation tests",
+      "Validation logic tests",
+      "Business rule enforcement tests",
+      "Authentication and authorization tests"
+    ],
+    "integration_tests": [
+      "API endpoint integration",
+      "Database interaction tests",
+      "Cross-entity relationship tests"
+    ],
+    "e2e_tests": [
+      "Complete user management workflows",
+      "User registration and profile management",
+      "User account administration"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-003",
+      "BE-002"
+    ],
+    "blocking_reason": "Entity models and authentication must be implemented first to provide the foundation for CRUD operations",
+    "can_start_date": "After BE-003 and BE-002 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement all the API endpoints defined in the user OpenAPI specification. Apply proper CQRS patterns for command and query operations. Ensure all operations are secured with appropriate authentication and authorization checks.",
+    "design_references": "OpenAPI specifications and entity relationship documentation",
+    "security_considerations": "All CRUD operations must be protected with proper authentication and authorization checks. Passwords must be properly hashed and secured."
+  }
+}

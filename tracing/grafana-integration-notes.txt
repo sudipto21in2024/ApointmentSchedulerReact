@@ -1,0 +1,37 @@
+# Grafana Integration for Distributed Tracing
+
+This file provides notes on how to integrate Grafana with Jaeger to visualize trace data.
+
+**Integration Steps:**
+
+1.  **Add Jaeger Data Source:** Add Jaeger as a data source in Grafana.
+    *   Navigate to Grafana -> Configuration -> Data Sources.
+    *   Click "Add data source" and select "Jaeger".
+    *   Configure the Jaeger data source with the following settings:
+        *   **Name:** Jaeger
+        *   **Type:** Jaeger
+        *   **URL:** http://jaeger:16686  (or the appropriate URL for your Jaeger instance)
+        *   **Access:** proxy
+        *   **Other settings:** Use default values.
+    *   Click "Save & Test" to verify the connection.
+2.  **Import Jaeger Dashboards (Optional):** Import pre-built Jaeger dashboards into Grafana.
+    *   Jaeger provides pre-built dashboards that can be imported into Grafana for visualizing trace data.
+    *   Download the dashboard JSON files from the Jaeger repository or community resources.
+    *   Navigate to Grafana -> Dashboards -> Import.
+    *   Upload the dashboard JSON file and configure the data source to "Jaeger".
+3.  **Explore Traces:** Use Grafana's Explore feature to query and visualize traces from Jaeger.
+    *   Navigate to Grafana -> Explore.
+    *   Select the "Jaeger" data source.
+    *   Use the Jaeger query language to search for traces based on service name, operation name, tags, or other criteria.
+    *   Visualize the traces in the trace view.
+
+**Technical Notes:**
+
+*   Ensure that the Jaeger URL is resolvable from the Grafana instance (e.g., within the same Docker network).
+*   Consider using environment variables for sensitive configuration values.
+*   Explore the Jaeger query language to create custom queries and visualizations.
+
+**Security Considerations:**
+
+*   Secure the communication between Grafana and Jaeger using TLS.
+*   Implement access control for Grafana dashboards and data sources.

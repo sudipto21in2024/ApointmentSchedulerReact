@@ -1,0 +1,48 @@
+# Application Instrumentation for APM
+
+This file provides notes on how to instrument the application to send performance data to the APM Server.
+
+**Instrumentation Methods:**
+
+1.  **Automatic Instrumentation (Agent-Based):**
+    *   Use an APM agent provided by Elastic or a third-party vendor.
+    *   The agent automatically collects performance data without requiring code changes.
+    *   Supported for many popular languages and frameworks (e.g., Java, Python, Node.js, .NET).
+2.  **Manual Instrumentation (API-Based):**
+    *   Use the APM agent's API to manually instrument specific parts of the code.
+    *   Provides more control over the data collected but requires code changes.
+
+**Configuration Steps (Example using Elastic APM Java Agent):**
+
+1.  **Add APM Agent Dependency:**
+    *   Add the Elastic APM Java agent dependency to your application's build file (e.g., `pom.xml` for Maven).
+    ```xml
+    <dependency>
+        <groupId>co.elastic.apm</groupId>
+        <artifactId>elastic-apm-agent</artifactId>
+        <version>1.x.x</version>
+    </dependency>
+    ```
+2.  **Configure APM Agent:**
+    *   Configure the APM agent using system properties or an `elasticapm.properties` file.
+    *   Set the following properties:
+        *   `elastic.apm.service_name`: The name of your application.
+        *   `elastic.apm.server_url`: The URL of your APM Server (e.g., `http://apm-server:8200`).
+        *   `elastic.apm.environment`: The environment your application is running in (e.g., `production`, `staging`, `development`).
+3.  **Run Your Application:**
+    *   Start your application with the APM agent enabled.
+    *   For Java applications, you can add the `-javaagent` flag to the JVM options:
+    ```bash
+    java -javaagent:/path/to/elastic-apm-agent-1.x.x.jar -jar your-application.jar
+    ```
+
+**Technical Notes:**
+
+*   Refer to the Elastic APM documentation for specific instructions for your language and framework.
+*   Consider using environment variables for sensitive configuration values.
+*   Monitor the APM agent's performance to ensure it does not introduce excessive overhead.
+
+**Security Considerations:**
+
+*   Secure the communication between your application and the APM Server using TLS.
+*   Implement access control for the APM agent configuration.

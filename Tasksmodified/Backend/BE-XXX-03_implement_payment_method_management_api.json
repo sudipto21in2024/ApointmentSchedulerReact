@@ -1,0 +1,151 @@
+{
+  "task_id": "BE-XXX-03",
+  "title": "Implement Payment Method Management API",
+  "description": "Implement API endpoints for managing saved payment methods (listing, adding, deleting, setting default).",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 24,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a user, I want to save multiple payment methods for future use.",
+      "As a user, I want to set a default payment method.",
+      "As a user, I want to remove outdated or incorrect payment methods."
+    ],
+    "business_rules": [
+      "Payment methods must be securely stored (tokenized).",
+      "Users can only manage their own payment methods.",
+      "At least one payment method must be set as default if multiple exist.",
+      "Integration with a payment gateway for tokenization and secure storage."
+    ],
+    "edge_cases": [
+      "Handling invalid payment method details during addition.",
+      "Attempting to delete the last remaining payment method.",
+      "Managing payment methods for different user types (customer vs. tenant admin subscription).",
+      "Handling payment gateway errors during tokenization."
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Payment Gateway Integration",
+      "User Management Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "New endpoints for payment method management are implemented and functional:",
+    "  - `GET /payment-methods` (list saved methods)",
+    "  - `POST /payment-methods` (add new method)",
+    "  - `DELETE /payment-methods/{id}` (remove method)",
+    "  - `PUT /payment-methods/{id}/default` (set default method)",
+    "Payment methods are securely stored (tokenized).",
+    "Proper authorization checks are enforced for all actions.",
+    "Appropriate success and error responses are returned."
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "API Design",
+    "Security (PCI DSS, Tokenization)"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/PaymentService/Controllers/PaymentMethodController.cs",
+      "backend/services/PaymentService/Services/IPaymentMethodService.cs",
+      "backend/services/PaymentService/Services/PaymentMethodService.cs",
+      "backend/services/PaymentService/Requests/CreatePaymentMethodRequest.cs",
+      "backend/services/PaymentService/Requests/UpdatePaymentMethodRequest.cs"
+    ],
+    "will_modify": [
+      "docs/API/OpenAPI/payment-openapi.yaml"
+    ],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd",
+      "docs/knowledgebase/UiFlow/Customer_ProfileManagement_Flow.md",
+      "docs/knowledgebase/UiFlow/TenantAdmin_SubscriptionBillingManagement_Flow.md"
+    ]
+  },
+  "entities": {
+    "primary": ["PaymentMethod"],
+    "related": ["User", "Tenant"]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/payment-methods",
+        "description": "List saved payment methods for a user/tenant."
+      },
+      {
+        "method": "POST",
+        "path": "/payment-methods",
+        "description": "Add a new payment method."
+      },
+      {
+        "method": "DELETE",
+        "path": "/payment-methods/{id}",
+        "description": "Remove a saved payment method."
+      },
+      {
+        "method": "PUT",
+        "path": "/payment-methods/{id}/default",
+        "description": "Set a payment method as default."
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/payment-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Test adding a new payment method (mock tokenization).",
+      "Test listing payment methods for a user/tenant.",
+      "Test setting a default payment method.",
+      "Test deleting a payment method.",
+      "Test unauthorized access to payment methods."
+    ],
+    "integration_tests": [
+      "End-to-end payment method management with database interactions.",
+      "Integration with payment gateway tokenization service (mock/sandbox)."
+    ],
+    "e2e_tests": []
+  },
+  "blocking_information": {
+    "is_blocked": false,
+    "blocking_tasks": [],
+    "can_start_date": ""
+  },
+  "additional_context": {
+    "technical_notes": "Implement payment method storage as tokens from the payment gateway (e.g., Stripe Payment Intents). Do not store raw card details. Ensure strong encryption for any sensitive data at rest and in transit. Consider webhooks from payment gateway for status updates.",
+    "design_references": "docs/BusinessRequirements/BRD.mmd, docs/knowledgebase/UiFlow/Customer_ProfileManagement_Flow.md, docs/knowledgebase/UiFlow/TenantAdmin_SubscriptionBillingManagement_Flow.md",
+    "security_considerations": "PCI DSS compliance is paramount. Implement strict authorization checks. Use tokenization services. Log all payment method changes."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/PaymentService/Controllers/PaymentMethodController.cs",
+      "backend/services/PaymentService/Services/IPaymentMethodService.cs",
+      "backend/services/PaymentService/Services/PaymentMethodService.cs"
+    ]
+  },
+  "subtasks": []
+}

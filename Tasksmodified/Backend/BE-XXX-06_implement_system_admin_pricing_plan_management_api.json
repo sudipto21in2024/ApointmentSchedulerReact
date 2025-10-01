@@ -1,0 +1,147 @@
+{
+  "task_id": "BE-XXX-06",
+  "title": "Implement System Admin Pricing Plan Management API",
+  "description": "Implement API endpoints for System Admin to manage global pricing plans (GET all, CREATE, UPDATE, ARCHIVE).",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 32,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a system administrator, I want to create new pricing plans for the platform.",
+      "As a system administrator, I want to view and manage all existing pricing plans.",
+      "As a system administrator, I want to activate, deactivate, or archive pricing plans."
+    ],
+    "business_rules": [
+      "Only SuperAdmin users can access these endpoints.",
+      "Pricing plan names must be unique.",
+      "Pricing plan changes (price, features, status) must be auditable.",
+      "Archived plans should not be selectable by new tenants but remain visible for historical data."
+    ],
+    "edge_cases": [
+      "Handling duplicate pricing plan names.",
+      "Managing plan status changes and their impact on existing subscriptions.",
+      "Ensuring data integrity during plan archiving."
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Subscription Management Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "API endpoints for pricing plan management are implemented and functional:",
+    "  - `GET /system-admin/pricing-plans` (list all plans)",
+    "  - `POST /system-admin/pricing-plans` (create new plan)",
+    "  - `PUT /system-admin/pricing-plans/{id}` (update plan details)",
+    "  - `PUT /system-admin/pricing-plans/{id}/status` (change status to active/inactive/archived)",
+    "Proper authorization checks ensure only SuperAdmins can access these endpoints.",
+    "Pricing plan data is validated during creation and update.",
+    "Appropriate success and error responses are returned."
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "API Design",
+    "Authorization"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/ConfigurationService/Controllers/SystemAdminPricingPlanController.cs",
+      "backend/services/ConfigurationService/Services/ISystemAdminPricingPlanService.cs",
+      "backend/services/ConfigurationService/Services/SystemAdminPricingPlanService.cs",
+      "backend/services/ConfigurationService/Requests/CreatePricingPlanRequest.cs",
+      "backend/services/ConfigurationService/Requests/UpdatePricingPlanRequest.cs",
+      "backend/services/ConfigurationService/Requests/UpdatePricingPlanStatusRequest.cs"
+    ],
+    "will_modify": [
+      "docs/API/OpenAPI/tenant-openapi.yaml"
+    ],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd",
+      "docs/knowledgebase/UiFlow/SystemAdmin_PricingPlanManagement_Flow.md"
+    ]
+  },
+  "entities": {
+    "primary": ["PricingPlan"],
+    "related": ["Subscription"]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/system-admin/pricing-plans",
+        "description": "List all pricing plans for System Admin."
+      },
+      {
+        "method": "POST",
+        "path": "/system-admin/pricing-plans",
+        "description": "Create a new pricing plan by System Admin."
+      },
+      {
+        "method": "PUT",
+        "path": "/system-admin/pricing-plans/{id}",
+        "description": "Update pricing plan details by System Admin."
+      },
+      {
+        "method": "PUT",
+        "path": "/system-admin/pricing-plans/{id}/status",
+        "description": "Change pricing plan status (active/inactive/archived) by System Admin."
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/tenant-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Test pricing plan creation with valid/invalid data.",
+      "Test pricing plan update for various fields.",
+      "Test pricing plan status changes (activate/deactivate/archive).",
+      "Test unauthorized access attempts."
+    ],
+    "integration_tests": [
+      "End-to-end pricing plan management workflow with database interactions."
+    ],
+    "e2e_tests": []
+  },
+  "blocking_information": {
+    "is_blocked": false,
+    "blocking_tasks": [],
+    "can_start_date": ""
+  },
+  "additional_context": {
+    "technical_notes": "Ensure pricing plan operations are atomic and auditable. Implement robust authorization checks for SuperAdmin role. Handle unique constraints for plan names. Consider impact on existing subscriptions when deactivating/archiving plans.",
+    "design_references": "docs/BusinessRequirements/BRD.mmd, docs/knowledgebase/UiFlow/SystemAdmin_PricingPlanManagement_Flow.md",
+    "security_considerations": "Strictly enforce SuperAdmin access. Validate all input data. Log all pricing plan changes for audit purposes."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/ConfigurationService/Controllers/SystemAdminPricingPlanController.cs",
+      "backend/services/ConfigurationService/Services/ISystemAdminPricingPlanService.cs",
+      "backend/services/ConfigurationService/Services/SystemAdminPricingPlanService.cs"
+    ]
+  },
+  "subtasks": []
+}

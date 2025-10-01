@@ -1,0 +1,1263 @@
+---
+openapi: 3.0.3
+info:
+  title: Tenant Management API
+  description: API for managing tenant accounts and configurations
+  version: 1.0.0
+
+servers:
+  - url: https://api.appointmentsystem.com/v1
+    description: Production server
+
+paths:
+  /system-admin/tenants:
+    get:
+      summary: Get all tenants (System Admin)
+      description: Retrieve a paginated list of all tenants for system administration
+      tags:
+        - System Admin - Tenants
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sort
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            default: createdAt
+        - name: order
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        '200':
+          description: Successfully retrieved tenants
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantListResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Create a new tenant (System Admin)
+      description: Create a new tenant account by system administrator
+      tags:
+        - System Admin - Tenants
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTenantRequest'
+      responses:
+        '201':
+          description: Tenant created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '409':
+          description: Tenant already exists (duplicate subdomain or admin email)
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /system-admin/tenants/{id}:
+    get:
+      summary: Get tenant by ID (System Admin)
+      description: Retrieve detailed information about a specific tenant
+      tags:
+        - System Admin - Tenants
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Tenant ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update tenant details (System Admin)
+      description: Update information for an existing tenant
+      tags:
+        - System Admin - Tenants
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Tenant ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantRequest'
+      responses:
+        '200':
+          description: Tenant updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict - duplicate subdomain or admin email
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Soft delete tenant (System Admin)
+      description: Soft delete a tenant account
+      tags:
+        - System Admin - Tenants
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Tenant ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Tenant deleted successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /system-admin/tenants/{id}/status:
+    put:
+      summary: Update tenant status (System Admin)
+      description: Change tenant status to active, inactive, or suspended
+      tags:
+        - System Admin - Tenants
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Tenant ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantStatusRequest'
+      responses:
+        '200':
+          description: Tenant status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /system-admin/pricing-plans:
+    get:
+      summary: Get all pricing plans (System Admin)
+      description: Retrieve a paginated list of all pricing plans for system administration
+      tags:
+        - System Admin - Pricing Plans
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sort
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            default: createdDate
+        - name: order
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        '200':
+          description: Successfully retrieved pricing plans
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanListResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Create a new pricing plan (System Admin)
+      description: Create a new pricing plan by system administrator
+      tags:
+        - System Admin - Pricing Plans
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePricingPlanRequest'
+      responses:
+        '201':
+          description: Pricing plan created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '409':
+          description: Pricing plan already exists (duplicate name)
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /system-admin/pricing-plans/{id}:
+    get:
+      summary: Get pricing plan by ID (System Admin)
+      description: Retrieve detailed information about a specific pricing plan
+      tags:
+        - System Admin - Pricing Plans
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Pricing plan ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved pricing plan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Pricing plan not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update pricing plan details (System Admin)
+      description: Update information for an existing pricing plan
+      tags:
+        - System Admin - Pricing Plans
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Pricing plan ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePricingPlanRequest'
+      responses:
+        '200':
+          description: Pricing plan updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Pricing plan not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict - duplicate pricing plan name
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /system-admin/pricing-plans/{id}/status:
+    put:
+      summary: Update pricing plan status (System Admin)
+      description: Change pricing plan status to active, inactive, or archived
+      tags:
+        - System Admin - Pricing Plans
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Pricing plan ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePricingPlanStatusRequest'
+      responses:
+        '200':
+          description: Pricing plan status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Pricing plan not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /system-admin/global-settings:
+    get:
+      summary: Get global system settings (System Admin)
+      description: Retrieve platform-wide global settings for system administration
+      tags:
+        - System Admin - Global Settings
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully retrieved global settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalSettingsResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update global system settings (System Admin)
+      description: Update platform-wide global settings by system administrator
+      tags:
+        - System Admin - Global Settings
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGlobalSettingsRequest'
+      responses:
+        '200':
+          description: Global settings updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalSettingsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Requires SuperAdmin role
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /tenants:
+    get:
+      summary: Get all tenants
+      description: Retrieve a paginated list of tenants with optional filtering
+      tags:
+        - Tenants
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sort
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            default: createdAt
+        - name: order
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: isActive
+          in: query
+          description: Filter by active status
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved tenants
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantListResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Create a new tenant
+      description: Create a new tenant account
+      tags:
+        - Tenants
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTenantRequest'
+      responses:
+        '201':
+          description: Tenant created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '409':
+          description: Tenant already exists
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  /tenants/{id}:
+    get:
+      summary: Get tenant by ID
+      description: Retrieve detailed information about a specific tenant
+      tags:
+        - Tenants
+      parameters:
+        - name: id
+          in: path
+          description: Tenant ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update tenant
+      description: Update information for an existing tenant
+      tags:
+        - Tenants
+      parameters:
+        - name: id
+          in: path
+          description: Tenant ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantRequest'
+      responses:
+        '200':
+          description: Tenant updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete tenant
+      description: Remove a tenant (soft delete)
+      tags:
+        - Tenants
+      parameters:
+        - name: id
+          in: path
+          description: Tenant ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Tenant deleted successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+        '404':
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Tenant:
+      type: object
+      required:
+        - id
+        - name
+        - subdomain
+        - status
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the tenant
+        name:
+          type: string
+          description: Tenant name
+        description:
+          type: string
+          description: Tenant description
+        subdomain:
+          type: string
+          description: Unique subdomain for the tenant (e.g., `tenant1`). Used for tenant-specific login.
+        status:
+          type: string
+          enum: [Active, Inactive, Suspended]
+          description: Current status of the tenant
+        createdAt:
+          type: string
+          format: date-time
+          description: Tenant creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last tenant update timestamp
+        logoUrl:
+          type: string
+          description: Tenant logo/image URL
+        adminEmail:
+          type: string
+          format: email
+          description: Admin email for the tenant
+
+    CreateTenantRequest:
+      type: object
+      required:
+        - name
+        - subdomain
+        - adminEmail
+      properties:
+        name:
+          type: string
+          description: Tenant name
+        description:
+          type: string
+          description: Tenant description
+        subdomain:
+          type: string
+          description: Unique subdomain for the tenant (e.g., `tenant1`). Used for tenant-specific login.
+        logoUrl:
+          type: string
+          description: Tenant logo/image URL
+        adminEmail:
+          type: string
+          format: email
+          description: Admin email for the tenant
+
+    UpdateTenantRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tenant name
+        description:
+          type: string
+          description: Tenant description
+        subdomain:
+          type: string
+          description: Unique subdomain for the tenant (e.g., `tenant1`). Used for tenant-specific login.
+        logoUrl:
+          type: string
+          description: Tenant logo/image URL
+        adminEmail:
+          type: string
+          format: email
+          description: Admin email for the tenant
+        status:
+          type: string
+          enum: [Active, Inactive, Suspended]
+          description: Tenant status
+
+    TenantResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Tenant'
+
+    UpdateTenantStatusRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [Active, Inactive, Suspended]
+          description: New status for the tenant
+
+    PricingPlan:
+      type: object
+      required:
+        - id
+        - name
+        - price
+        - currency
+        - interval
+        - status
+        - createdDate
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the pricing plan
+        name:
+          type: string
+          description: Pricing plan name
+        description:
+          type: string
+          description: Pricing plan description
+        price:
+          type: number
+          format: decimal
+          description: Plan price
+        currency:
+          type: string
+          description: Currency code (e.g., USD, EUR)
+        interval:
+          type: string
+          enum: [monthly, annually]
+          description: Billing interval
+        features:
+          type: array
+          items:
+            type: string
+          description: List of plan features
+        maxUsers:
+          type: integer
+          description: Maximum number of users allowed
+        maxAppointments:
+          type: integer
+          description: Maximum number of appointments allowed
+        status:
+          type: string
+          enum: [Active, Inactive, Archived]
+          description: Current status of the pricing plan
+        createdDate:
+          type: string
+          format: date-time
+          description: Plan creation timestamp
+        updatedDate:
+          type: string
+          format: date-time
+          description: Last plan update timestamp
+
+    CreatePricingPlanRequest:
+      type: object
+      required:
+        - name
+        - price
+        - currency
+        - interval
+      properties:
+        name:
+          type: string
+          description: Pricing plan name
+        description:
+          type: string
+          description: Pricing plan description
+        price:
+          type: number
+          format: decimal
+          description: Plan price
+        currency:
+          type: string
+          description: Currency code (e.g., USD, EUR)
+        interval:
+          type: string
+          enum: [monthly, annually]
+          description: Billing interval
+        features:
+          type: array
+          items:
+            type: string
+          description: List of plan features
+        maxUsers:
+          type: integer
+          description: Maximum number of users allowed
+        maxAppointments:
+          type: integer
+          description: Maximum number of appointments allowed
+
+    UpdatePricingPlanRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Pricing plan name
+        description:
+          type: string
+          description: Pricing plan description
+        price:
+          type: number
+          format: decimal
+          description: Plan price
+        currency:
+          type: string
+          description: Currency code (e.g., USD, EUR)
+        interval:
+          type: string
+          enum: [monthly, annually]
+          description: Billing interval
+        features:
+          type: array
+          items:
+            type: string
+          description: List of plan features
+        maxUsers:
+          type: integer
+          description: Maximum number of users allowed
+        maxAppointments:
+          type: integer
+          description: Maximum number of appointments allowed
+
+    UpdatePricingPlanStatusRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [Active, Inactive, Archived]
+          description: New status for the pricing plan
+
+    PricingPlanResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/PricingPlan'
+
+    PricingPlanListResponse:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PricingPlan'
+        meta:
+          $ref: '../common/pagination.yaml#/components/schemas/Pagination'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            first:
+              type: string
+            last:
+              type: string
+            prev:
+              type: string
+            next:
+              type: string
+
+    TenantListResponse:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tenant'
+        meta:
+          $ref: '../common/pagination.yaml#/components/schemas/Pagination'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            first:
+              type: string
+            last:
+              type: string
+            prev:
+              type: string
+            next:
+              type: string
+
+    GlobalSettings:
+      type: object
+      required:
+        - id
+        - maintenanceMode
+        - defaultTimezone
+        - maxUsersPerTenant
+        - maxAppointmentsPerTenant
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for global settings
+        maintenanceMode:
+          type: boolean
+          description: Whether the platform is in maintenance mode
+        defaultTimezone:
+          type: string
+          description: Default timezone for the platform
+        maxUsersPerTenant:
+          type: integer
+          description: Maximum number of users allowed per tenant
+        maxAppointmentsPerTenant:
+          type: integer
+          description: Maximum number of appointments allowed per tenant
+        createdAt:
+          type: string
+          format: date-time
+          description: Settings creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last settings update timestamp
+        updatedBy:
+          type: string
+          format: uuid
+          description: User who last updated the settings
+
+    UpdateGlobalSettingsRequest:
+      type: object
+      required:
+        - maintenanceMode
+        - defaultTimezone
+        - maxUsersPerTenant
+        - maxAppointmentsPerTenant
+      properties:
+        maintenanceMode:
+          type: boolean
+          description: Whether the platform is in maintenance mode
+        defaultTimezone:
+          type: string
+          description: Default timezone for the platform
+        maxUsersPerTenant:
+          type: integer
+          minimum: 1
+          description: Maximum number of users allowed per tenant
+        maxAppointmentsPerTenant:
+          type: integer
+          minimum: 1
+          description: Maximum number of appointments allowed per tenant
+
+    GlobalSettingsResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/GlobalSettings'
+
+    ErrorResponse:
+      $ref: '../common/errors.yaml#/components/schemas/ErrorResponse'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

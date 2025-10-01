@@ -1,0 +1,64 @@
+---
+openapi: 3.0.3
+info:
+  title: Common Enum Definitions
+  version: 1.0.0
+
+components:
+  schemas:
+    UserType:
+      type: string
+      description: Type of user
+      enum:
+        - Customer
+        - Provider
+        - Admin
+        - SuperAdmin
+      example: Customer
+
+    BookingStatus:
+      type: string
+      description: Status of a booking
+      enum:
+        - Pending
+        - Confirmed
+        - Cancelled
+        - Completed
+      example: Confirmed
+
+    PaymentStatus:
+      type: string
+      description: Status of a payment
+      enum:
+        - Pending
+        - Completed
+        - Failed
+        - Refunded
+      example: Completed
+
+    PaymentMethod:
+      type: string
+      description: Method used for payment
+      enum:
+        - CreditCard
+        - DebitCard
+        - PayPal
+        - BankTransfer
+      example: CreditCard
+
+    NotificationType:
+      type: string
+      description: Type of notification
+      enum:
+        - Email
+        - SMS
+        - Push
+      example: Email
+
+    ServiceStatus:
+      type: string
+      description: Status of a service
+      enum:
+        - Active
+        - Inactive
+      example: Active

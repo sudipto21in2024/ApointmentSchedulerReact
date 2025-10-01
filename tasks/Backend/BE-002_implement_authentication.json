@@ -1,0 +1,150 @@
+{
+  "task_id": "BE-002",
+  "title": "Implement JWT Authentication and Role-Based Access Control",
+  "description": "Develop the comprehensive authentication and authorization system for the Multi-Tenant Appointment Booking System. This includes JWT-based authentication, role-based access control, and tenant isolation mechanisms.",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 24,
+    "story_points": 8,
+    "justification": "Implementing a robust authentication and authorization system requires deep understanding of security patterns, JWT implementation, and RBAC. This is a critical security component."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a user, I want to securely login to the system so that my account is protected",
+      "As a service provider, I need role-based access control so that I can only access my tenant data",
+      "As an administrator, I want tenant isolation so that data from different providers remains separate"
+    ],
+    "business_rules": [
+      "JWT tokens must be generated and validated securely",
+      "User roles must be enforced for proper access control",
+      "Tenant context must be maintained throughout user sessions",
+      "Password security requirements must be implemented",
+      "Session management must be secure and efficient",
+      "Token refresh mechanisms must be implemented"
+    ],
+    "edge_cases": [
+      "Handling token expiration and refresh properly",
+      "Managing concurrent sessions for same user",
+      "Implementing proper logout and session invalidation",
+      "Handling cross-tenant access attempts securely",
+      "Managing password reset and recovery processes",
+      "Implementing secure session storage"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "INF-002",
+      "BE-001"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Redis for session storage",
+      "Password hashing library"
+    ]
+  },
+  "acceptance_criteria": [
+    "JWT-based authentication is fully implemented with secure token generation",
+    "Role-based access control is functional with proper user roles",
+    "Tenant isolation is properly enforced for multi-tenancy",
+    "Password security requirements are met with proper hashing",
+    "Session management works correctly with secure storage",
+    "User registration and login flows are complete",
+    "Password reset and recovery functionality works",
+    "Security headers and protections are implemented for authentication endpoints"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "JWT Authentication",
+    "Security Implementation",
+    "ASP.NET Core",
+    "Role-Based Access Control"
+  ],
+  "related_files": {
+    "will_create": [
+      "services/AuthService.cs",
+      "processors/JwtService.cs",
+      "processors/TokenService.cs",
+      "processors/AuthorizationService.cs",
+      "middleware/AuthenticationMiddleware.cs",
+      "middleware/AuthorizationMiddleware.cs",
+      "models/User.cs",
+      "models/UserRole.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/AuthenticationFlow.mmd",
+      "docs/Entities/DatabaseSchema.mmd",
+      "docs/Architecture/DevInstruction/aspnet-coding-standards.md"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "User",
+      "Tenant"
+    ],
+    "related": [
+      "UserRole"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/auth/login",
+        "description": "User authentication with JWT token generation"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/register",
+        "description": "User registration with role assignment"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/logout",
+        "description": "User logout with session invalidation"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/refresh",
+        "description": "Token refresh for secure session management"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/auth-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "JWT token generation and validation",
+      "User authentication flow",
+      "Authorization checks with role validation",
+      "Session management and invalidation",
+      "Token refresh endpoint functionality"
+    ],
+    "integration_tests": [
+      "Authentication middleware integration",
+      "Token refresh endpoint with secure validation",
+      "Logout functionality with session cleanup",
+      "Role-based access control with tenant context"
+    ],
+    "e2e_tests": [
+      "Complete login flow with role validation",
+      "Role-based access control for different user types",
+      "Tenant isolation validation during authentication",
+      "Session management and token refresh workflow"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "INF-002",
+      "BE-001"
+    ],
+    "blocking_reason": "Database schema and API framework must be established first to implement authentication services",
+    "can_start_date": "After INF-002 and BE-001 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement the authentication flow as described in the AuthenticationFlow document. Ensure proper JWT implementation with refresh tokens, secure session management, and tenant context propagation. Include role-based access control for different user types (customer, provider, admin).",
+    "design_references": "Authentication flow documentation and API specification",
+    "security_considerations": "Follow security best practices for token management, password handling, and session security. Implement secure cookie handling for refresh tokens and proper token expiration policies."
+  }
+}

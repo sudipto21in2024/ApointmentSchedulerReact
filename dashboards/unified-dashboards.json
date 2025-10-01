@@ -1,0 +1,25 @@
+{
+  "title": "Unified Monitoring Dashboard",
+  "description": "A dashboard that correlates metrics, logs, and traces.",
+  "panels": [
+    {
+      "title": "Service Performance Overview",
+      "type": "timeseries",
+      "metrics": [
+        "Service Response Time",
+        "Service Error Rate"
+      ],
+      "logs": "Recent Logs",
+      "traces": "Trace Timeline"
+    },
+    {
+      "title": "Request Flow Analysis",
+      "type": "trace_view",
+      "description": "Visualize the flow of requests across services with correlated logs and metrics."
+    }
+  ],
+  "time_range": {
+    "from": "now-15m",
+    "to": "now"
+  }
+}

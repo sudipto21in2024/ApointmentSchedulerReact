@@ -1,0 +1,34 @@
+# Filebeat Configuration Notes
+
+This file is a placeholder for Filebeat configuration. 
+You need to configure Filebeat on the application side to ship logs to Logstash.
+
+**Configuration Steps:**
+
+1.  **Install Filebeat:** Install Filebeat on the application server or container.
+2.  **Configure Filebeat Input:** Configure Filebeat to read logs from the appropriate log files.
+3.  **Configure Logstash Output:** Configure Filebeat to send logs to Logstash on port 5044 (as defined in docker-compose.yml).
+4.  **Enable and Start Filebeat:** Enable and start the Filebeat service.
+
+**Example Filebeat Configuration (filebeat.yml):**
+
+```yaml
+filebeat.inputs:
+- type: log
+  paths:
+    - /path/to/your/application/logs/*.log
+
+output.logstash:
+  hosts: ["logstash:5044"]
+```
+
+**Technical Notes:**
+
+*   Replace `/path/to/your/application/logs/*.log` with the actual path to your application log files.
+*   Ensure that the `logstash:5044` host is resolvable from the Filebeat instance (e.g., within the same Docker network).
+*   Consider using environment variables for sensitive configuration values.
+
+**Security Considerations:**
+
+*   Secure the communication between Filebeat and Logstash using TLS.
+*   Implement access control for Filebeat configuration files.

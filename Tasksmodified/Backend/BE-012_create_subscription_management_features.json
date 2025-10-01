@@ -1,0 +1,173 @@
+{
+  "task_id": "BE-012",
+  "title": "Create Subscription Management Features",
+  "description": "Implement subscription management functionality including pricing plans, usage tracking, and billing automation",
+  "priority": "MEDIUM",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 32,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a service provider, I want to choose a subscription plan so I can access platform features",
+      "As a service provider, I want to track my plan usage so I know my limits",
+      "As an administrator, I want to manage pricing plans so I can adjust business model",
+      "As a user, I want to upgrade or downgrade plans so I can change my features"
+    ],
+    "business_rules": [
+      "Subscription plans must support tiered pricing with different features",
+      "Plan usage must be tracked and enforced",
+      "Billing must be automated with recurring charges",
+      "Plan changes must be seamless with prorated adjustments",
+      "Subscription status must be tracked and audited"
+    ],
+    "edge_cases": [
+      "Handling plan upgrades and downgrades",
+      "Managing usage limits and overages",
+      "Handling subscription cancellations",
+      "Managing billing failures",
+      "Handling plan changes during billing cycles"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-008"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Database Schema",
+      "Payment Service",
+      "User Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "Subscription management API supports tiered pricing plans",
+    "Usage tracking accurately monitors plan limits",
+    "Billing automation processes recurring charges",
+    "Plan changes are seamless with prorated adjustments",
+    "Subscription status is tracked and audited",
+    "Error handling works correctly for billing failures"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "Payment Integration",
+    "Business Logic Implementation"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/ConfigurationService/Controllers/SubscriptionController.cs",
+      "backend/services/ConfigurationService/Services/ISubscriptionService.cs",
+      "backend/services/ConfigurationService/Services/SubscriptionService.cs",
+      "backend/services/ConfigurationService/Validators/ISubscriptionValidator.cs",
+      "backend/services/ConfigurationService/Validators/SubscriptionValidator.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Entities/DatabaseSchema.mmd",
+      "docs/API/OpenAPI/tenant-openapi.yaml"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Subscription",
+      "PricingPlan"
+    ],
+    "related": [
+      "User",
+      "Tenant",
+      "Payment"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/subscriptions/plans",
+        "description": "Get available pricing plans"
+      },
+      {
+        "method": "POST",
+        "path": "/subscriptions/create",
+        "description": "Create a new subscription"
+      },
+      {
+        "method": "PUT",
+        "path": "/subscriptions/{id}/change-plan",
+        "description": "Change subscription plan"
+      },
+      {
+        "method": "GET",
+        "path": "/subscriptions/{id}/usage",
+        "description": "Get subscription usage"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/tenant-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "SubscriptionService.CreateSubscriptionAsync sets up subscriptions",
+      "SubscriptionService.ChangePlanAsync handles plan changes",
+      "SubscriptionService.GetUsageAsync tracks usage accurately",
+      "SubscriptionValidator validates subscription requests",
+      "SubscriptionValidator validates plan change requests"
+    ],
+    "integration_tests": [
+      "Subscription API manages pricing plans",
+      "Subscription API creates and manages subscriptions",
+      "Subscription API tracks usage accurately",
+      "Subscription API handles plan changes",
+      "Subscription API integrates with payment service"
+    ],
+    "e2e_tests": [
+      "Complete subscription management workflow",
+      "Plan creation and management",
+      "Subscription creation and management",
+      "Usage tracking and limit enforcement",
+      "Error handling for billing failures"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-008"
+    ],
+    "blocking_reason": "Subscription management depends on user management implementation",
+    "can_start_date": "After BE-008 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement flexible pricing plan management. Track usage metrics accurately. Integrate with payment service for billing automation. Implement proper error handling for billing failures. Use database transactions for consistency during plan changes.",
+    "design_references": "docs/BusinessRequirements/BRD.mmd",
+    "security_considerations": "Ensure secure handling of subscription data. Implement proper authentication and authorization. Validate all input data to prevent injection attacks. Use HTTPS for all subscription-related communications."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/ConfigurationService/Controllers/SubscriptionController.cs",
+      "backend/services/ConfigurationService/Services/ISubscriptionService.cs",
+      "backend/services/ConfigurationService/Services/SubscriptionService.cs",
+      "backend/services/ConfigurationService/Validators/ISubscriptionValidator.cs",
+      "backend/services/ConfigurationService/Validators/SubscriptionValidator.cs"
+    ]
+  },
+  "subtasks": []
+}

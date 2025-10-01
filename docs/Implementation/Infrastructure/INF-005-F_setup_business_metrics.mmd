@@ -1,0 +1,19 @@
+graph LR
+    A[Analyze Task INF-005-F] --> B(Create Business KPI Dashboards);
+    B --> C{Create dashboards/business-kpi-dashboards.json};
+    C --> D(Create SLI/SLO Definitions);
+    D --> E{Create monitoring/sli-slo-definitions.txt};
+    E --> F(Implement Error Budget Tracking);
+    F --> G{Create monitoring/error-budget-tracking.txt};
+    G --> H(Create Custom Application Metrics);
+    H --> I{Implement code to collect custom metrics};
+    I --> J(Test Business Metrics);
+    J --> K{Verify business metrics are being collected and displayed};
+    K --> L{Verify SLOs are being met};
+    L --> M{Verify Error Budget Tracking};
+    M --> N(Document Setup);
+    N --> O{Document Business KPI Dashboards};
+    O --> P{Document SLI/SLO Definitions};
+    P --> Q{Document Error Budget Tracking};
+    Q --> R{Document Custom Application Metrics};
+    R --> S(Complete Task INF-005-F);

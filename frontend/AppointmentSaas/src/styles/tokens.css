@@ -1,0 +1,99 @@
+@import './abstracts/variables';
+
+:root {
+  /* Colors */
+  --color-primary-50: #{$color-primary-50};
+  --color-primary-100: #{$color-primary-100};
+  --color-primary-200: #{$color-primary-200};
+  --color-primary-300: #{$color-primary-300};
+  --color-primary-400: #{$color-primary-400};
+  --color-primary-500: #{$color-primary-500};
+  --color-primary-600: #{$color-primary-600};
+  --color-primary-700: #{$color-primary-700};
+  --color-primary-800: #{$color-primary-800};
+  --color-primary-900: #{$color-primary-900};
+
+  --color-accent-50: #{$color-accent-50};
+  --color-accent-100: #{$color-accent-100};
+  --color-accent-200: #{$color-accent-200};
+  --color-accent-300: #{$color-accent-300};
+  --color-accent-400: #{$color-accent-400};
+  --color-accent-500: #{$color-accent-500};
+  --color-accent-600: #{$color-accent-600};
+  --color-accent-700: #{$color-accent-700};
+  --color-accent-800: #{$color-accent-800};
+  --color-accent-900: #{$color-accent-900};
+
+  --color-warn-500: #{$color-warn-500};
+  --color-success-500: #{$color-success-500};
+
+  --color-text-primary: #{$color-text-primary};
+  --color-text-secondary: #{$color-text-secondary};
+  --color-text-disabled: #{$color-text-disabled};
+  --color-text-light: #{$color-text-light};
+
+  --color-background-default: #{$color-background-default};
+  --color-background-paper: #{$color-background-paper};
+
+  --color-border-default: #{$color-border-default};
+
+  /* Typography */
+  --typography-fontFamily: #{$typography-fontFamily};
+  --typography-fontSize-base: #{$typography-fontSize-base};
+  --typography-fontSize-small: #{$typography-fontSize-small};
+  --typography-fontSize-large: #{$typography-fontSize-large};
+  --typography-fontSize-h1: #{$typography-fontSize-h1};
+  --typography-fontSize-h2: #{$typography-fontSize-h2};
+  --typography-fontSize-h3: #{$typography-fontSize-h3};
+  --typography-fontSize-h4: #{$typography-fontSize-h4};
+  --typography-fontSize-h5: #{$typography-fontSize-h5};
+  --typography-fontSize-h6: #{$typography-fontSize-h6};
+
+  --typography-fontWeight-light: #{$typography-fontWeight-light};
+  --typography-fontWeight-normal: #{$typography-fontWeight-normal};
+  --typography-fontWeight-medium: #{$typography-fontWeight-medium};
+  --typography-fontWeight-bold: #{$typography-fontWeight-bold};
+
+  --typography-lineHeight-dense: #{$typography-lineHeight-dense};
+  --typography-lineHeight-normal: #{$typography-lineHeight-normal};
+  --typography-lineHeight-loose: #{$typography-lineHeight-loose};
+
+  /* Spacing */
+  --spacing-xxs: #{$spacing-xxs};
+  --spacing-xs: #{$spacing-xs};
+  --spacing-sm: #{$spacing-sm};
+  --spacing-md: #{$spacing-md};
+  --spacing-lg: #{$spacing-lg};
+  --spacing-xl: #{$spacing-xl};
+  --spacing-xxl: #{$spacing-xxl};
+
+  /* Breakpoints */
+  --breakpoint-xs: #{$breakpoint-xs};
+  --breakpoint-sm: #{$breakpoint-sm};
+  --breakpoint-md: #{$breakpoint-md};
+  --breakpoint-lg: #{$breakpoint-lg};
+  --breakpoint-xl: #{$breakpoint-xl};
+
+  /* Border Radius */
+  --borderRadius-none: #{$borderRadius-none};
+  --borderRadius-sm: #{$borderRadius-sm};
+  --borderRadius-md: #{$borderRadius-md};
+  --borderRadius-lg: #{$borderRadius-lg};
+  --borderRadius-full: #{$borderRadius-full};
+
+  /* Box Shadow */
+  --boxShadow-sm: #{$boxShadow-sm};
+  --boxShadow-md: #{$boxShadow-md};
+  --boxShadow-lg: #{$boxShadow-lg};
+
+  /* Z-Index */
+  --zIndex-hide: #{$zIndex-hide};
+  --zIndex-auto: #{$zIndex-auto};
+  --zIndex-base: #{$zIndex-base};
+  --zIndex-dropdown: #{$zIndex-dropdown};
+  --zIndex-sticky: #{$zIndex-sticky};
+  --zIndex-fixed: #{$zIndex-fixed};
+  --zIndex-modal: #{$zIndex-modal};
+  --zIndex-popover: #{$zIndex-popover};
+  --zIndex-tooltip: #{$zIndex-tooltip};
+}

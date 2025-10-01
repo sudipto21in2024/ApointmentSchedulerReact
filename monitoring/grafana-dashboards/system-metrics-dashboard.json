@@ -1,0 +1,12 @@
+{
+  "message": "This is a placeholder for the Grafana system metrics dashboard configuration. Please manually configure the dashboard in Grafana, or replace this file with an automated configuration.",
+  "metrics": [
+    "CPU Usage",
+    "Memory Usage",
+    "Disk I/O",
+    "Network Traffic"
+  ],
+  "data_sources": [
+    "Prometheus"
+  ]
+}

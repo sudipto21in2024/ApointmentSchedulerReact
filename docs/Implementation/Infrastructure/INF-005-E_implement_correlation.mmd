@@ -1,0 +1,17 @@
+graph LR
+    A[Analyze Task INF-005-E] --> B(Implement Trace ID Injection in Logs);
+    B --> C{Create logging/trace-id-injection-notes.txt};
+    C --> D(Configure Exemplars);
+    D --> E{Create monitoring/exemplars-configuration.txt};
+    E --> F(Create Unified Dashboards);
+    F --> G{Create dashboards/unified-dashboards.json};
+    G --> H(Implement Context Propagation);
+    H --> I{Create tracing/context-propagation-notes.txt};
+    I --> J(Test Correlation);
+    J --> K{Verify metrics, logs, and traces are correlated};
+    K --> L(Document Setup);
+    L --> M{Document Trace ID Injection};
+    M --> N{Document Exemplars Configuration};
+    N --> O{Document Unified Dashboards};
+    O --> P{Document Context Propagation};
+    P --> Q(Complete Task INF-005-E);

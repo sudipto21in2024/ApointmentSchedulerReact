@@ -1,0 +1,72 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#2563EB", "secondaryColor": "#1D4ED8", "lineColor": "#6B7280"}}}%%
+graph TD
+    %% Main Layout
+    A[Container: maxWidth="480px", centered=true, padding="40px 24px"] --> B[Stack: spacing="32px", align="center"]
+    
+    %% Header Section
+    B --> C[Logo: size="medium", variant="full", link="/"]
+    B --> D[Stack: spacing="8px", align="center"]
+    D --> E[Heading: level=1, text="Create Your Account"]
+    D --> F[Text: variant="subtitle", content="Join us to get started today"]
+    
+    %% Social Registration Options
+    B --> G[Stack: spacing="16px", width="100%"]
+    G --> H[Divider: text="Sign up with"]
+    G --> I[Stack: spacing="12px"]
+    I --> J[Button: variant="secondary", block=true, size="large", icon="google", text="Continue with Google"]
+    I --> K[Button: variant="secondary", block=true, size="large", icon="github", text="Continue with GitHub"]
+    
+    %% Email Registration Form
+    B --> L[Stack: spacing="24px", width="100%"]
+    L --> M[Divider: text="Or register with email"]
+    L --> N[FormSection: title="Personal Information"]
+    N --> O[FormRow: columns=2, gap="16px", responsive=true]
+    O --> P[FormColumn: span=1]
+    P --> Q[FormField: text, name="firstName", label="First Name", placeholder="John", required=true]
+    O --> R[FormColumn: span=1]
+    R --> S[FormField: text, name="lastName", label="Last Name", placeholder="Doe", required=true]
+    N --> T[FormField: email, name="email", label="Email Address", placeholder="john.doe@example.com", required=true]
+    N --> U[FormGroup: spacing="16px"]
+    U --> V[FormField: password, name="password", label="Password", placeholder="Create a strong password", required=true, showToggle=true, strength=true]
+    U --> W[FormField: password, name="confirmPassword", label="Confirm Password", placeholder="Re-enter your password", required=true, showToggle=true]
+    N --> X[Stack: spacing="12px"]
+    X --> Y[FormField: checkbox, name="terms", required=true, label="I agree to the Terms of Service and Privacy Policy"]
+    X --> Z[FormField: checkbox, name="newsletter", label="Send me updates about new features and promotions"]
+    N --> AA[Button: variant="primary", block=true, size="large", text="Create Account", type="submit"]
+    
+    %% Sign In Link
+    B --> AB[Stack: direction="horizontal", justify="center", spacing="4px"]
+    AB --> AC[Text: content="Already have an account?"]
+    AB --> AD[Link: href="/signin", text="Sign in"]
+    
+    %% Styling
+    style A fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style B fill:#FFFFFF,stroke:none
+    style C fill:#FFFFFF,stroke:none
+    style D fill:#FFFFFF,stroke:none
+    style E fill:#FFFFFF,stroke:none,color:#111827
+    style F fill:#FFFFFF,stroke:none,color:#6B7280
+    style G fill:#FFFFFF,stroke:none
+    style H fill:#FFFFFF,stroke:none,color:#6B7280
+    style I fill:#FFFFFF,stroke:none
+    style J fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style K fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style L fill:#FFFFFF,stroke:none
+    style M fill:#FFFFFF,stroke:none,color:#6B7280
+    style N fill:#FFFFFF,stroke:none
+    style O fill:#FFFFFF,stroke:none
+    style P fill:#FFFFFF,stroke:none
+    style Q fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style R fill:#FFFFFF,stroke:none
+    style S fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style T fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style U fill:#FFFFFF,stroke:none
+    style V fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style W fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style X fill:#FFFFFF,stroke:none
+    style Y fill:#FFFFFF,stroke:none
+    style Z fill:#FFFFFF,stroke:none
+    style AA fill:#2563EB,stroke:#2563EB,stroke-width:1px,color:#FFFFFF
+    style AB fill:#FFFFFF,stroke:none
+    style AC fill:#FFFFFF,stroke:none,color:#6B7280
+    style AD fill:#FFFFFF,stroke:none,color:#2563EB

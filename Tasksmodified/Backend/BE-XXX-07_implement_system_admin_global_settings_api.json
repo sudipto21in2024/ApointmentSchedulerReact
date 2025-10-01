@@ -1,0 +1,127 @@
+{
+  "task_id": "BE-XXX-07",
+  "title": "Implement System Admin Global Settings API",
+  "description": "Implement API endpoints for System Admin to manage platform-wide global settings.",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 32,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a system administrator, I want to configure platform-wide settings that affect all tenants and system behavior."
+    ],
+    "business_rules": [
+      "Only SuperAdmin users can access these endpoints.",
+      "Global settings must be validated before saving.",
+      "Changes to global settings must be auditable and potentially require confirmation."
+    ],
+    "edge_cases": [
+      "Handling invalid setting values.",
+      "Ensuring consistency of settings across different environments.",
+      "Managing concurrent updates to global settings."
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [],
+    "blocked_by": [],
+    "external_dependencies": []
+  },
+  "acceptance_criteria": [
+    "API endpoints for global settings management are implemented and functional:",
+    "  - `GET /system-admin/global-settings` (retrieve all global settings)",
+    "  - `PUT /system-admin/global-settings` (update global settings)",
+    "Proper authorization checks ensure only SuperAdmins can access these endpoints.",
+    "Global settings data is validated during update.",
+    "Appropriate success and error responses are returned."
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "API Design",
+    "Authorization"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/ConfigurationService/Controllers/SystemAdminGlobalSettingsController.cs",
+      "backend/services/ConfigurationService/Services/ISystemAdminGlobalSettingsService.cs",
+      "backend/services/ConfigurationService/Services/SystemAdminGlobalSettingsService.cs",
+      "backend/services/ConfigurationService/Requests/UpdateGlobalSettingsRequest.cs"
+    ],
+    "will_modify": [
+      "docs/API/OpenAPI/tenant-openapi.yaml"
+    ],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd",
+      "docs/knowledgebase/UiFlow/SystemAdmin_GlobalSettings_Flow.md"
+    ]
+  },
+  "entities": {
+    "primary": ["GlobalSettings"],
+    "related": []
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/system-admin/global-settings",
+        "description": "Retrieve global system settings for System Admin."
+      },
+      {
+        "method": "PUT",
+        "path": "/system-admin/global-settings",
+        "description": "Update global system settings by System Admin."
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/tenant-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Test retrieving global settings.",
+      "Test updating global settings with valid/invalid data.",
+      "Test unauthorized access attempts."
+    ],
+    "integration_tests": [
+      "End-to-end global settings management with database interactions."
+    ],
+    "e2e_tests": []
+  },
+  "blocking_information": {
+    "is_blocked": false,
+    "blocking_tasks": [],
+    "can_start_date": ""
+  },
+  "additional_context": {
+    "technical_notes": "Store global settings as key-value pairs or a single configuration object in the database. Implement robust authorization checks for SuperAdmin role. Log all changes for audit purposes. Consider caching global settings for performance.",
+    "design_references": "docs/BusinessRequirements/BRD.mmd, docs/knowledgebase/UiFlow/SystemAdmin_GlobalSettings_Flow.md",
+    "security_considerations": "Strictly enforce SuperAdmin access. Validate all input data. Protect sensitive configuration values. Log all changes to global settings."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/ConfigurationService/Controllers/SystemAdminGlobalSettingsController.cs",
+      "backend/services/ConfigurationService/Services/ISystemAdminGlobalSettingsService.cs",
+      "backend/services/ConfigurationService/Services/SystemAdminGlobalSettingsService.cs"
+    ]
+  },
+  "subtasks": []
+}

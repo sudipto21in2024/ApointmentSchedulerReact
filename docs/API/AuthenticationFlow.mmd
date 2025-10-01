@@ -1,0 +1,338 @@
+# Authentication Flow: Multi-Tenant Appointment Booking System
+
+## 1. Overview
+
+This document describes the authentication and authorization flows for the Multi-Tenant Appointment Booking System. The system implements a comprehensive security model that supports multi-tenancy, role-based access control, and secure user sessions.
+
+## 2. Authentication Architecture
+
+### 2.1 Authentication Methods
+
+The system supports multiple authentication methods:
+
+1. **Email/Password Authentication**: Standard username/password login
+2. **Social Login**: Integration with Google, Facebook, and other OAuth providers
+3. **API Key Authentication**: For service-to-service communication
+4. **JWT Bearer Authentication**: For stateless API access
+
+### 2.2 Authentication Flow Components
+
+```
+[User/Client] → [Authentication Service] → [Identity Provider] 
+     ↓                    ↓                     ↓
+[Token Generation] ← [User Validation] ← [External Provider]
+     ↓                    ↓                     ↓
+[Token Storage] → [Session Management] → [Access Control]
+     ↓                    ↓                     ↓
+[Secure API Access] ← [Role Validation] ← [Resource Access]
+```
+
+## 3. User Authentication Flow
+
+### 3.1 Standard Login Flow
+
+```
+Step 1: User submits login credentials
+    ↓
+Step 2: Authentication Service validates credentials
+    ↓
+Step 3: If valid, generate access token and refresh token
+    ↓
+Step 4: Store session in Redis cache with expiration
+    ↓
+Step 5: Return tokens to client
+    ↓
+Step 6: Client stores tokens securely (browser storage)
+    ↓
+Step 7: Subsequent requests include access token in Authorization header
+```
+
+### 3.2 Token Management
+
+#### Access Token
+- Short-lived (15-30 minutes)
+- Used for API authentication
+- Contains user claims and roles
+- Issued by Authentication Service
+
+#### Refresh Token
+- Long-lived (7-30 days)
+- Used to obtain new access tokens
+- Stored securely in HTTP-only cookies
+- Rotated on each use
+- Can be revoked
+
+### 3.3 Token Validation Process
+
+```
+[API Request] → [Authorization Header] → [Token Validation]
+     ↓                    ↓                    ↓
+[JWT Decode] ← [Signature Verification] ← [Expiry Check]
+     ↓                    ↓                    ↓
+[Claims Validation] ← [Role Check] ← [Active User Check]
+     ↓                    ↓                    ↓
+[Access Granted] ← [Access Denied] ← [Token Expired]
+```
+
+## 4. Multi-Tenant Authentication
+
+### 4.1 Tenant Context Establishment
+
+```
+Step 1: User authenticates with email/password
+    ↓
+Step 2: Authentication Service verifies user exists
+    ↓
+Step 3: Determine tenant from user record
+    ↓
+Step 4: Generate tenant-scoped tokens
+    ↓
+Step 5: Include tenant ID in token claims
+    ↓
+Step 6: Client uses tenant-scoped tokens for all requests
+```
+
+### 4.2 Tenant Isolation
+
+- Each tenant has isolated user data
+- Token validation includes tenant verification
+- API endpoints enforce tenant context
+- Cross-tenant access is prevented
+
+## 5. OAuth2 Authentication Flow
+
+### 5.1 Google Login Flow
+
+```
+Step 1: User clicks "Login with Google"
+    ↓
+Step 2: Redirect to Google OAuth2 consent screen
+    ↓
+Step 3: User grants permissions
+    ↓
+Step 4: Google redirects back with authorization code
+    ↓
+Step 5: Authentication Service exchanges code for tokens
+    ↓
+Step 6: Service validates Google ID token
+    ↓
+Step 7: Create or update user in system
+    ↓
+Step 8: Generate JWT tokens for user
+    ↓
+Step 9: Redirect user to application with tokens
+```
+
+### 5.2 OAuth2 Token Exchange
+
+```
+[Third Party Provider] → [Authentication Service] → [Token Validation]
+     ↓                      ↓                      ↓
+[Authorization Code] ← [Exchange Request] ← [ID Token]
+     ↓                      ↓                      ↓
+[Access Token] → [Token Verification] → [User Profile]
+     ↓                      ↓                      ↓
+[User Creation/Update] ← [Scope Validation] ← [Token Storage]
+```
+
+## 6. Session Management
+
+### 6.1 Session Lifecycle
+
+```
+[User Login] → [Token Generation] → [Session Creation] 
+     ↓               ↓                ↓
+[Store in Redis] → [Set Expiration] → [Return to Client]
+     ↓               ↓                ↓
+[API Requests] → [Token Validation] → [Session Refresh]
+     ↓               ↓                ↓
+[Token Renewal] → [Access Granted] → [Request Processing]
+     ↓               ↓                ↓
+[Token Expiry] → [Session Cleanup] → [Logout Process]
+```
+
+### 6.2 Session Security
+
+- Sessions stored in Redis with TTL
+- HTTP-only cookies for refresh tokens
+- Secure flag for all cookies
+- SameSite attributes for CSRF protection
+- Session invalidation on logout
+- Automatic cleanup of expired sessions
+
+## 7. Role-Based Access Control (RBAC)
+
+### 7.1 User Roles
+
+- **Customer**: Can book services, view bookings, leave reviews
+- **Provider**: Can manage services, view bookings, manage availability
+- **Admin**: Full system access, tenant management, user management
+- **Guest**: Limited access for anonymous users
+
+### 7.2 Role Validation Flow
+
+```
+[API Request] → [Token Parsing] → [Role Extraction]
+     ↓               ↓               ↓
+[User Claims] ← [JWT Payload] ← [Token Verification]
+     ↓               ↓               ↓
+[Role Check] → [Permission Validation] → [Access Decision]
+     ↓               ↓               ↓
+[Grant Access] ← [Deny Access] ← [Access Denied]
+```
+
+### 7.3 Permission Enforcement
+
+- Each endpoint has required role/permission annotations
+- Middleware validates user roles before request processing
+- Dynamic permission checking for granular access
+- Audit logging of access attempts
+
+## 8. Password Security
+
+### 8.1 Password Handling
+
+```
+[User Enters Password] → [Password Salt Generation] → [Hashing]
+     ↓                      ↓                       ↓
+[Secure Salt] ← [PBKDF2/BCrypt] ← [SHA-256/SHA-3]
+     ↓                      ↓                       ↓
+[Stored Hash] → [Verification During Login] → [Secure Comparison]
+```
+
+### 8.2 Password Policies
+
+- Minimum 12 characters
+- Mixed case letters
+- Numbers and special characters
+- No dictionary words or common patterns
+- Password history (prevent reuse of last 5 passwords)
+
+## 9. Security Measures
+
+### 9.1 Rate Limiting
+
+- 5 failed login attempts per hour
+- 100 API requests per minute per user
+- 1000 API requests per hour per IP
+- Account lockout after excessive failed attempts
+
+### 9.2 Protection Against Common Attacks
+
+#### Brute Force Protection
+- Account lockout after 5 failed attempts
+- Increasing delay between attempts
+- CAPTCHA for repeated failures
+- IP-based rate limiting
+
+#### Session Hijacking
+- Secure, HTTP-only cookies
+- Random session identifiers
+- Session timeout and regeneration
+- IP address binding (optional)
+
+#### CSRF Protection
+- Anti-forgery tokens for form submissions
+- Origin header validation
+- SameSite cookie attributes
+- Request validation middleware
+
+## 10. Token Refresh Flow
+
+### 10.1 Refresh Token Process
+
+```
+[Expired Access Token] → [Refresh Token Request] → [Token Validation]
+     ↓                      ↓                      ↓
+[Invalid Token] ← [Verify Refresh Token] ← [Validate Token Claims]
+     ↓                      ↓                      ↓
+[Token Revoked] ← [Check Expiry] ← [Verify Signature]
+     ↓                      ↓                      ↓
+[Generate New Tokens] ← [Create New Refresh Token] ← [Update Session]
+     ↓                      ↓                      ↓
+[Return New Tokens] → [Store New Refresh Token] → [Client Update]
+```
+
+### 10.2 Token Rotation
+
+- New refresh tokens generated on each use
+- Old refresh tokens invalidated
+- Refresh token lifetime extended on use
+- Session management for token revocation
+
+## 11. Logout Process
+
+### 11.1 Session Termination
+
+```
+[User Logout Request] → [Remove Access Token] → [Invalidate Session]
+     ↓                      ↓                      ↓
+[Clear Browser Storage] ← [Delete Refresh Token] ← [Remove Redis Entry]
+     ↓                      ↓                      ↓
+[Redirect to Login] → [Clear Cookies] → [Return to Home]
+```
+
+### 11.2 Security Considerations
+
+- Immediate invalidation of access tokens
+- Removal of refresh tokens from storage
+- Session cleanup in Redis
+- Clear browser storage of tokens
+- Prevention of token reuse
+
+## 12. Error Handling
+
+### 12.1 Authentication Errors
+
+- **Invalid Credentials**: 401 Unauthorized
+- **Token Expired**: 401 Unauthorized + retry header
+- **Token Invalid**: 401 Unauthorized
+- **Account Locked**: 403 Forbidden
+- **Insufficient Permissions**: 403 Forbidden
+
+### 12.2 Error Responses
+
+```json
+{
+  "error": "invalid_credentials",
+  "message": "The provided credentials are invalid",
+  "timestamp": "2023-01-01T12:00:00Z"
+}
+```
+
+## 13. API Security Headers
+
+### 13.1 Security Headers
+
+- **X-Content-Type-Options**: nosniff
+- **X-Frame-Options**: DENY
+- **X-XSS-Protection**: 1; mode=block
+- **Strict-Transport-Security**: max-age=31536000; includeSubDomains
+- **Content-Security-Policy**: default-src 'self'
+
+### 13.2 CORS Configuration
+
+- Allow specific origins for API access
+- Configure allowed methods and headers
+- Handle preflight requests properly
+- Restrict credentials usage when needed
+
+## 14. Monitoring and Logging
+
+### 14.1 Authentication Events
+
+- Successful logins
+- Failed login attempts
+- Token generation and refresh
+- Session creation and destruction
+- Role changes and permissions updates
+
+### 14.2 Security Monitoring
+
+- Suspicious login patterns
+- Multiple failed attempts
+- Unusual geographic access
+- Token theft detection
+- Session hijacking attempts
+
+This authentication flow provides a secure, scalable, and multi-tenant capable authentication system that meets the requirements of the Multi-Tenant Appointment Booking System.

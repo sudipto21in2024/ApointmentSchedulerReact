@@ -1,0 +1,80 @@
+{
+  "task_id": "FE-000-00",
+  "title": "Component Task Title",
+  "description": "A clear, concise description of the component's purpose and the business value it provides.",
+  "priority": "MEDIUM",
+  "status": "NOT_STARTED",
+
+  "ui_control_specifications": {
+    "design_system_version": "2.1.0",
+    "component_library_reference": "ui-specs/components/auth-components-spec.json",
+    "layout_pattern_reference": "ui-specs/layouts/page-layouts.json#auth_centered_layout",
+    "design_tokens_file": "ui-specs/design-system/design-tokens.json",
+
+    "strict_requirements": {
+      "must_use_exact_html_structure": true,
+      "must_use_specified_css_classes": true,
+      "cannot_modify_layout_pattern": true,
+      "cannot_change_color_scheme": true,
+      "must_follow_component_spec": true
+    }
+  },
+
+  "component_specifications": {
+    "components_to_create": [
+      {
+        "name": "LoginComponent",
+        "specification_reference": "ui-specs/components/auth-components-spec.json#LoginComponent",
+        "required_files": [
+          "frontend/src/app/components/auth/login/login.component.ts",
+          "frontend/src/app/components/auth/login/login.component.html",
+          "frontend/src/app/components/auth/login/login.component.scss"
+        ],
+        "template_structure": "EXACT_COPY_REQUIRED",
+        "css_classes": "NO_MODIFICATIONS_ALLOWED",
+        "validation_rules": "AS_SPECIFIED_ONLY"
+      }
+    ]
+  },
+
+  "implementation_constraints": {
+    "required_imports": [
+      "@angular/forms",
+      "@angular/common",
+      "@angular/router"
+    ],
+    "forbidden_modifications": [
+      "HTML element structure",
+      "CSS class names",
+      "Layout patterns",
+      "Color values",
+      "Spacing values"
+    ],
+    "allowed_customizations": [
+      "Component logic (TypeScript)",
+      "Form validation logic",
+      "Event handlers",
+      "Service integrations"
+    ]
+  },
+
+  "quality_gates": {
+    "pre_commit_hook": {
+      "script": "npm run validate:ui",
+      "must_pass": true
+    },
+    "ci_pipeline_job": {
+      "name": "ui-validation-gate",
+      "script": "npm run validate:ui -- --all-changed",
+      "must_pass": true
+    }
+  },
+
+  "acceptance_criteria": [
+    "HTML structure EXACTLY matches the specification.",
+    "All CSS classes are used EXACTLY as specified with NO additions or modifications.",
+    "Component uses the specified layout pattern without deviations.",
+    "Form validation follows the exact rules specified in the component spec.",
+    "All automated validation scripts pass with a 100% score."
+  ]
+}

@@ -1,0 +1,68 @@
+# Getting Started with Distributed Tracing (Jaeger and OpenTelemetry)
+
+This document provides a step-by-step guide for novice users to start using the distributed tracing system.
+
+**Prerequisites:**
+
+*   Docker and Docker Compose installed.
+*   Basic understanding of Docker and Docker Compose concepts.
+
+**Step 1: Start the Tracing Infrastructure**
+
+1.  Navigate to the project directory containing the `docker-compose.yml` file.
+2.  Run the following command to start the Jaeger and OpenTelemetry Collector services:
+
+    ```bash
+    docker-compose up -d jaeger otel-collector
+    ```
+
+    This command will start the Jaeger backend and the OpenTelemetry Collector in detached mode.
+3.  Verify that the services are running by running:
+
+    ```bash
+    docker-compose ps
+    ```
+
+    You should see `jaeger` and `otel-collector` in the list of running services.
+
+**Step 2: Configure Your Application to Send Traces**
+
+1.  **Add OpenTelemetry SDK to Your Application:**
+    *   Add the OpenTelemetry SDK and Jaeger exporter dependencies to your application. (See `tracing/trace-sampling-notes.txt` for configuration examples).
+2.  **Configure the OpenTelemetry Exporter:**
+    *   Configure the OpenTelemetry exporter to send traces to the OpenTelemetry Collector.
+    *   The OpenTelemetry Collector is listening on port 4317 (gRPC).
+3.  **Implement Trace Sampling (Optional):**
+    *   Implement trace sampling to reduce the volume of trace data. (See `tracing/trace-sampling-notes.txt` for configuration examples).
+4.  **Run Your Application:**
+    *   Start your application. It should now be sending traces to the OpenTelemetry Collector, which will forward them to Jaeger.
+
+**Step 3: View Traces in Jaeger**
+
+1.  **Access the Jaeger UI:**
+    *   Open your web browser and navigate to `http://localhost:16686`.
+2.  **Search for Traces:**
+    *   Use the Jaeger UI to search for traces based on service name, operation name, tags, or other criteria.
+    *   Select a trace to view the trace details, including the spans and their dependencies.
+3.  **Analyze Traces:**
+    *   Use the trace view to identify performance bottlenecks and understand the flow of requests across services.
+
+**Step 4: Integrate Grafana (Optional)**
+
+1.  **Add Jaeger Data Source in Grafana:**
+    *   Follow the instructions in `tracing/grafana-integration-notes.txt` to add Jaeger as a data source in Grafana.
+2.  **Import Jaeger Dashboards (Optional):**
+    *   Import pre-built Jaeger dashboards or create your own dashboards to visualize trace data.
+
+**Troubleshooting:**
+
+*   If you are not seeing traces in Jaeger, check the following:
+    *   Verify that the Jaeger and OpenTelemetry Collector services are running.
+    *   Verify that your application is correctly configured to send traces to the OpenTelemetry Collector.
+    *   Check the OpenTelemetry Collector logs for errors.
+    *   Check the Jaeger logs for errors.
+
+**Security Considerations:**
+
+*   Secure the communication between your application and the OpenTelemetry Collector using TLS.
+*   Implement access control for the Jaeger UI.

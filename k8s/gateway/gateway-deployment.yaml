@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  labels:
+    app: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: gateway:latest # This image should be built from backend/Gateway/Dockerfile
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: ASPNETCORE_HTTP_PORT
+              value: "80"
+            - name: Consul__Host
+              value: "http://consul:8500" # Referencing the Consul service in Kubernetes
+          volumeMounts:
+            - name: ocelot-config
+              mountPath: /app/ocelot.json
+              subPath: ocelot.json
+      volumes:
+        - name: ocelot-config
+          configMap:
+            name: gateway-ocelot-config

@@ -1,0 +1,186 @@
+{
+  "task_id": "BE-XXX-08",
+  "title": "Implement Dashboard Analytics API (Tenant & System Admin)",
+  "description": "Implement API endpoints to provide aggregated data for both tenant-specific and global system dashboards.",
+  "priority": "HIGH",
+  "complexity": 5,
+  "effort_estimate": {
+    "hours": 40,
+    "story_points": 13
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a tenant administrator, I want to retrieve dashboard data relevant to my clinic's performance.",
+      "As a system administrator, I want to retrieve global dashboard data for overall platform health and growth."
+    ],
+    "business_rules": [
+      "Tenant-specific dashboard data must be isolated by tenant.",
+      "Global dashboard data must aggregate information across all tenants.",
+      "Data should be filterable by date range.",
+      "Metrics should include bookings, revenue, user growth, service performance, etc."
+    ],
+    "edge_cases": [
+      "Handling large data sets for aggregation and retrieval.",
+      "Ensuring data consistency for real-time updates.",
+      "Managing performance for complex queries."
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-005",
+      "BE-006",
+      "BE-008",
+      "BE-010",
+      "BE-012"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Booking Service",
+      "Payment Service",
+      "User Service",
+      "Service Management Service",
+      "Tenant Management Service",
+      "Subscription Management Service"
+    ]
+  },
+  "acceptance_criteria": [
+    "API endpoints for dashboard analytics are implemented and functional:",
+    "  - `GET /tenant-admin/dashboard/overview` (tenant-specific)",
+    "  - `GET /system-admin/dashboard/overview` (global)",
+    "  - `GET /analytics/tenant/bookings` (tenant-specific booking trends)",
+    "  - `GET /analytics/tenant/revenue` (tenant-specific revenue trends)",
+    "  - `GET /analytics/global/bookings` (global booking trends)",
+    "  - `GET /analytics/global/revenue` (global revenue trends)",
+    "Proper authorization checks ensure data access is role and tenant-specific.",
+    "Aggregated data is accurate and consistent.",
+    "Appropriate success and error responses are returned."
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "Data Aggregation",
+    "Performance Optimization",
+    "API Design",
+    "Authorization"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/ReportingService/Controllers/TenantAdminDashboardController.cs",
+      "backend/services/ReportingService/Controllers/SystemAdminDashboardController.cs",
+      "backend/services/ReportingService/Services/IDashboardAnalyticsService.cs",
+      "backend/services/ReportingService/Services/DashboardAnalyticsService.cs",
+      "backend/services/ReportingService/DTOs/TenantDashboardOverviewDto.cs",
+      "backend/services/ReportingService/DTOs/SystemDashboardOverviewDto.cs",
+      "backend/services/ReportingService/DTOs/BookingTrendDto.cs",
+      "backend/services/ReportingService/DTOs/RevenueTrendDto.cs"
+    ],
+    "will_modify": [
+      "docs/API/OpenAPI/booking-openapi.yaml",
+      "docs/API/OpenAPI/service-openapi.yaml",
+      "docs/API/OpenAPI/user-openapi.yaml",
+      "docs/API/OpenAPI/tenant-openapi.yaml",
+      "docs/API/OpenAPI/payment-openapi.yaml"
+    ],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd",
+      "docs/knowledgebase/UiFlow/TenantAdmin_Dashboard_Flow.md",
+      "docs/knowledgebase/UiFlow/SystemAdmin_Dashboard_Flow.md"
+    ]
+  },
+  "entities": {
+    "primary": [],
+    "related": ["Booking", "Payment", "User", "Service", "Tenant"]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/tenant-admin/dashboard/overview",
+        "description": "Get tenant-specific dashboard overview data (e.g., bookings, revenue, staff performance)."
+      },
+      {
+        "method": "GET",
+        "path": "/system-admin/dashboard/overview",
+        "description": "Get global platform dashboard overview data (e.g., total tenants, users, bookings, revenue, system health)."
+      },
+      {
+        "method": "GET",
+        "path": "/analytics/tenant/bookings",
+        "description": "Get tenant-specific booking analytics data."
+      },
+      {
+        "method": "GET",
+        "path": "/analytics/tenant/revenue",
+        "description": "Get tenant-specific revenue analytics data."
+      },
+      {
+        "method": "GET",
+        "path": "/analytics/global/bookings",
+        "description": "Get global booking analytics data."
+      },
+      {
+        "method": "GET",
+        "path": "/analytics/global/revenue",
+        "description": "Get global revenue analytics data."
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/dashboard-analytics-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Test data aggregation for tenant-specific metrics.",
+      "Test data aggregation for global metrics.",
+      "Test filtering by date range.",
+      "Test unauthorized access attempts."
+    ],
+    "integration_tests": [
+      "End-to-end dashboard data retrieval with database and service interactions."
+    ],
+    "e2e_tests": []
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-005",
+      "BE-006",
+      "BE-008",
+      "BE-010",
+      "BE-012"
+    ],
+    "blocking_reason": "Dashboard analytics rely on data from booking, service, user, payment, and subscription features.",
+    "can_start_date": "After BE-005, BE-006, BE-008, BE-010, and BE-012 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement efficient data aggregation queries. Consider caching strategies for frequently accessed dashboard data. Ensure proper data isolation for tenant-specific dashboards.",
+    "design_references": "docs/BusinessRequirements/BRD.mmd, docs/knowledgebase/UiFlow/TenantAdmin_Dashboard_Flow.md, docs/knowledgebase/UiFlow/SystemAdmin_Dashboard_Flow.md",
+    "security_considerations": "Strictly enforce role-based access control (Tenant Admin vs. System Admin). Ensure data isolation to prevent cross-tenant data leakage. Validate all input parameters for filtering and sorting."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "backend/services/ReportingService/Controllers/TenantAdminDashboardController.cs",
+      "backend/services/ReportingService/Controllers/SystemAdminDashboardController.cs",
+      "backend/services/ReportingService/Services/IDashboardAnalyticsService.cs",
+      "backend/services/ReportingService/Services/DashboardAnalyticsService.cs"
+    ]
+  },
+  "subtasks": []
+}

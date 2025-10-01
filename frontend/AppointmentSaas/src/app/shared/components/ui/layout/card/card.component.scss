@@ -1,0 +1,45 @@
+@use '../../../../../../styles/abstracts/variables' as *;
+
+.app-card {
+  background-color: var(--color-background-paper);
+  border-radius: var(--borderRadius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+
+  &--elevation-none {
+    box-shadow: none;
+  }
+
+  &--elevation-sm {
+    box-shadow: var(--boxShadow-sm);
+  }
+
+  &--elevation-md {
+    box-shadow: var(--boxShadow-md);
+  }
+
+  &--elevation-lg {
+    box-shadow: var(--boxShadow-lg);
+  }
+}
+
+.app-card-header {
+  margin-bottom: var(--spacing-md);
+}
+
+.app-card-title {
+  font-size: var(--typography-fontSize-h5);
+  font-weight: var(--typography-fontWeight-medium);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.app-card-subtitle {
+  font-size: var(--typography-fontSize-small);
+  color: var(--color-text-secondary);
+  margin: var(--spacing-xs) 0 0;
+}
+
+.app-card-content {
+  // Styles for content within the card
+}

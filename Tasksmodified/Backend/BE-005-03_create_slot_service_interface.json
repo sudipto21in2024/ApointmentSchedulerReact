@@ -1,0 +1,126 @@
+{
+  "task_id": "BE-005-03",
+ "title": "Create Slot Service Interface",
+  "description": "Define the ISlotService interface with all required methods for slot management operations",
+  "priority": "HIGH",
+  "complexity": 2,
+  "effort_estimate": {
+    "hours": 4,
+    "story_points": 3
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a developer, I need a well-defined interface for slot management operations"
+    ],
+    "business_rules": [
+      "Interface must include all CRUD operations for slots",
+      "Interface must include slot availability checking methods"
+    ],
+    "edge_cases": []
+  },
+  "dependencies": {
+    "blocking_tasks": [],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Shared Models",
+      "Database Schema"
+    ]
+  },
+  "acceptance_criteria": [
+    "ISlotService interface is created with all required methods",
+    "Interface follows naming conventions",
+    "Interface includes proper documentation comments",
+    "Interface is registered with DI container"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "C#",
+    "ASP.NET Core",
+    "Dependency Injection"
+  ],
+  "related_files": {
+    "will_create": [
+      "backend/services/BookingService/Services/ISlotService.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Entities/DatabaseSchema.mmd",
+      "shared/Models/Slot.cs"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Slot"
+    ],
+    "related": [
+      "Service",
+      "Booking"
+    ]
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Interface method signatures verification"
+    ],
+    "integration_tests": [],
+    "e2e_tests": []
+  },
+  "blocking_information": {
+    "is_blocked": false,
+    "blocking_tasks": [
+      "BE-005-04"
+    ],
+    "can_start_date": "Immediately"
+  },
+  "additional_context": {
+    "technical_notes": "Follow existing patterns in UserService for consistency",
+    "design_references": "UserService/Services/IUserService.cs",
+    "security_considerations": "Interface should not expose sensitive implementation details"
+  },
+  "implementation_guidance": {
+    "method_signatures": [
+      "Task<Slot> CreateSlotAsync(CreateSlotRequest request)",
+      "Task<Slot> GetSlotByIdAsync(Guid slotId)",
+      "Task<Slot> UpdateSlotAsync(Guid slotId, UpdateSlotRequest request)",
+      "Task DeleteSlotAsync(Guid slotId)",
+      "Task<bool> IsSlotAvailableAsync(Guid slotId)",
+      "Task<IEnumerable<Slot>> GetAvailableSlotsAsync(Guid serviceId, DateTime startDate, DateTime endDate)",
+      "Task<Slot> UpdateSlotAvailabilityAsync(Guid slotId, int bookingCount)"
+    ],
+    "implementation_logic": [
+      "Define interface with all required slot management operations",
+      "Include proper XML documentation for all methods",
+      "Use appropriate return types and parameters",
+      "Include exception documentation for each method"
+    ],
+    "file_structure": [
+      "backend/services/BookingService/Services/ISlotService.cs"
+    ],
+    "dependencies": [
+      "Microsoft.Extensions.Logging",
+      "Shared.Models",
+      "System.Collections.Generic",
+      "System.Threading.Tasks"
+    ],
+    "error_handling": [
+      "Document expected exceptions in XML comments",
+      "Include EntityNotFoundException for missing entities",
+      "Include BusinessRuleViolationException for rule violations"
+    ],
+    "testing_guidance": [
+      "Verify interface method signatures match requirements",
+      "Ensure all methods have proper documentation",
+      "Check that return types are appropriate",
+      "Validate parameter types and names"
+    ]
+  }
+}

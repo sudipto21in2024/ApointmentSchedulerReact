@@ -1,0 +1,19 @@
+{
+  "environments": [
+    {
+      "name": "dev",
+      "kubernetesNamespace": "dev",
+      "imageTag": "latest"
+    },
+    {
+      "name": "staging",
+      "kubernetesNamespace": "staging",
+      "imageTag": "staging"
+    },
+    {
+      "name": "prod",
+      "kubernetesNamespace": "prod",
+      "imageTag": "prod"
+    }
+  ]
+}

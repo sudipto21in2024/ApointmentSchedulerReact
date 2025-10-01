@@ -1,0 +1,62 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#2563EB", "secondaryColor": "#1D4ED8", "lineColor": "#6B7280"}}}%%
+graph TD
+    %% Main Layout
+    A[Container: maxWidth="480px", centered=true, padding="40px 24px"] --> B[Stack: spacing="32px", align="center"]
+    
+    %% Header Section
+    B --> C[Logo: size="medium", variant="full", link="/"]
+    B --> D[Stack: spacing="8px", align="center"]
+    D --> E[Heading: level=1, text="Welcome Back"]
+    D --> F[Text: variant="subtitle", content="Sign in to your account"]
+    
+    %% Social Login Options
+    B --> G[Stack: spacing="16px", width="100%"]
+    G --> H[Divider: text="Sign in with"]
+    G --> I[Stack: spacing="12px"]
+    I --> J[Button: variant="secondary", block=true, size="large", icon="google", text="Continue with Google"]
+    I --> K[Button: variant="secondary", block=true, size="large", icon="github", text="Continue with GitHub"]
+    
+    %% Email Login Form
+    B --> L[Stack: spacing="24px", width="100%"]
+    L --> M[Divider: text="Or sign in with email"]
+    L --> N[FormSection:]
+    N --> O[FormGroup:]
+    O --> P[FormField: email, name="email", label="Email Address", placeholder="you@example.com", required=true]
+    N --> Q[FormGroup:]
+    Q --> R[FormField: password, name="password", label="Password", placeholder="Enter your password", required=true, showToggle=true]
+    N --> S[Flex: direction="row", justify="space-between", align="center"]
+    S --> T[FormField: checkbox, name="remember", label="Remember me"]
+    S --> U[Link: href="/forgot-password", text="Forgot password?"]
+    N --> V[Button: variant="primary", block=true, size="large", text="Sign In", type="submit"]
+    
+    %% Sign Up Link
+    B --> W[Stack: direction="horizontal", justify="center", spacing="4px"]
+    W --> X[Text: content="Don't have an account?"]
+    W --> Y[Link: href="/register", text="Sign up"]
+    
+    %% Styling
+    style A fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style B fill:#FFFFFF,stroke:none
+    style C fill:#FFFFFF,stroke:none
+    style D fill:#FFFFFF,stroke:none
+    style E fill:#FFFFFF,stroke:none,color:#111827
+    style F fill:#FFFFFF,stroke:none,color:#6B7280
+    style G fill:#FFFFFF,stroke:none
+    style H fill:#FFFFFF,stroke:none,color:#6B7280
+    style I fill:#FFFFFF,stroke:none
+    style J fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style K fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style L fill:#FFFFFF,stroke:none
+    style M fill:#FFFFFF,stroke:none,color:#6B7280
+    style N fill:#FFFFFF,stroke:none
+    style O fill:#FFFFFF,stroke:none
+    style P fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style Q fill:#FFFFFF,stroke:none
+    style R fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px
+    style S fill:#FFFFFF,stroke:none
+    style T fill:#FFFFFF,stroke:none
+    style U fill:#FFFFFF,stroke:none,color:#2563EB
+    style V fill:#2563EB,stroke:#2563EB,stroke-width:1px,color:#FFFFFF
+    style W fill:#FFFFFF,stroke:none
+    style X fill:#FFFFFF,stroke:none,color:#6B7280
+    style Y fill:#FFFFFF,stroke:none,color:#2563EB

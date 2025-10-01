@@ -1,0 +1,112 @@
+{
+  "task_id": "BE-001",
+  "title": "Setup API Framework and Microservices Structure",
+  "description": "Establish the foundational API framework and microservices structure for the Multi-Tenant Appointment Booking System. This includes setting up the .NET Core 8+ framework, implementing CQRS pattern, and organizing services according to the microservices architecture.",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 20,
+    "story_points": 8,
+    "justification": "Setting up a comprehensive microservices framework with CQRS pattern requires deep understanding of .NET Core architecture, service organization, and implementation of core patterns. This is foundational for all backend development."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a backend developer, I want a structured API framework so that I can implement services consistently",
+      "As a team lead, I need CQRS implementation so that command and query operations are separated properly"
+    ],
+    "business_rules": [
+      "All services must follow the microservices architecture pattern",
+      "Command Query Responsibility Segregation (CQRS) must be implemented",
+      "Event sourcing must be supported for audit trails",
+      "Services must be loosely coupled and independently deployable"
+    ],
+    "edge_cases": [
+      "Handling cross-service communication properly",
+      "Managing service boundaries and responsibilities",
+      "Implementing proper error handling across services",
+      "Ensuring service scalability and performance"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "INF-001"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      ".NET Core 8 SDK",
+      "Entity Framework Core",
+      "MediatR library"
+    ]
+  },
+  "acceptance_criteria": [
+    "API framework is established with proper project structure",
+    "Microservices are organized according to the architecture",
+    "CQRS pattern is implemented across services",
+    "Event sourcing capabilities are configured",
+    "Service communication patterns are defined",
+    "Base service classes and utilities are created",
+    "Documentation of service structure is complete"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    ".NET Core 8",
+    "CQRS Pattern",
+    "Microservices Architecture",
+    "Entity Framework Core"
+  ],
+  "related_files": {
+    "will_create": [
+      "services/UserService/",
+      "services/BookingService/",
+      "services/ServiceManagementService/",
+      "services/PaymentService/",
+      "services/NotificationService/",
+      "services/ReportingService/",
+      "shared/Contracts/",
+      "shared/Models/"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Architecture/HLD.mmd",
+      "docs/Architecture/LLD.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "User",
+      "Tenant",
+      "Service",
+      "Slot",
+      "Booking",
+      "Payment",
+      "Review",
+      "Notification"
+    ],
+    "related": [
+      "ServiceCategory",
+      "BookingHistory"
+    ]
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [],
+    "integration_tests": [],
+    "e2e_tests": []
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "INF-001"
+    ],
+    "blocking_reason": "Project structure must be established first to create services in the correct locations",
+    "can_start_date": "After INF-001 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement the services as described in the HLD and LLD documents. Follow the CQRS pattern with separate command and query handlers. Ensure proper separation of concerns between services.",
+    "design_references": "Architecture documents (HLD and LLD) and the technology stack requirements",
+    "security_considerations": "Ensure proper authentication and authorization are built into the framework"
+  }
+}

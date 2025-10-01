@@ -1,0 +1,46 @@
+# Modification Documentation: User Entity Enhancement
+
+## Overview
+This document describes the changes made to the User entity to align with the updated entity model specification and API requirements.
+
+## Changes Made
+
+### 1. User Model Updates (shared/Models/User.cs)
+- Added `FirstName` property (string, required)
+- Added `LastName` property (string, required) 
+- Added `PhoneNumber` property (string, optional)
+- Added `UserType` property (UserRole enum, required)
+- Added `IsActive` property (bool, required)
+- Added `CreatedAt` property (DateTime, required)
+- Added `UpdatedAt` property (DateTime, required)
+- Added `LastLoginAt` property (DateTime?, optional)
+- Updated `Role` property to `UserType` to match entity specification
+
+### 2. UserRole Enum Updates (shared/Models/UserRole.cs)
+- Removed `Guest` enum value
+- Kept `Customer`, `Provider`, and `Admin` enum values
+
+### 3. UserService Contract Updates (shared/Contracts/IUserService.cs)
+- Added `GetUserById` method
+- Added `CreateUser` method  
+- Added `UpdateUser` method
+- Added `DeleteUser` method
+- Updated `GetUserByUsername` to accept email parameter instead of username
+
+### 4. UserService Implementation Updates (backend/services/UserService/Services/UserService.cs)
+- Implemented all new methods in the UserService interface
+- Added proper initialization of new properties during user creation
+- Added timestamp management for CreatedAt and UpdatedAt
+
+### 5. AuthController Updates (backend/services/UserService/Controllers/AuthController.cs)
+- Updated endpoint signatures to match API specification
+- Added proper request/response DTOs
+- Implemented registration endpoint with full user creation
+- Added user retrieval endpoint
+- Updated authentication flow to use proper DTOs
+
+## Impact
+These changes bring the User entity implementation in line with the complete entity model specification and provide full CRUD functionality as defined in the API specifications.
+
+## Validation
+All changes have been compiled successfully with no errors or warnings.

@@ -1,0 +1,137 @@
+{
+  "task_id": "BE-011",
+  "title": "Implement Payment Processing and Billing Features",
+  "description": "Develop comprehensive payment processing functionality including payment gateway integration, billing management, and transaction handling for service providers and customers.",
+  "priority": "HIGH",
+  "complexity": 5,
+  "effort_estimate": {
+    "hours": 32,
+    "story_points": 13,
+    "justification": "Implementing payment processing requires integration with external payment gateways, handling transaction lifecycles, and managing billing cycles with proper security and compliance measures."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to pay securely for services so that I can complete bookings",
+      "As a service provider, I need automated billing so that I can receive payments",
+      "As a platform administrator, I want to manage subscription plans so that revenue is properly collected"
+    ],
+    "business_rules": [
+      "Payment transactions must be processed securely with proper validation",
+      "Billing cycles must be managed according to subscription plans",
+      "Payment gateway integrations must follow security standards",
+      "Refund processing must follow defined policies",
+      "Transaction records must be maintained for audit purposes"
+    ],
+    "edge_cases": [
+      "Handling payment failures and retries",
+      "Processing refunds and chargebacks",
+      "Managing subscription upgrades and downgrades",
+      "Handling currency conversions for international payments",
+      "Ensuring PCI DSS compliance for payment processing"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "BE-008"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Payment gateway API (Stripe/PayPal)",
+      "Billing engine service"
+    ]
+  },
+  "acceptance_criteria": [
+    "Payment gateway integration with secure transactions",
+    "Billing cycle management for subscription plans",
+    "Transaction record keeping and auditing",
+    "Refund processing with policy enforcement",
+    "Subscription plan management",
+    "Payment status tracking and notifications",
+    "PCI DSS compliance for payment handling"
+  ],
+  "assigned_team": "Backend",
+  "required_skills": [
+    "Payment Processing",
+    "Billing Systems",
+    "Security Compliance",
+    "Transaction Management"
+  ],
+  "related_files": {
+    "will_create": [
+      "controllers/PaymentController.cs",
+      "services/PaymentService.cs",
+      "models/Payment.cs",
+      "processors/PaymentProcessor.cs",
+      "gateways/PaymentGatewayAdapter.cs"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/BusinessRequirements/BRD.mmd#5.3.1",
+      "docs/BusinessRequirements/UserJourneys.mmd#Stage 2: Booking Process"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Payment",
+      "Booking"
+    ],
+    "related": [
+      "User",
+      "Service"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/payments/process",
+        "description": "Process a payment for booking"
+      },
+      {
+        "method": "POST",
+        "path": "/payments/refund",
+        "description": "Initiate a refund process"
+      },
+      {
+        "method": "GET",
+        "path": "/payments/history",
+        "description": "Get payment transaction history"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/payment-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Payment processing validation",
+      "Transaction lifecycle management",
+      "Refund processing logic",
+      "Billing cycle calculations",
+      "Payment gateway integration"
+    ],
+    "integration_tests": [
+      "Complete payment workflow",
+      "Refund processing",
+      "Subscription billing management",
+      "Transaction record creation"
+    ],
+    "e2e_tests": [
+      "Complete payment journey",
+      "Refund processing workflow",
+      "Subscription billing cycle",
+      "Payment status tracking"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "BE-008"
+    ],
+    "blocking_reason": "Booking system must be implemented first to process payments for bookings",
+    "can_start_date": "After BE-008 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement payment processing features as defined in FR-8.1 to FR-8.4 of the BRD. Include subscription management and automated billing capabilities. Follow security requirements including PCI DSS compliance.",
+    "design_references": "Payment processing requirements from BRD and booking process journey from User Journeys",
+    "security_considerations": "Implement comprehensive security measures for payment processing, including PCI DSS compliance, secure token handling, and encrypted data transmission"
+  }
+}

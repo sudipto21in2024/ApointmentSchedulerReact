@@ -1,0 +1,109 @@
+{
+  "task_id": "FE-004",
+  "title": "Implement Application Routing and Navigation",
+  "description": "Set up the complete routing and navigation system for the Multi-Tenant Appointment Booking System. This includes defining routes for different user roles, implementing lazy loading, and creating navigation structures for all application views.",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 16,
+    "story_points": 5,
+    "justification": "Implementing a comprehensive routing system requires careful planning of user journeys, proper route configuration, and navigation structure that supports different user roles and application flows."
+  },
+  "business_logic": {
+    "user_stories": [
+      "As a user, I want to navigate easily between different parts of the application so that I can find what I need",
+      "As a developer, I need proper routing so that application views are loaded efficiently",
+      "As an administrator, I want role-based navigation so that I only see relevant sections"
+    ],
+    "business_rules": [
+      "Routes must be organized by user roles and functionality",
+      "Lazy loading must be implemented for performance",
+      "Navigation must be consistent across all views",
+      "Route guards must be implemented for authentication and authorization"
+    ],
+    "edge_cases": [
+      "Handling unauthorized access attempts",
+      "Managing route parameters and query strings",
+      "Implementing proper fallback routes",
+      "Ensuring smooth transitions between views"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-001"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Angular Router",
+      "Authentication service"
+    ]
+  },
+  "acceptance_criteria": [
+    "Complete routing structure is defined and implemented",
+    "Lazy loading is configured for performance",
+    "Route guards are implemented for security",
+    "Navigation menus are consistent across application",
+    "URL structure follows SEO best practices",
+    "Routing works correctly for all user roles",
+    "Error handling for invalid routes is implemented"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "Angular Routing",
+    "Navigation Design",
+    "SPA Architecture",
+    "Security Implementation"
+  ],
+  "related_files": {
+    "will_create": [
+      "src/app/routes/app-routing.module.ts",
+      "src/app/routes/auth-routing.module.ts",
+      "src/app/routes/provider-routing.module.ts",
+      "src/app/components/navigation/",
+      "src/app/guards/auth.guard.ts"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/UI/Requirements.mmd",
+      "docs/BusinessRequirements/BRD.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [],
+    "related": []
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Route configuration",
+      "Guard functionality",
+      "Navigation behavior"
+    ],
+    "integration_tests": [
+      "Route transitions",
+      "Parameter handling",
+      "Authentication flow"
+    ],
+    "e2e_tests": [
+      "User journey testing",
+      "Navigation flow validation",
+      "Role-based access testing"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-001"
+    ],
+    "blocking_reason": "Frontend framework must be established first to implement routing",
+    "can_start_date": "After FE-001 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement routing based on user personas and business requirements. Ensure proper separation of routes for different user types (customer, provider, admin). Use Angular's lazy loading for better performance.",
+    "design_references": "UI requirements documentation and user journey maps",
+    "security_considerations": "Implement proper route guards to protect unauthorized access to sensitive areas"
+  }
+}

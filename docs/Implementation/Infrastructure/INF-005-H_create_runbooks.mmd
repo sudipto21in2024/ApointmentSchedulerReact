@@ -1,0 +1,16 @@
+graph LR
+    A[Analyze Task INF-005-H] --> B(Define Runbook Structure);
+    B --> C{Create Runbook Templates};
+    C --> D{Implement Automated Incident Response};
+    D --> E{Test Incident Response};
+    E --> F{Implement Self-Healing Mechanisms};
+    F --> G{Document Runbooks and Automation};
+    G --> H(Complete Task INF-005-H);
+
+    subgraph Implementation Details
+        C --> C1(Create templates for common incident types);
+        D --> D1(Automate alert response procedures);
+        E --> E1(Simulate incidents to test response);
+        F --> F1(Implement mechanisms to automatically resolve incidents);
+        G --> G1(Document runbook creation and incident response automation);
+    end
