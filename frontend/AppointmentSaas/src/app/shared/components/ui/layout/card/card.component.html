@@ -1,9 +1,0 @@
-<div [ngClass]="cardClasses">
-  <div *ngIf="title" class="app-card-header">
-    <h2 class="app-card-title">{{ title }}</h2>
-    <h3 *ngIf="subtitle" class="app-card-subtitle">{{ subtitle }}</h3>
-  </div>
-  <div class="app-card-content">
-    <ng-content></ng-content>
-  </div>
-</div>
