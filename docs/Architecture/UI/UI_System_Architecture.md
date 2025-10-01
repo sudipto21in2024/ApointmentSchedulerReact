@@ -25,19 +25,22 @@ To support this new workflow, the following file structure is proposed. It estab
 
 ```
 /
-├── frontend/                     # New Angular Application Root
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── components/       # Generated UI Components (e.g., auth/login)
-│   │   │   └── ...
-│   │   ├── assets/
-│   │   │   └── styles/
-│   │   │       └── _design-tokens.scss # Ingested design tokens
-│   │   └── ...
-│   ├── angular.json
-│   ├── package.json              # Will contain validation/generation scripts
-│   └── tsconfig.json
-│
+├── src/                         # React Application Root
+│   ├── components/              # Generated UI Components (e.g., auth/Login)
+│   ├── hooks/                   # Custom React hooks
+│   ├── store/                   # Redux store configuration
+│   ├── styles/                  # Global styles and design tokens
+│   ├── types/                   # TypeScript type definitions
+│   ├── utils/                   # Utility functions
+│   ├── App.tsx                  # Root component
+│   ├── main.tsx                 # Application entry point
+│   └── vite-env.d.ts           # Vite environment types
+├── public/                      # Static assets
+├── index.html                   # HTML template
+├── package.json                 # Will contain validation/generation scripts
+├── tsconfig.json
+├── vite.config.ts              # Vite configuration
+└── tailwind.config.js          # Tailwind CSS configuration
 ├── ui-specs/                     # NEW: Single Source of Truth for all UI Specs
 │   ├── design-system/
 │   │   ├── design-tokens.json

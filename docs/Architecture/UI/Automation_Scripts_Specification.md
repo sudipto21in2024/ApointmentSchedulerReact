@@ -14,10 +14,10 @@ The script will be executable via `npm` and will accept command-line arguments.
 
 ```bash
 # Example
-npm run validate:ui -- --component=src/app/components/auth/login
+npm run validate:ui -- --component=src/components/auth/Login
 ```
 
--   **`--component`**: (Required) The path to the component's directory. The script will derive the paths to the `.html` and `.ts` files from this.
+-   **`--component`**: (Required) The path to the component's directory. The script will derive the paths to the `.tsx` and related files from this.
 
 ### 2.2. Core Logic & Sub-routines
 
@@ -25,10 +25,10 @@ The script will be class-based (`UIValidator`) and orchestrate several validatio
 
 #### **`constructor(componentPath)`**
 
--   Parses the `componentPath` to determine the component's name (e.g., `login`).
+-   Parses the `componentPath` to determine the component's name (e.g., `Login`).
 -   Locates the relevant spec file (e.g., `ui-specs/components/auth-components-spec.json`). This may require a mapping configuration if the naming convention isn't direct.
 -   Loads the component's spec (e.g., `authSpec.components.LoginComponent`) into memory.
--   Loads the component's HTML file content.
+-   Loads the component's JSX file content.
 -   Loads the global `validation-rules.json` and `design-tokens.json` into memory.
 
 #### **`run()`**
@@ -94,37 +94,46 @@ npm run generate:component -- --spec=auth-components-spec.json#LoginComponent
 -   Parses the `specReference` to get the file name and component name.
 -   Loads the specified file (e.g., `ui-specs/components/auth-components-spec.json`).
 -   Loads the specific component's spec object.
--   Determines the target path for the new component (e.g., `frontend/src/app/components/auth/login`).
+-   Determines the target path for the new component (e.g., `src/components/auth/Login`).
 
 #### **`run()`**
 
 -   Creates the target directory.
--   Calls `generateHTMLFile()`.
+-   Calls `generateTSXFile()`.
 -   Calls `generateTSFile()`.
--   Calls `generateSCSSFile()`.
+-   Calls `generateTestFile()`.
+-   Calls `generateIndexFile()`.
 -   Logs a success message to the console.
 
-#### **`generateHTMLFile()`**
+#### **`generateTSXFile()`**
 
 -   **Process**:
-    1.  Implement a recursive function that takes a `specNode` from the `required_structure` and returns an HTML string.
-    2.  This function will construct the opening tag with all its classes, recursively call itself for all children, and then add the closing tag.
+    1.  Implement a recursive function that takes a `specNode` from the `required_structure` and returns a JSX string.
+    2.  This function will construct the opening JSX tag with all its classes, recursively call itself for all children, and then add the closing tag.
     3.  Properly indent the output for readability.
-    4.  Write the resulting string to the `.html` file.
+    4.  Write the resulting string to the `.tsx` file.
 
 #### **`generateTSFile()`**
 
 -   **Process**:
-    1.  Create a template string for a basic Angular component.
+    1.  Create a template string for a basic React functional component.
     2.  Inject the component's name (e.g., `LoginComponent`).
-    3.  **Bonus**: Parse the `validation_rules` from the spec to pre-populate a `FormGroup` with `FormControl`s and their basic validators.
+    3.  **Bonus**: Parse the `validation_rules` from the spec to pre-populate a React Hook Form with validation rules.
     4.  Write the resulting string to the `.ts` file.
 
-#### **`generateSCSSFile()`**
+#### **`generateTestFile()`**
 
 -   **Process**:
-    1.  Create the `.scss` file. It can be empty or contain a single comment block.
-    2.  `/* This file is intentionally left blank. All styling is driven by design tokens and utility classes. */`
+    1.  Create a test file template using React Testing Library.
+    2.  Include basic tests for component rendering and user interactions.
+    3.  Write the resulting string to the `.test.tsx` file.
+
+#### **`generateIndexFile()`**
+
+-   **Process**:
+    1.  Create an index file for clean imports.
+    2.  Export the component and its types.
+    3.  Write the resulting string to the `index.ts` file.
 
 ## 4. Dependencies
 

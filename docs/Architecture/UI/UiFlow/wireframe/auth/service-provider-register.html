@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Provider Registration - Appointment Booking System</title>
+    <link rel="stylesheet" href="../styles/styles.scss">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles from Design Tokens */
+        :root {
+            --color-primary-main: #2563EB;
+            --color-primary-dark: #1D4ED8;
+            --color-primary-light: #DBEAFE;
+            --color-neutral-gray900: #111827;
+            --color-neutral-gray700: #374151;
+            --color-neutral-gray500: #6B7280;
+            --color-neutral-gray300: #D1D5DB;
+            --color-neutral-gray100: #F3F4F6;
+            --color-neutral-white: #FFFFFF;
+            --color-secondary-danger: #EF4444;
+            --color-secondary-success: #10B981;
+            --color-secondary-warning: #F59E0B;
+            --color-secondary-info: #3B82F6;
+
+            --font-family-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            --font-size-heading1: 32px;
+            --font-size-heading2: 24px;
+            --font-size-heading3: 20px;
+            --font-size-body-large: 16px;
+            --font-size-body-medium: 14px;
+            --font-size-body-small: 12px;
+            --font-weight-bold: 700;
+            --font-weight-medium: 500;
+            --font-weight-semiBold: 600;
+
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-xxl: 48px;
+
+            --card-border-radius: 8px;
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --card-padding: 24px;
+
+            --navigation-height: 64px;
+            --navigation-hover-background: rgba(0, 0, 0, 0.05);
+
+            --form-border-radius: 6px;
+            --form-focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.3);
+            --form-label-spacing: 8px;
+            --form-input-height: 40px;
+            --form-input-padding: 12px;
+
+            --button-border-radius: 6px;
+            --button-font-weight: 600;
+            --button-transition: 0.2s ease;
+            --button-height: 40px;
+            --button-padding: 12px 24px;
+        }
+
+        body {
+            font-family: var(--font-family-inter);
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-neutral-gray100);
+            color: var(--color-neutral-gray900);
+        }
+        .text-primary { color: var(--color-primary-main); }
+        .text-red-600 { color: var(--color-secondary-danger); }
+        .text-gray-600 { color: var(--color-neutral-gray700); }
+        .text-gray-700 { color: var(--color-neutral-gray700); }
+        .text-gray-900 { color: var(--color-neutral-gray900); }
+        .bg-gray-50 { background-color: var(--color-neutral-gray100); }
+        .bg-primary { background-color: var(--color-primary-main); }
+        .hover\:bg-primary-hover:hover { background-color: var(--color-primary-dark); }
+        .text-sm { font-size: var(--font-size-body-medium); }
+        .text-base { font-size: var(--font-size-body-large); }
+        .text-lg { font-size: var(--font-size-heading3); }
+        .text-xl { font-size: var(--font-size-heading3); } /* Using H3 size for xl */
+        .text-2xl { font-size: var(--font-size-heading2); }
+        .font-bold { font-weight: var(--font-weight-bold); }
+        .font-medium { font-weight: var(--font-weight-medium); }
+        .font-semibold { font-weight: var(--font-weight-semiBold); }
+        .rounded-lg { border-radius: var(--card-border-radius); }
+        .shadow-md { box-shadow: var(--card-shadow); }
+        .p-8 { padding: var(--card-padding); }
+        .p-6 { padding: var(--card-padding); }
+        .mb-2 { margin-bottom: var(--spacing-sm); }
+        .mb-4 { margin-bottom: var(--spacing-md); }
+        .mb-6 { margin-bottom: var(--spacing-lg); }
+        .mb-8 { margin-bottom: var(--spacing-xl); }
+        .mt-1 { margin-top: var(--spacing-xs); }
+        .mt-2 { margin-top: var(--spacing-sm); }
+        .mt-4 { margin-top: var(--spacing-md); }
+        .mt-6 { margin-top: var(--spacing-lg); }
+        .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: var(--spacing-md); }
+        .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: var(--spacing-lg); }
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .gap-4 { gap: var(--spacing-md); }
+        .w-full { width: 100%; }
+        .min-h-screen { min-height: 100vh; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .block { display: block; }
+        .border { border-width: 1px; border-style: solid; }
+        .border-gray-300 { border-color: var(--color-neutral-gray300); }
+        .rounded-md { border-radius: var(--form-border-radius); }
+        .focus\:outline-none:focus { outline: none; }
+        .focus\:ring-2:focus { box-shadow: var(--form-focus-ring); }
+        .focus\:ring-primary:focus { box-shadow: var(--form-focus-ring); }
+        .focus\:border-transparent:focus { border-color: transparent; }
+        .focus\:ring-offset-2:focus { box-shadow: 0 0 0 2px var(--color-neutral-white), var(--form-focus-ring); }
+        .text-center { text-align: center; }
+        .hidden { display: none; }
+
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-neutral-gray100);
+        }
+
+        .auth-card {
+            max-width: 40rem; /* Increased max-width to accommodate more content */
+            width: 100%;
+            background-color: var(--color-neutral-white);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--card-shadow);
+            padding: var(--card-padding);
+        }
+
+        .field-group {
+            margin-bottom: var(--spacing-md); /* Consistent spacing */
+        }
+
+        .form-error-message {
+            color: var(--color-secondary-danger);
+            font-size: var(--font-size-body-small);
+            margin-top: var(--spacing-xs);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: var(--button-height);
+            padding: var(--button-padding);
+            border-radius: var(--button-border-radius);
+            font-weight: var(--button-font-weight);
+            transition: var(--button-transition);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background-color: var(--color-primary-main);
+            color: var(--color-neutral-white);
+        }
+        .btn-primary:hover {
+            background-color: var(--color-primary-dark);
+        }
+        .btn-secondary {
+            background-color: var(--color-neutral-white);
+            color: var(--color-neutral-gray700);
+            border: 1px solid var(--color-neutral-gray300);
+        }
+        .btn-secondary:hover {
+            background-color: var(--color-neutral-gray100);
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-primary-main);
+            border: 1px solid var(--color-primary-main);
+        }
+        .btn-outline:hover {
+            background-color: var(--color-primary-light);
+        }
+
+        /* Stepper styles */
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-xl);
+            position: relative;
+            padding: 0 var(--spacing-xl);
+        }
+
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: var(--spacing-xl);
+            right: var(--spacing-xl);
+            height: 2px;
+            background-color: var(--color-neutral-gray300);
+            z-index: 0;
+        }
+
+        .stepper-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stepper-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--color-neutral-gray300);
+            color: var(--color-neutral-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-sm);
+            transition: all 0.3s ease;
+        }
+
+        .stepper-label {
+            font-size: var(--font-size-body-small);
+            color: var(--color-neutral-gray700);
+            text-align: center;
+        }
+
+        .stepper-item.active .stepper-circle {
+            background-color: var(--color-primary-main);
+        }
+
+        .stepper-item.completed .stepper-circle {
+            background-color: var(--color-secondary-success);
+        }
+
+        /* Subscription Plan Cards */
+        .plan-card {
+            background-color: var(--color-neutral-white);
+            border: 1px solid var(--color-neutral-gray300);
+            border-radius: var(--card-border-radius);
+            padding: var(--card-padding);
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .plan-card:hover {
+            border-color: var(--color-primary-main);
+            box-shadow: var(--card-shadow);
+        }
+        .plan-card.selected {
+            border-color: var(--color-primary-main);
+            box-shadow: 0 0 0 3px var(--color-primary-light);
+        }
+        .plan-card-title {
+            font-size: var(--font-size-heading3);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-sm);
+        }
+        .plan-card-price {
+            font-size: var(--font-size-heading1);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+        }
+        .plan-card-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: var(--spacing-md);
+            text-align: left;
+        }
+        .plan-card-features li {
+            margin-bottom: var(--spacing-xs);
+            display: flex;
+            align-items: center;
+            font-size: var(--font-size-body-medium);
+            color: var(--color-neutral-gray700);
+        }
+        .plan-card-features li svg {
+            margin-right: var(--spacing-xs);
+            color: var(--color-secondary-success);
+        }
+        .plan-card .btn {
+            width: 100%;
+        }
+        .plan-card.recommended {
+            border-color: var(--color-primary-main);
+            position: relative;
+            overflow: hidden;
+        }
+        .plan-card.recommended::before {
+            content: "Recommended";
+            position: absolute;
+            top: 10px;
+            right: -30px;
+            background-color: var(--color-primary-main);
+            color: var(--color-neutral-white);
+            padding: 2px 30px;
+            font-size: var(--font-size-body-small);
+            transform: rotate(45deg);
+        }
+        .input-with-suffix {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--color-neutral-gray300);
+            border-radius: var(--form-border-radius);
+            padding-right: var(--form-input-padding);
+        }
+        .input-with-suffix input {
+            border: none;
+            flex-grow: 1;
+            padding: var(--form-input-padding);
+            outline: none;
+        }
+        .input-with-suffix span {
+            color: var(--color-neutral-gray700);
+            font-size: var(--font-size-body-medium);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Create Your Service Provider Account</h1>
+            <p class="text-sm text-gray-600">Join our platform and start managing your appointments.</p>
+        </div>
+
+        <div class="stepper">
+            <div class="stepper-item active" data-step="1">
+                <div class="stepper-circle">1</div>
+                <div class="stepper-label">Account Details</div>
+            </div>
+            <div class="stepper-item" data-step="2">
+                <div class="stepper-circle">2</div>
+                <div class="stepper-label">Business Info</div>
+            </div>
+            <div class="stepper-item" data-step="3">
+                <div class="stepper-circle">3</div>
+                <div class="stepper-label">Subscription</div>
+            </div>
+            <div class="stepper-item" data-step="4">
+                <div class="stepper-circle">4</div>
+                <div class="stepper-label">Payment</div>
+            </div>
+        </div>
+
+        <form>
+            <!-- Step 1: Account Details -->
+            <div id="step-1" class="step-content space-y-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Tell us about yourself</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="field-group">
+                        <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="John"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <div class="form-error-message hidden">First name is required.</div>
+                    </div>
+                    <div class="field-group">
+                        <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Doe"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <div class="form-error-message hidden">Last name is required.</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <div class="form-error-message hidden">Please enter a valid email address.</div>
+                </div>
+                <div class="field-group">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" name="password" placeholder="********"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <div class="form-error-message hidden">Password must be at least 8 characters and contain a mix of uppercase, lowercase, and numbers.</div>
+                </div>
+                <div class="field-group">
+                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="********"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <div class="form-error-message hidden">Passwords do not match.</div>
+                </div>
+                <div class="flex justify-end mt-6">
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Business Information -->
+            <div id="step-2" class="step-content space-y-6 hidden">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Tell us about your business</h3>
+                <div class="field-group">
+                    <label for="companyName" class="block text-sm font-medium text-gray-700 mb-2">Company/Practice Name</label>
+                    <input type="text" id="companyName" name="companyName" placeholder="My Clinic Name"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <div class="form-error-message hidden">Company name is required.</div>
+                </div>
+                <div class="field-group">
+                    <label for="subdomain" class="block text-sm font-medium text-gray-700 mb-2">Desired Subdomain</label>
+                    <div class="input-with-suffix">
+                        <input type="text" id="subdomain" name="subdomain" placeholder="mybusiness"
+                               class="focus:outline-none focus:ring-0 focus:border-transparent">
+                        <span>.yourdomain.com</span>
+                    </div>
+                    <div class="form-error-message hidden">Subdomain is required and must be unique.</div>
+                </div>
+                <div class="field-group">
+                    <label for="industry" class="block text-sm font-medium text-gray-700 mb-2">Industry/Category</label>
+                    <select id="industry" name="industry"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">Select an industry</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="beauty">Beauty & Wellness</option>
+                        <option value="consulting">Consulting</option>
+                        <option value="fitness">Fitness</option>
+                        <option value="education">Education</option>
+                    </select>
+                    <div class="form-error-message hidden">Industry is required.</div>
+                </div>
+                <div class="field-group">
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Business Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="(123) 456-7890"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <div class="form-error-message hidden">Please enter a valid phone number.</div>
+                </div>
+                <div class="field-group">
+                    <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Business Address</label>
+                    <textarea id="address" name="address" rows="3" placeholder="123 Business Rd, Suite 400"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                    <div class="form-error-message hidden">Business address is required.</div>
+                </div>
+                <div class="flex justify-between mt-6">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">Previous</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Choose Your Subscription Plan -->
+            <div id="step-3" class="step-content space-y-6 hidden">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Select Your Subscription Plan</h3>
+                <p class="text-sm text-gray-600 mb-6">Choose the plan that best fits your business needs. You can upgrade or downgrade anytime.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="plan-card" data-plan="starter">
+                        <div class="plan-card-title">Starter</div>
+                        <div class="plan-card-price">$0<span class="text-sm text-gray-600">/month</span></div>
+                        <ul class="plan-card-features">
+                            <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Up to 5 Services</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Basic Booking Page</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Email Notifications</li>
+                        </ul>
+                        <button type="button" class="btn btn-primary" onclick="selectPlan('starter')">Select Plan</button>
+                    </div>
+
+                    <div class="plan-card recommended" data-plan="pro">
+                        <div class="plan-card-title">Pro</div>
+                        <div class="plan-card-price">$29<span class="text-sm text-gray-600">/month</span></div>
+                        <ul class="plan-card-features">
+                            <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Unlimited Services</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Advanced Analytics</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> SMS Notifications</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Multi-user Support</li>
+                        </ul>
+                        <button type="button" class="btn btn-primary" onclick="selectPlan('pro')">Select Plan</button>
+                    </div>
+
+                    <div class="plan-card" data-plan="enterprise">
+                        <div class="plan-card-title">Enterprise</div>
+                        <div class="plan-card-price">$99<span class="text-sm text-gray-600">/month</span></div>
+                        <ul class="plan-card-features">
+                            <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> All Pro Features</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Custom Integrations</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Dedicated Support</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> White-label Options</li>
+                        </ul>
+                        <button type="button" class="btn btn-primary" onclick="selectPlan('enterprise')">Select Plan</button>
+                    </div>
+                </div>
+                <div class="flex justify-between mt-6">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">Previous</button>
+                    <!-- "Next" button will be enabled after plan selection if payment is required -->
+                    <button type="button" class="btn btn-primary" id="selectPlanNextButton" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Payment Information -->
+            <div id="step-4" class="step-content space-y-6 hidden">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Enter Payment Details</h3>
+                <p class="text-sm text-gray-600 mb-6">Securely provide your payment information to activate your chosen plan.</p>
+                <div class="field-group">
+                    <label for="cardNumber" class="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
+                    <input type="text" id="cardNumber" name="cardNumber" placeholder="**** **** **** ****"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <div class="form-error-message hidden">Please enter a valid card number.</div>
+                </div>
+                <div class="field-group">
+                    <label for="cardName" class="block text-sm font-medium text-gray-700 mb-2">Cardholder Name</label>
+                    <input type="text" id="cardName" name="cardName" placeholder="John Doe"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <div class="form-error-message hidden">Cardholder name is required.</div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="field-group">
+                        <label for="expiryDate" class="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
+                        <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <div class="form-error-message hidden">Please enter a valid expiry date.</div>
+                    </div>
+                    <div class="field-group">
+                        <label for="cvc" class="block text-sm font-medium text-gray-700 mb-2">CVC</label>
+                        <input type="text" id="cvc" name="cvc" placeholder="***"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <div class="form-error-message hidden">Please enter a valid CVC.</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label for="billingAddress" class="block text-sm font-medium text-gray-700 mb-2">Billing Address</label>
+                    <textarea id="billingAddress" name="billingAddress" rows="2" placeholder="123 Billing St"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                    <div class="form-error-message hidden">Billing address is required.</div>
+                </div>
+                <div class="flex items-center mt-4">
+                    <input type="checkbox" id="saveCard" name="saveCard" class="form-checkbox text-primary">
+                    <label for="saveCard" class="ml-2 text-sm text-gray-700">Save card for future use</label>
+                </div>
+
+                <div class="flex justify-between mt-6">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">Previous</button>
+                    <button type="submit" class="btn btn-primary">Complete Registration</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="auth-footer text-center mt-6">
+            <p class="text-sm text-gray-600">Already have an account? <a href="login.html" class="text-primary hover:text-primary-dark font-medium">Sign In</a></p>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        let selectedPlan = null; // To store the selected plan type
+
+        function showStep(step) {
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(`step-${step}`).classList.remove('hidden');
+
+            document.querySelectorAll('.stepper-item').forEach((item, index) => {
+                if (index + 1 < step) {
+                    item.classList.add('completed');
+                    item.classList.remove('active');
+                } else if (index + 1 === step) {
+                    item.classList.add('active');
+                    item.classList.remove('completed');
+                } else {
+                    item.classList.remove('active', 'completed');
+                }
+            });
+
+            // Handle "Next" button state for Step 3
+            if (step === 3) {
+                const nextButton = document.getElementById('selectPlanNextButton');
+                if (selectedPlan === 'starter') { // Assuming 'starter' is free
+                    nextButton.textContent = 'Complete Registration';
+                    nextButton.disabled = false;
+                    nextButton.onclick = submitForm;
+                } else if (selectedPlan) { // A paid plan is selected
+                    nextButton.textContent = 'Next';
+                    nextButton.disabled = false;
+                    nextButton.onclick = nextStep;
+                } else {
+                    nextButton.disabled = true;
+                }
+            }
+        }
+
+        function nextStep() {
+            // Basic client-side validation for current step before proceeding
+            if (currentStep === 1) {
+                if (!validateStep1()) return;
+            } else if (currentStep === 2) {
+                if (!validateStep2()) return;
+            } else if (currentStep === 3) {
+                if (!selectedPlan) {
+                    alert('Please select a subscription plan.');
+                    return;
+                }
+                if (selectedPlan === 'starter') {
+                    submitForm(); // Free plan, complete registration
+                    return;
+                }
+            }
+
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function selectPlan(planType) {
+            selectedPlan = planType;
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`.plan-card[data-plan="${planType}"]`).classList.add('selected');
+
+            const nextButton = document.getElementById('selectPlanNextButton');
+            if (planType === 'starter') { // Assuming 'starter' is free
+                nextButton.textContent = 'Complete Registration';
+                nextButton.disabled = false;
+                nextButton.onclick = submitForm;
+            } else {
+                nextButton.textContent = 'Next';
+                nextButton.disabled = false;
+                nextButton.onclick = nextStep;
+            }
+        }
+
+        function validateStep1() {
+            let isValid = true;
+            const firstName = document.getElementById('firstName');
+            const lastName = document.getElementById('lastName');
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+
+            // Simple validation examples
+            if (firstName.value.trim() === '') {
+                showError(firstName, 'First name is required.');
+                isValid = false;
+            } else { hideError(firstName); }
+
+            if (lastName.value.trim() === '') {
+                showError(lastName, 'Last name is required.');
+                isValid = false;
+            } else { hideError(lastName); }
+
+            if (!/\S+@\S+\.\S+/.test(email.value)) {
+                showError(email, 'Please enter a valid email address.');
+                isValid = false;
+            } else { hideError(email); }
+
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password.value)) {
+                showError(password, 'Password must be at least 8 characters and contain a mix of uppercase, lowercase, and numbers.');
+                isValid = false;
+            } else { hideError(password); }
+
+            if (password.value !== confirmPassword.value) {
+                showError(confirmPassword, 'Passwords do not match.');
+                isValid = false;
+            } else { hideError(confirmPassword); }
+
+            return isValid;
+        }
+
+        function validateStep2() {
+            let isValid = true;
+            const companyName = document.getElementById('companyName');
+            const subdomain = document.getElementById('subdomain');
+            const industry = document.getElementById('industry');
+            const phone = document.getElementById('phone');
+            const address = document.getElementById('address');
+
+            if (companyName.value.trim() === '') {
+                showError(companyName, 'Company name is required.');
+                isValid = false;
+            } else { hideError(companyName); }
+
+            if (subdomain.value.trim() === '') {
+                showError(subdomain, 'Subdomain is required.');
+                isValid = false;
+            } else { hideError(subdomain); }
+            // Add more complex subdomain validation (e.g., uniqueness check via API) here
+
+            if (industry.value === '') {
+                showError(industry, 'Industry is required.');
+                isValid = false;
+            } else { hideError(industry); }
+
+            if (!/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(phone.value)) {
+                showError(phone, 'Please enter a valid phone number.');
+                isValid = false;
+            } else { hideError(phone); }
+
+            if (address.value.trim() === '') {
+                showError(address, 'Business address is required.');
+                isValid = false;
+            } else { hideError(address); }
+
+            return isValid;
+        }
+
+        function showError(element, message) {
+            element.classList.add('border-red-600');
+            const errorElement = element.nextElementSibling;
+            if (errorElement && errorElement.classList.contains('form-error-message')) {
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+            }
+        }
+
+        function hideError(element) {
+            element.classList.remove('border-red-600');
+            const errorElement = element.nextElementSibling;
+            if (errorElement && errorElement.classList.contains('form-error-message')) {
+                errorElement.classList.add('hidden');
+            }
+        }
+
+
+        function submitForm() {
+            // In a real application, this would send data to the backend
+            alert(`Service Provider Registration Complete! Selected Plan: ${selectedPlan || 'Free'}`);
+            window.location.href = '../dashboard/index.html'; // Redirect to dashboard
+        }
+
+        // Initial display
+        showStep(currentStep);
+    </script>
+</body>
+</html>

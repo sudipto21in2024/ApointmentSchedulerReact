@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenant Settings - Appointment Booking System</title>
+    <link rel="stylesheet" href="../styles/styles.scss">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles from Design Tokens */
+        :root {
+            --color-primary-main: #2563EB;
+            --color-primary-dark: #1D4ED8;
+            --color-primary-light: #DBEAFE;
+            --color-neutral-gray900: #111827;
+            --color-neutral-gray700: #374151;
+            --color-neutral-gray500: #6B7280;
+            --color-neutral-gray300: #D1D5DB;
+            --color-neutral-gray100: #F3F4F6;
+            --color-neutral-white: #FFFFFF;
+            --color-secondary-danger: #EF4444;
+            --color-secondary-success: #10B981;
+            --color-secondary-warning: #F59E0B;
+            --color-secondary-info: #3B82F6;
+
+            --font-family-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            --font-size-heading1: 32px;
+            --font-size-heading2: 24px;
+            --font-size-heading3: 20px;
+            --font-size-body-large: 16px;
+            --font-size-body-medium: 14px;
+            --font-size-body-small: 12px;
+            --font-weight-bold: 700;
+            --font-weight-medium: 500;
+            --font-weight-semiBold: 600;
+
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-xxl: 48px;
+            --spacing-xxxl: 64px;
+
+            --card-border-radius: 8px;
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --card-padding: 24px;
+
+            --navigation-height: 64px;
+            --navigation-hover-background: rgba(0, 0, 0, 0.05);
+
+            --form-border-radius: 6px;
+            --form-focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.3);
+            --form-label-spacing: 8px;
+            --form-input-height: 40px;
+            --form-input-padding: 12px;
+
+            --button-border-radius: 6px;
+            --button-font-weight: 600;
+            --button-transition: 0.2s ease;
+            --button-height: 40px;
+            --button-padding: 12px 24px;
+        }
+
+        body {
+            font-family: var(--font-family-inter);
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-neutral-gray100);
+            color: var(--color-neutral-gray900);
+        }
+        .text-primary { color: var(--color-primary-main); }
+        .text-red-600 { color: var(--color-secondary-danger); }
+        .text-gray-600 { color: var(--color-neutral-gray700); }
+        .text-gray-700 { color: var(--color-neutral-gray700); }
+        .text-gray-900 { color: var(--color-neutral-gray900); }
+        .bg-gray-50 { background-color: var(--color-neutral-gray100); }
+        .bg-primary { background-color: var(--color-primary-main); }
+        .hover\:bg-primary-hover:hover { background-color: var(--color-primary-dark); }
+        .text-sm { font-size: var(--font-size-body-medium); }
+        .text-base { font-size: var(--font-size-body-large); }
+        .text-lg { font-size: var(--font-size-heading3); }
+        .text-xl { font-size: var(--font-size-heading3); } /* Using H3 size for xl */
+        .text-2xl { font-size: var(--font-size-heading2); }
+        .text-3xl { font-size: var(--font-size-heading1); }
+        .font-bold { font-weight: var(--font-weight-bold); }
+        .font-medium { font-weight: var(--font-weight-medium); }
+        .font-semibold { font-weight: var(--font-weight-semiBold); }
+        .rounded-lg { border-radius: var(--card-border-radius); }
+        .shadow-md { box-shadow: var(--card-shadow); }
+        .p-8 { padding: var(--card-padding); }
+        .p-6 { padding: var(--card-padding); }
+        .mb-2 { margin-bottom: var(--spacing-sm); }
+        .mb-4 { margin-bottom: var(--spacing-md); }
+        .mb-6 { margin-bottom: var(--spacing-lg); }
+        .mb-8 { margin-bottom: var(--spacing-xl); }
+        .mt-1 { margin-top: var(--spacing-xs); }
+        .mt-2 { margin-top: var(--spacing-sm); }
+        .mt-4 { margin-top: var(--spacing-md); }
+        .mt-6 { margin-top: var(--spacing-lg); }
+        .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: var(--spacing-md); }
+        .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: var(--spacing-lg); }
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .gap-4 { gap: var(--spacing-md); }
+        .gap-6 { gap: var(--spacing-lg); }
+        .w-full { width: 100%; }
+        .max-w-4xl { max-width: 56rem; }
+        .max-w-7xl { max-width: 80rem; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .min-h-screen { min-height: 100vh; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .block { display: block; }
+        .border { border-width: 1px; border-style: solid; }
+        .border-gray-300 { border-color: var(--color-neutral-gray300); }
+        .rounded-md { border-radius: var(--form-border-radius); }
+        .focus\:outline-none:focus { outline: none; }
+        .focus\:ring-2:focus { box-shadow: var(--form-focus-ring); }
+        .focus\:ring-primary:focus { box-shadow: var(--form-focus-ring); }
+        .focus\:border-transparent:focus { border-color: transparent; }
+        .focus\:ring-offset-2:focus { box-shadow: 0 0 0 2px var(--color-neutral-white), var(--form-focus-ring); }
+        .text-center { text-align: center; }
+        .hidden { display: none; }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .top-0 { top: 0; }
+        .left-0 { left: 0; }
+        .fixed { position: fixed; }
+        .z-50 { z-index: 50; }
+
+        .app-header {
+            height: var(--navigation-height);
+            background-color: var(--color-neutral-white);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            padding: 0 var(--spacing-lg);
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 16rem; /* Adjusted for sidebar */
+            right: 0;
+            z-index: 40;
+        }
+        .app-sidebar {
+            width: 16rem;
+            background-color: var(--color-primary-main);
+            color: var(--color-neutral-white);
+            padding: var(--spacing-lg) var(--spacing-md);
+            position: fixed;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: 50;
+            overflow-y: auto;
+        }
+        .app-sidebar-nav-item {
+            display: block;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--button-border-radius);
+            color: var(--color-neutral-white);
+            text-decoration: none;
+            margin-bottom: var(--spacing-xs);
+        }
+        .app-sidebar-nav-item:hover {
+            background-color: var(--navigation-hover-background);
+        }
+        .app-sidebar-nav-item.active {
+            background-color: var(--color-primary-dark);
+        }
+        .app-footer {
+            background-color: var(--color-neutral-gray900);
+            color: var(--color-neutral-white);
+            padding: var(--spacing-lg) 0;
+            text-align: center;
+            margin-left: 16rem; /* Adjusted for sidebar */
+            width: calc(100% - 16rem);
+        }
+
+        .settings-section {
+            padding: var(--spacing-xl);
+            background-color: var(--color-neutral-gray100);
+        }
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+        }
+        .settings-header h2 {
+            font-size: var(--font-size-heading2);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-neutral-gray900);
+        }
+        .settings-card {
+            background-color: var(--color-neutral-white);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--card-shadow);
+            padding: var(--card-padding);
+            margin-bottom: var(--spacing-xl);
+        }
+        .settings-card h3 {
+            font-size: var(--font-size-heading3);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--color-neutral-gray300);
+            padding-bottom: var(--spacing-sm);
+        }
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+        .form-group label {
+            display: block;
+            font-size: var(--font-size-body-medium);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-neutral-gray700);
+            margin-bottom: var(--form-label-spacing);
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="number"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: var(--form-input-padding);
+            height: var(--form-input-height);
+            border: 1px solid var(--color-neutral-gray300);
+            border-radius: var(--form-border-radius);
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .form-group textarea {
+            height: auto;
+            min-height: 80px;
+            resize: vertical;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--color-primary-main);
+            box-shadow: var(--form-focus-ring);
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--color-neutral-gray300);
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .toggle-slider {
+            background-color: var(--color-primary-main);
+        }
+        input:focus + .toggle-slider {
+            box-shadow: 0 0 1px var(--color-primary-main);
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(16px);
+        }
+        .notification-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--color-neutral-gray300);
+        }
+        .notification-toggle:last-child {
+            border-bottom: none;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: var(--button-height);
+            padding: var(--button-padding);
+            border-radius: var(--button-border-radius);
+            font-weight: var(--button-font-weight);
+            transition: var(--button-transition);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background-color: var(--color-primary-main);
+            color: var(--color-neutral-white);
+        }
+        .btn-primary:hover {
+            background-color: var(--color-primary-dark);
+        }
+        .btn-secondary {
+            background-color: var(--color-neutral-white);
+            color: var(--color-neutral-gray700);
+            border: 1px solid var(--color-neutral-gray300);
+        }
+        .btn-secondary:hover {
+            background-color: var(--color-neutral-gray100);
+        }
+
+        /* Tabs styling */
+        .tab-buttons {
+            display: flex;
+            margin-bottom: var(--spacing-xl);
+            border-bottom: 2px solid var(--color-neutral-gray300);
+        }
+        .tab-button {
+            padding: var(--spacing-md) var(--spacing-lg);
+            font-size: var(--font-size-body-large);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-neutral-gray700);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .tab-button:hover {
+            color: var(--color-primary-main);
+        }
+        .tab-button.active {
+            color: var(--color-primary-main);
+            border-color: var(--color-primary-main);
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+        <div class="p-4 mb-8">
+            <h2 class="text-xl font-bold text-white">Admin Panel</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html" class="app-sidebar-nav-item">Dashboard</a></li>
+                <li><a href="users.html" class="app-sidebar-nav-item">Users</a></li>
+                <li><a href="services.html" class="app-sidebar-nav-item">Services</a></li>
+                <li><a href="bookings.html" class="app-sidebar-nav-item">Bookings</a></li>
+                <li><a href="customers.html" class="app-sidebar-nav-item">Customers</a></li>
+                <li><a href="analytics.html" class="app-sidebar-nav-item">Analytics</a></li>
+                <li><a href="subscriptions.html" class="app-sidebar-nav-item">Subscriptions</a></li>
+                <li><a href="settings.html" class="app-sidebar-nav-item active">Settings</a></li>
+            </ul>
+        </nav>
+        <div class="p-4 mt-auto text-sm">
+            <p>Tenant: My Clinic Inc.</p>
+            <p>Role: Administrator</p>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 ml-64 pt-16 bg-gray-50">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="flex items-center">
+                <h1 class="text-lg font-semibold text-gray-900">Settings</h1>
+                <span class="mx-2 text-gray-500">/</span>
+                <span class="text-sm text-gray-600">Tenant Configuration</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <button class="flex items-center text-gray-700 hover:text-gray-900 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.158 7 8.36 7 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">0</span>
+                    </button>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <img class="h-8 w-8 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
+                    <span class="text-sm font-medium text-gray-700">Clinic Admin</span>
+                </div>
+                <a href="../../auth/login.html" class="text-sm text-gray-700 hover:text-red-600">Logout</a>
+            </div>
+        </header>
+
+        <main class="settings-section">
+            <div class="settings-header">
+                <h2>Tenant Configuration</h2>
+            </div>
+
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="showSettingsSection('general')">General Settings</button>
+                <button class="tab-button" onclick="showSettingsSection('booking-policies')">Booking Policies</button>
+                <button class="tab-button" onclick="showSettingsSection('notification-defaults')">Notification Defaults</button>
+                <button class="tab-button" onclick="showSettingsSection('branding')">Branding & Appearance</button>
+                <button class="tab-button" onclick="showSettingsSection('integrations')">Integrations</button>
+            </div>
+
+            <!-- General Settings Section -->
+            <div id="general" class="settings-card">
+                <h3>General Information</h3>
+                <form class="space-y-4">
+                    <div class="form-group">
+                        <label for="clinicName">Clinic Name</label>
+                        <input type="text" id="clinicName" value="My Clinic Inc.">
+                    </div>
+                    <div class="form-group">
+                        <label for="clinicAddress">Address</label>
+                        <textarea id="clinicAddress" rows="3">123 Health Ave, Suite 100, City, State, 12345</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Contact Email</label>
+                        <input type="email" id="contactEmail" value="info@myclinic.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">Contact Phone</label>
+                        <input type="tel" id="contactPhone" value="+1 (555) 123-4567">
+                    </div>
+                    <div class="form-group">
+                        <label for="timeZone">Time Zone</label>
+                        <select id="timeZone">
+                            <option value="EST">Eastern Standard Time (EST)</option>
+                            <option value="CST">Central Standard Time (CST)</option>
+                            <option value="PST" selected>Pacific Standard Time (PST)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="currency">Default Currency</label>
+                        <select id="currency">
+                            <option value="USD" selected>USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="websiteUrl">Website URL</label>
+                        <input type="url" id="websiteUrl" value="https://www.myclinic.com">
+                    </div>
+                    <button class="btn btn-primary mt-6">Save Changes</button>
+                </form>
+            </div>
+
+            <!-- Booking Policies Section -->
+            <div id="booking-policies" class="settings-card hidden">
+                <h3>Booking Policies</h3>
+                <form class="space-y-4">
+                    <div class="form-group">
+                        <label for="minBookingNotice">Minimum Booking Notice (hours)</label>
+                        <input type="number" id="minBookingNotice" value="24">
+                    </div>
+                    <div class="form-group">
+                        <label for="maxBookingHorizon">Maximum Booking Horizon (days)</label>
+                        <input type="number" id="maxBookingHorizon" value="90">
+                    </div>
+                    <div class="form-group">
+                        <label for="cancellationPolicy">Cancellation Policy</label>
+                        <textarea id="cancellationPolicy" rows="4">Appointments can be cancelled or rescheduled up to 24 hours in advance without any charge. Cancellations within 24 hours may incur a 50% fee. No-shows will be charged the full service amount.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="reschedulingPolicy">Rescheduling Policy</label>
+                        <textarea id="reschedulingPolicy" rows="4">You can reschedule your appointment up to 12 hours before the scheduled time free of charge. Rescheduling within 12 hours may incur a fee.</textarea>
+                    </div>
+                    <div class="notification-toggle">
+                        <span>Allow Guest Bookings</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="notification-toggle">
+                        <span>Require Payment at Booking</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <button class="btn btn-primary mt-6">Save Policies</button>
+                </form>
+            </div>
+
+            <!-- Notification Defaults Section -->
+            <div id="notification-defaults" class="settings-card hidden">
+                <h3>Notification Defaults</h3>
+                <form class="space-y-4">
+                    <div class="form-group">
+                        <label for="confirmMessage">Confirmation Message Template (Email/SMS)</label>
+                        <textarea id="confirmMessage" rows="3">Your booking for {Service} with {Provider} on {Date} at {Time} is confirmed. Booking ID: {BookingID}.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="reminderMessage">Reminder Message Template (Email/SMS)</label>
+                        <textarea id="reminderMessage" rows="3">Reminder: Your appointment for {Service} is tomorrow, {Date} at {Time} with {Provider}.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="reminderTiming">Reminder Timing</label>
+                        <select id="reminderTiming">
+                            <option value="24">24 hours before</option>
+                            <option value="12">12 hours before</option>
+                            <option value="1">1 hour before</option>
+                        </select>
+                    </div>
+                    <div class="notification-toggle">
+                        <span>Enable SMS Notifications Globally</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <button class="btn btn-primary mt-6">Save Defaults</button>
+                </form>
+            </div>
+
+            <!-- Branding & Appearance Section -->
+            <div id="branding" class="settings-card hidden">
+                <h3>Branding & Appearance</h3>
+                <form class="space-y-4">
+                    <div class="form-group">
+                        <label for="clinicLogo">Clinic Logo</label>
+                        <input type="file" id="clinicLogo">
+                        <p class="text-sm text-gray-600 mt-1">Upload your clinic's logo (Max 2MB, PNG/JPG)</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="primaryColor">Primary Brand Color</label>
+                        <input type="color" id="primaryColor" value="#2563EB">
+                    </div>
+                    <div class="form-group">
+                        <label for="accentColor">Accent Color</label>
+                        <input type="color" id="accentColor" value="#1D4ED8">
+                    </div>
+                    <button class="btn btn-primary mt-6">Save Branding</button>
+                </form>
+            </div>
+
+            <!-- Integrations Section -->
+            <div id="integrations" class="settings-card hidden">
+                <h3>Integrations</h3>
+                <form class="space-y-4">
+                    <div class="form-group">
+                        <label for="paymentGateway">Payment Gateway (Stripe API Key)</label>
+                        <input type="text" id="paymentGateway" placeholder="sk_live_XXXXXXXXXXXXXXXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="smsGateway">SMS Gateway (Twilio Account SID)</label>
+                        <input type="text" id="smsGateway" placeholder="ACXXXXXXXXXXXXXXXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="calendarSync">Calendar Sync (Google Calendar API Key)</label>
+                        <input type="text" id="calendarSync" placeholder="AIzaXXXXXXXXXXXXXXXXXXXX">
+                    </div>
+                    <button class="btn btn-primary mt-6">Save Integrations</button>
+                </form>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            &copy; 2023 Appointment System. All rights reserved.
+        </footer>
+    </div>
+
+    <script>
+        function showSettingsSection(sectionId) {
+            document.querySelectorAll('.settings-card').forEach(card => {
+                card.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            // Add active class to the clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
