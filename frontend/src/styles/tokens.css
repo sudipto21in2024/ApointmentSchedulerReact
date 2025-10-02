@@ -1,0 +1,570 @@
+/* ========================================================================== */
+/* DESIGN TOKENS CSS CUSTOM PROPERTIES */
+/* ========================================================================== */
+/* Multi-Tenant Appointment Booking System - Design Token System */
+/* Generated: 2025-10-02 */
+/* Version: 1.0.0 */
+/* Description: CSS custom properties for consistent styling across components */
+/* Usage: Import this file in your Angular component styles or global styles */
+/* ========================================================================== */
+
+/* ========================================================================== */
+/* COLOR SYSTEM - CSS CUSTOM PROPERTIES */
+/* ========================================================================== */
+
+:root {
+  /* Primary Brand Colors */
+  --color-primary-50: #EFF6FF;
+  --color-primary-100: #DBEAFE;
+  --color-primary-200: #BFDBFE;
+  --color-primary-300: #93C5FD;
+  --color-primary-400: #60A5FA;
+  --color-primary-500: #3B82F6;
+  --color-primary-600: #2563EB;
+  --color-primary-700: #1D4ED8;
+  --color-primary-800: #1E40AF;
+  --color-primary-900: #1E3A8A;
+  --color-primary-950: #172554;
+
+  /* Primary color shortcuts for common use */
+  --color-primary-main: var(--color-primary-600);
+  --color-primary-dark: var(--color-primary-700);
+  --color-primary-light: var(--color-primary-100);
+
+  /* Success Colors (Semantic) */
+  --color-success-50: #ECFDF5;
+  --color-success-100: #D1FAE5;
+  --color-success-200: #A7F3D0;
+  --color-success-300: #6EE7B7;
+  --color-success-400: #34D399;
+  --color-success-500: #10B981;
+  --color-success-600: #059669;
+  --color-success-700: #047857;
+  --color-success-800: #065F46;
+  --color-success-900: #064E3B;
+  --color-success-950: #022C22;
+
+  /* Success color shortcuts */
+  --color-success-main: var(--color-success-500);
+  --color-success-dark: var(--color-success-600);
+  --color-success-light: var(--color-success-100);
+
+  /* Warning Colors (Semantic) */
+  --color-warning-50: #FFFBEB;
+  --color-warning-100: #FEF3C7;
+  --color-warning-200: #FDE68A;
+  --color-warning-300: #FCD34D;
+  --color-warning-400: #FBBF24;
+  --color-warning-500: #F59E0B;
+  --color-warning-600: #D97706;
+  --color-warning-700: #B45309;
+  --color-warning-800: #92400E;
+  --color-warning-900: #78350F;
+  --color-warning-950: #451A03;
+
+  /* Warning color shortcuts */
+  --color-warning-main: var(--color-warning-500);
+  --color-warning-dark: var(--color-warning-600);
+  --color-warning-light: var(--color-warning-100);
+
+  /* Danger/Error Colors (Semantic) */
+  --color-danger-50: #FEF2F2;
+  --color-danger-100: #FEE2E2;
+  --color-danger-200: #FECACA;
+  --color-danger-300: #FCA5A5;
+  --color-danger-400: #F87171;
+  --color-danger-500: #EF4444;
+  --color-danger-600: #DC2626;
+  --color-danger-700: #B91C1C;
+  --color-danger-800: #991B1B;
+  --color-danger-900: #7F1D1D;
+  --color-danger-950: #450A0A;
+
+  /* Danger color shortcuts */
+  --color-danger-main: var(--color-danger-500);
+  --color-danger-dark: var(--color-danger-600);
+  --color-danger-light: var(--color-danger-100);
+
+  /* Info Colors (Semantic) */
+  --color-info-50: #EFF6FF;
+  --color-info-100: #DBEAFE;
+  --color-info-200: #BFDBFE;
+  --color-info-300: #93C5FD;
+  --color-info-400: #60A5FA;
+  --color-info-500: #3B82F6;
+  --color-info-600: #2563EB;
+  --color-info-700: #1D4ED8;
+  --color-info-800: #1E40AF;
+  --color-info-900: #1E3A8A;
+  --color-info-950: #172554;
+
+  /* Info color shortcuts */
+  --color-info-main: var(--color-info-500);
+  --color-info-dark: var(--color-info-600);
+  --color-info-light: var(--color-info-100);
+
+  /* Neutral Colors */
+  --color-neutral-white: #FFFFFF;
+  --color-neutral-black: #000000;
+
+  /* Gray scale */
+  --color-neutral-gray-50: #F9FAFB;
+  --color-neutral-gray-100: #F3F4F6;
+  --color-neutral-gray-200: #E5E7EB;
+  --color-neutral-gray-300: #D1D5DB;
+  --color-neutral-gray-400: #9CA3AF;
+  --color-neutral-gray-500: #6B7280;
+  --color-neutral-gray-600: #4B5563;
+  --color-neutral-gray-700: #374151;
+  --color-neutral-gray-800: #1F2937;
+  --color-neutral-gray-900: #111827;
+  --color-neutral-gray-950: #030712;
+
+  /* Semantic text colors */
+  --color-text-primary: var(--color-neutral-gray-900);
+  --color-text-secondary: var(--color-neutral-gray-500);
+  --color-text-disabled: var(--color-neutral-gray-400);
+
+  /* Semantic background colors */
+  --color-bg-primary: var(--color-neutral-white);
+  --color-bg-secondary: var(--color-neutral-gray-50);
+  --color-bg-tertiary: var(--color-neutral-gray-100);
+
+  /* Semantic border colors */
+  --color-border-light: var(--color-neutral-gray-200);
+  --color-border-medium: var(--color-neutral-gray-300);
+  --color-border-dark: var(--color-neutral-gray-400);
+
+  /* Appointment-specific colors */
+  --color-appointment-available: var(--color-success-main);
+  --color-appointment-booked: var(--color-neutral-gray-500);
+  --color-appointment-blocked: var(--color-danger-main);
+  --color-appointment-pending: var(--color-warning-main);
+  --color-appointment-confirmed: var(--color-info-main);
+  --color-appointment-cancelled: var(--color-danger-600);
+  --color-appointment-completed: var(--color-success-600);
+
+  /* ========================================================================== */
+  /* TYPOGRAPHY SYSTEM - CSS CUSTOM PROPERTIES */
+  /* ========================================================================== */
+
+  /* Font Families */
+  --font-family-primary: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+  /* Font Sizes */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  --font-size-5xl: 3rem;      /* 48px */
+  --font-size-6xl: 3.75rem;   /* 60px */
+  --font-size-7xl: 4.5rem;    /* 72px */
+  --font-size-8xl: 6rem;      /* 96px */
+  --font-size-9xl: 8rem;      /* 128px */
+
+  /* Font Weights */
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  /* Line Heights */
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+
+  /* Letter Spacing */
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+
+  /* ========================================================================== */
+  /* SPACING SYSTEM - CSS CUSTOM PROPERTIES */
+  /* ========================================================================== */
+
+  /* Base spacing scale */
+  --space-0: 0rem;      /* 0px */
+  --space-px: 1px;      /* 1px */
+  --space-0_5: 0.125rem; /* 2px */
+  --space-1: 0.25rem;   /* 4px */
+  --space-1_5: 0.375rem; /* 6px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-2_5: 0.625rem; /* 10px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-3_5: 0.875rem; /* 14px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-7: 1.75rem;  /* 28px */
+  --space-8: 2rem;     /* 32px */
+  --space-9: 2.25rem;  /* 36px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-11: 2.75rem; /* 44px */
+  --space-12: 3rem;    /* 48px */
+  --space-14: 3.5rem;  /* 56px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+  --space-24: 6rem;    /* 96px */
+  --space-28: 7rem;    /* 112px */
+  --space-32: 8rem;    /* 128px */
+  --space-36: 9rem;    /* 144px */
+  --space-40: 10rem;   /* 160px */
+  --space-44: 11rem;   /* 176px */
+  --space-48: 12rem;   /* 192px */
+  --space-52: 13rem;   /* 208px */
+  --space-56: 14rem;   /* 224px */
+  --space-60: 15rem;   /* 240px */
+  --space-64: 16rem;   /* 256px */
+  --space-72: 18rem;   /* 288px */
+  --space-80: 20rem;   /* 320px */
+  --space-96: 24rem;   /* 384px */
+
+  /* Semantic spacing shortcuts */
+  --space-xs: var(--space-1);   /* 4px */
+  --space-sm: var(--space-2);   /* 8px */
+  --space-md: var(--space-4);   /* 16px */
+  --space-lg: var(--space-6);   /* 24px */
+  --space-xl: var(--space-8);   /* 32px */
+  --space-2xl: var(--space-12); /* 48px */
+  --space-3xl: var(--space-16); /* 64px */
+
+  /* ========================================================================== */
+  /* BREAKPOINT SYSTEM - CSS CUSTOM PROPERTIES */
+  /* ========================================================================== */
+
+  /* Breakpoint values in pixels for use in media queries */
+  --breakpoint-mobile: 768px;
+  --breakpoint-tablet: 1024px;
+  --breakpoint-desktop: 1400px;
+
+  /* Container max-widths for different breakpoints */
+  --container-mobile: 100%;
+  --container-tablet: 750px;
+  --container-desktop: 1200px;
+  --container-wide: 1400px;
+
+  /* ========================================================================== */
+  /* COMPONENT-SPECIFIC TOKENS - CSS CUSTOM PROPERTIES */
+  /* ========================================================================== */
+
+  /* Card Component */
+  --card-border-radius: 0.5rem;
+  --card-padding: 1.5rem;
+  --card-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --card-shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --card-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --card-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --card-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --card-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Button Component */
+  --button-height-sm: 2rem;
+  --button-height-md: 2.5rem;
+  --button-height-lg: 3rem;
+  --button-padding-sm: 0.5rem 1rem;
+  --button-padding-md: 0.75rem 1.5rem;
+  --button-padding-lg: 1rem 2rem;
+  --button-border-radius: 0.375rem;
+  --button-font-weight: 600;
+  --button-transition: all 0.2s ease-in-out;
+  --button-focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  --button-focus-ring-offset: 2px;
+  --button-disabled-opacity: 0.6;
+
+  /* Form Component */
+  --form-label-font-size: 0.875rem;
+  --form-label-font-weight: 500;
+  --form-label-color: #374151;
+  --form-label-margin-bottom: 0.5rem;
+  --form-input-height: 2.5rem;
+  --form-input-padding: 0.75rem;
+  --form-input-border-radius: 0.375rem;
+  --form-input-border-width: 1px;
+  --form-input-focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  --form-input-focus-border-color: #2563EB;
+  --form-error-color: #DC2626;
+  --form-error-font-size: 0.75rem;
+  --form-error-margin-top: 0.25rem;
+  --form-help-color: #6B7280;
+  --form-help-font-size: 0.75rem;
+  --form-help-margin-top: 0.25rem;
+
+  /* Navigation Component */
+  --nav-height: 4rem;
+  --nav-sidebar-width-expanded: 16rem;
+  --nav-sidebar-width-collapsed: 4rem;
+  --nav-sidebar-bg-color: #FFFFFF;
+  --nav-sidebar-border-color: #E5E7EB;
+  --nav-sidebar-item-padding: 0.75rem;
+  --nav-sidebar-icon-size: 1.25rem;
+  --nav-breadcrumb-height: 2.5rem;
+  --nav-breadcrumb-separator-color: #9CA3AF;
+  --nav-breadcrumb-link-color: #3B82F6;
+  --nav-breadcrumb-text-color: #6B7280;
+
+  /* Modal Component */
+  --modal-overlay-bg-color: rgba(0, 0, 0, 0.5);
+  --modal-overlay-backdrop-blur: 4px;
+  --modal-content-bg-color: #FFFFFF;
+  --modal-content-border-radius: 0.5rem;
+  --modal-content-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --modal-content-max-width: 32rem;
+  --modal-content-padding: 2rem;
+  --modal-header-padding-bottom: 1rem;
+  --modal-header-border-bottom: 1px solid #E5E7EB;
+  --modal-body-padding-y: 1.5rem;
+  --modal-footer-padding-top: 1rem;
+  --modal-footer-border-top: 1px solid #E5E7EB;
+
+  /* Table/Data Grid Component */
+  --table-header-bg-color: #F9FAFB;
+  --table-header-border-color: #E5E7EB;
+  --table-header-font-weight: 600;
+  --table-header-padding: 0.75rem 1rem;
+  --table-header-text-color: #374151;
+  --table-row-bg-color: #FFFFFF;
+  --table-row-border-color: #E5E7EB;
+  --table-row-padding: 0.75rem 1rem;
+  --table-row-hover-bg-color: #F9FAFB;
+  --table-row-text-color: #111827;
+  --table-cell-font-size: 0.875rem;
+  --table-cell-line-height: 1.5;
+
+  /* Badge Component */
+  --badge-padding: 0.25rem 0.75rem;
+  --badge-border-radius: 9999px;
+  --badge-font-size: 0.75rem;
+  --badge-font-weight: 500;
+  --badge-text-transform: uppercase;
+  --badge-letter-spacing: 0.05em;
+
+  /* Loading Component */
+  --loading-spinner-size: 1.25rem;
+  --loading-spinner-color: #2563EB;
+  --loading-spinner-speed: 1s;
+  --loading-skeleton-height: 1rem;
+  --loading-skeleton-bg-color: #F3F4F6;
+  --loading-skeleton-animation-duration: 1.5s;
+
+  /* ========================================================================== */
+  /* ANIMATION SYSTEM - CSS CUSTOM PROPERTIES */
+  /* ========================================================================== */
+
+  /* Easing Functions */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Animation Durations */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 500ms;
+
+  /* ========================================================================== */
+  /* Z-INDEX SCALE - CSS CUSTOM PROPERTIES */
+  /* ========================================================================== */
+
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal: 1040;
+  --z-popover: 1050;
+  --z-tooltip: 1060;
+  --z-toast: 1070;
+
+  /* ========================================================================== */
+  /* ACCESSIBILITY - CSS CUSTOM PROPERTIES */
+  /* ========================================================================== */
+
+  /* Focus styles for better accessibility */
+  --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  --focus-ring-offset: 2px;
+  --focus-outline: 2px solid transparent;
+  --focus-outline-offset: 2px;
+
+  /* Screen reader only utility class */
+  --sr-only-position: absolute;
+  --sr-only-width: 1px;
+  --sr-only-height: 1px;
+  --sr-only-padding: 0;
+  --sr-only-margin: -1px;
+  --sr-only-overflow: hidden;
+  --sr-only-clip: rect(0, 0, 0, 0);
+  --sr-only-white-space: nowrap;
+  --sr-only-border: 0;
+
+  /* ========================================================================== */
+  /* THEME SYSTEM - CSS CUSTOM PROPERTIES */
+  /* ========================================================================== */
+
+  /* Light Theme (Default) */
+  --theme-bg-primary: var(--color-neutral-white);
+  --theme-bg-secondary: var(--color-neutral-gray-50);
+  --theme-bg-tertiary: var(--color-neutral-gray-100);
+  --theme-text-primary: var(--color-neutral-gray-900);
+  --theme-text-secondary: var(--color-neutral-gray-500);
+  --theme-text-tertiary: var(--color-neutral-gray-400);
+  --theme-border-primary: var(--color-neutral-gray-200);
+  --theme-border-secondary: var(--color-neutral-gray-300);
+
+  /* ========================================================================== */
+  /* UTILITY CLASSES GENERATED FROM TOKENS */
+  /* ========================================================================== */
+
+  /* These utility classes can be used directly in HTML templates */
+  /* Example: <div class="bg-primary">...</div> */
+}
+
+/* Utility classes for common color usage */
+.bg-primary { background-color: var(--color-primary-main); }
+.text-primary { color: var(--color-primary-main); }
+.border-primary { border-color: var(--color-primary-main); }
+
+.bg-success { background-color: var(--color-success-main); }
+.text-success { color: var(--color-success-main); }
+.border-success { border-color: var(--color-success-main); }
+
+.bg-warning { background-color: var(--color-warning-main); }
+.text-warning { color: var(--color-warning-main); }
+.border-warning { border-color: var(--color-warning-main); }
+
+.bg-danger { background-color: var(--color-danger-main); }
+.text-danger { color: var(--color-danger-main); }
+.border-danger { border-color: var(--color-danger-main); }
+
+.bg-info { background-color: var(--color-info-main); }
+.text-info { color: var(--color-info-main); }
+.border-info { border-color: var(--color-info-main); }
+
+/* Text colors */
+.text-on-primary { color: var(--color-neutral-white); }
+.text-on-dark { color: var(--color-neutral-gray-100); }
+
+/* Background colors */
+.bg-page { background-color: var(--theme-bg-primary); }
+.bg-surface { background-color: var(--theme-bg-secondary); }
+.bg-card { background-color: var(--theme-bg-primary); }
+
+/* Typography utilities */
+.font-primary { font-family: var(--font-family-primary); }
+.font-mono { font-family: var(--font-family-mono); }
+
+/* ========================================================================== */
+/* RESPONSIVE UTILITIES */
+/* ========================================================================== */
+
+/* Container classes for responsive design */
+.container-mobile { max-width: var(--container-mobile); margin: 0 auto; padding: 0 var(--space-4); }
+.container-tablet { max-width: var(--container-tablet); margin: 0 auto; padding: 0 var(--space-6); }
+.container-desktop { max-width: var(--container-desktop); margin: 0 auto; padding: 0 var(--space-8); }
+.container-wide { max-width: var(--container-wide); margin: 0 auto; padding: 0 var(--space-8); }
+
+/* ========================================================================== */
+/* ACCESSIBILITY UTILITIES */
+/* ========================================================================== */
+
+/* Screen reader only utility */
+.sr-only {
+  position: var(--sr-only-position);
+  width: var(--sr-only-width);
+  height: var(--sr-only-height);
+  padding: var(--sr-only-padding);
+  margin: var(--sr-only-margin);
+  overflow: var(--sr-only-overflow);
+  clip: var(--sr-only-clip);
+  white-space: var(--sr-only-white-space);
+  border: var(--sr-only-border);
+}
+
+/* Focus utility classes */
+.focus-ring:focus {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+  box-shadow: var(--focus-ring);
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+  }
+}
+
+/* ========================================================================== */
+/* DARK THEME SUPPORT (Future Implementation) */
+/* ========================================================================== */
+
+/* Dark theme variables - uncomment when implementing dark mode */
+/*
+@media (prefers-color-scheme: dark) {
+  :root {
+    --theme-bg-primary: #111827;
+    --theme-bg-secondary: #1F2937;
+    --theme-bg-tertiary: #374151;
+    --theme-text-primary: #F9FAFB;
+    --theme-text-secondary: #D1D5DB;
+    --theme-text-tertiary: #9CA3AF;
+    --theme-border-primary: #374151;
+    --theme-border-secondary: #4B5563;
+  }
+}
+*/
+
+/* ========================================================================== */
+/* PRINT STYLES */
+/* ========================================================================== */
+
+@media print {
+  :root {
+    --color-primary-main: #000000;
+    --color-text-primary: #000000;
+    --color-bg-primary: #FFFFFF;
+  }
+}
+
+/* ========================================================================== */
+/* FILE METADATA */
+/* ========================================================================== */
+/*
+ * Design Tokens CSS File
+ * Generated: 2025-10-02
+ * Version: 1.0.0
+ * Framework: Angular 17+
+ * Design System: Custom Design System
+ * Compliance: WCAG 2.1 AA
+ *
+ * This file contains CSS custom properties that map to the design tokens
+ * defined in design-tokens.json. Use these variables in your component
+ * styles for consistent theming across the application.
+ *
+ * Usage Examples:
+ * - Background: background-color: var(--color-primary-main);
+ * - Text: color: var(--color-text-primary);
+ * - Spacing: margin: var(--space-4);
+ * - Typography: font-size: var(--font-size-lg);
+ * - Borders: border-radius: var(--card-border-radius);
+ *
+ * For utility classes, use the predefined classes like .bg-primary, .text-success, etc.
+ */
