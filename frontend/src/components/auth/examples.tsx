@@ -437,8 +437,6 @@ export const AuthWorkflowExample: React.FC = () => {
  * Error Handling Examples
  */
 export const AuthErrorHandling: React.FC = () => {
-  const [loginAttempts, setLoginAttempts] = useState(0);
-  const [isLocked, setIsLocked] = useState(false);
 
 
   return (
@@ -453,31 +451,9 @@ export const AuthErrorHandling: React.FC = () => {
           </CardHeader>
 
           <CardContent className="space-y-4">
-            {isLocked ? (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-md">
-                <div className="flex items-center">
-                  <svg className="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                  </svg>
-                  <div>
-                    <p className="text-sm font-medium text-red-800">
-                      Account Temporarily Locked
-                    </p>
-                    <p className="text-sm text-red-700">
-                      Too many failed attempts. Try again in 5 seconds.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                <p className="text-sm text-gray-600">
-                  Login attempts: {loginAttempts}/3
-                </p>
-
-                <Login />
-              </div>
-            )}
+            <div className="space-y-2">
+              <Login />
+            </div>
 
             {/* Error state examples */}
             <div className="space-y-4 pt-6 border-t">
