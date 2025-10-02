@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
     try {
       await login(email, password)
       toast.success('Login successful!')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Login failed. Please check your credentials.')
     }
   }

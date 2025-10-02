@@ -1,64 +1,137 @@
+/**
+ * @fileoverview Main Application Component with Multi-Tenant Architecture
+ *
+ * This file contains the root component of the Multi-Tenant Appointment Booking System.
+ * It implements a comprehensive routing structure supporting multiple user roles and
+ * provides global state management through React Context and React Query.
+ *
+ * @description
+ * The application supports four distinct user roles:
+ * - Customer: Service discovery and booking
+ * - Service Provider: Business management and appointment handling
+ * - Tenant Admin: Tenant-specific administration
+ * - System Admin: Global platform administration
+ *
+ * @architecture
+ * - Multi-tenant architecture with role-based access control
+ * - Nested routing with React Router v7
+ * - Global state management with React Context
+ * - Server state management with TanStack Query
+ * - Real-time notifications with React Hot Toast
+ *
+ * @author Frontend Development Team
+ * @version 1.0.0
+ */
+
 import { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from 'react-hot-toast'
 
-// Layouts
-import PublicLayout from './layouts/PublicLayout'
-import AuthLayout from './layouts/AuthLayout'
-import DashboardLayout from './layouts/DashboardLayout'
+// ==================== LAYOUT COMPONENTS ====================
+/**
+ * Layout components that define the overall structure for different sections
+ * of the application. Each layout handles specific UI patterns and navigation.
+ */
+import PublicLayout from './layouts/PublicLayout'      // Public-facing layout with marketing header/footer
+import AuthLayout from './layouts/AuthLayout'          // Authentication layout with centered forms
+import DashboardLayout from './layouts/DashboardLayout' // Dashboard layout with sidebar navigation
 
-// Pages
-import HomePage from './pages/public/HomePage'
-import ServiceDiscoveryPage from './pages/public/ServiceDiscoveryPage'
-import ServiceDetailPage from './pages/public/ServiceDetailPage'
-import PricingPage from './pages/public/PricingPage'
-import ContactUsPage from './pages/public/ContactUsPage'
+// ==================== PUBLIC PAGES ====================
+/**
+ * Publicly accessible pages that don't require authentication.
+ * These pages are for marketing, service discovery, and initial user engagement.
+ */
+import HomePage from './pages/public/HomePage'                    // Landing page with hero section
+import ServiceDiscoveryPage from './pages/public/ServiceDiscoveryPage' // Service search and filtering
+import ServiceDetailPage from './pages/public/ServiceDetailPage'   // Detailed service information
+import PricingPage from './pages/public/PricingPage'               // Subscription plans and pricing
+import ContactUsPage from './pages/public/ContactUsPage'           // Contact form and company information
 
-// Auth Pages
-import LoginPage from './pages/auth/LoginPage'
-import RegisterPage from './pages/auth/RegisterPage'
-import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
+// ==================== AUTHENTICATION PAGES ====================
+/**
+ * Authentication-related pages for user login, registration, and account recovery.
+ * These pages handle the complete authentication flow.
+ */
+import LoginPage from './pages/auth/LoginPage'              // User login form
+import RegisterPage from './pages/auth/RegisterPage'        // User registration form
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage' // Password recovery flow
 
-// Dashboard Pages
-import CustomerDashboard from './pages/dashboards/CustomerDashboard'
-import ProviderDashboard from './pages/dashboards/ProviderDashboard'
-import AdminDashboard from './pages/dashboards/AdminDashboard'
+// ==================== DASHBOARD PAGES ====================
+/**
+ * Role-specific dashboard pages that serve as the main hub for each user type.
+ * Each dashboard provides role-appropriate functionality and navigation.
+ */
+import CustomerDashboard from './pages/dashboards/CustomerDashboard'    // Customer overview and quick actions
+import ProviderDashboard from './pages/dashboards/ProviderDashboard'    // Service provider business metrics
+import AdminDashboard from './pages/dashboards/AdminDashboard'          // Administrative control panel
 
-// Feature Pages
-import ProfilePage from './pages/customer/ProfilePage'
-import BookingHistoryPage from './pages/customer/BookingHistoryPage'
-import BookingConfirmationPage from './pages/customer/BookingConfirmationPage'
+// ==================== CUSTOMER FEATURE PAGES ====================
+/**
+ * Customer-specific functionality for profile management and appointment tracking.
+ */
+import ProfilePage from './pages/customer/ProfilePage'                    // Customer profile management
+import BookingHistoryPage from './pages/customer/BookingHistoryPage'      // Past and upcoming appointments
+import BookingConfirmationPage from './pages/customer/BookingConfirmationPage' // Booking confirmation display
 
-// Provider Pages
-import ServiceManagementPage from './pages/provider/ServiceManagementPage'
-import BookingManagementPage from './pages/provider/BookingManagementPage'
-import EarningsPage from './pages/provider/EarningsPage'
+// ==================== SERVICE PROVIDER PAGES ====================
+/**
+ * Business management pages for service providers to manage their services and appointments.
+ */
+import ServiceManagementPage from './pages/provider/ServiceManagementPage'    // Service creation and management
+import BookingManagementPage from './pages/provider/BookingManagementPage'    // Appointment management
+import EarningsPage from './pages/provider/EarningsPage'                    // Revenue and earnings tracking
 
-// Admin Pages
-import UserManagementPage from './pages/admin/UserManagementPage'
-import SystemSettingsPage from './pages/admin/SystemSettingsPage'
-import AnalyticsPage from './pages/admin/AnalyticsPage'
+// ==================== ADMINISTRATIVE PAGES ====================
+/**
+ * Administrative pages for platform and tenant management.
+ */
+import UserManagementPage from './pages/admin/UserManagementPage'      // User account management
+import SystemSettingsPage from './pages/admin/SystemSettingsPage'      // System configuration
+import AnalyticsPage from './pages/admin/AnalyticsPage'                // Platform analytics and reporting
 
-// Error Pages
-import NotFoundPage from './pages/error/NotFoundPage'
-import UnauthorizedPage from './pages/error/UnauthorizedPage'
+// ==================== ERROR PAGES ====================
+/**
+ * Error handling pages for various HTTP status codes and error conditions.
+ */
+import NotFoundPage from './pages/error/NotFoundPage'        // 404 Not Found page
+import UnauthorizedPage from './pages/error/UnauthorizedPage' // 403 Access Denied page
 
-// Context Providers
-import { AuthProvider } from './contexts/AuthContext'
-import { ThemeProvider } from './contexts/ThemeContext'
+// ==================== CONTEXT PROVIDERS ====================
+/**
+ * Global state management providers that wrap the entire application.
+ * These contexts provide shared state and functionality across all components.
+ */
+import { AuthProvider } from './contexts/AuthContext'    // Authentication state management
+import { ThemeProvider } from './contexts/ThemeContext'  // Theme and UI preferences
 
-// Utils
-import ProtectedRoute from './components/auth/ProtectedRoute'
-import PublicRoute from './components/auth/PublicRoute'
+// ==================== ROUTE PROTECTION COMPONENTS ====================
+/**
+ * Higher-order components that handle route protection and access control.
+ * These components ensure users can only access appropriate sections based on their roles.
+ */
+import ProtectedRoute from './components/auth/ProtectedRoute'  // Requires authentication and role validation
+import PublicRoute from './components/auth/PublicRoute'        // Redirects authenticated users to dashboard
 
-// Create a client
+// ==================== REACT QUERY CLIENT CONFIGURATION ====================
+/**
+ * Global configuration for TanStack Query (React Query) server state management.
+ *
+ * @description
+ * Configures caching, background refetching, and error handling for all API requests.
+ * The settings optimize for user experience while managing server state efficiently.
+ *
+ * @property {Object} defaultOptions - Default configuration for all queries
+ * @property {Object} defaultOptions.queries - Query-specific settings
+ * @property {number} defaultOptions.queries.staleTime - How long data stays fresh (5 minutes)
+ * @property {number} defaultOptions.queries.gcTime - Cache cleanup time (10 minutes)
+ */
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      gcTime: 1000 * 60 * 10, // 10 minutes
+      staleTime: 1000 * 60 * 5, // 5 minutes - data considered fresh
+      gcTime: 1000 * 60 * 10, // 10 minutes - cache garbage collection
     },
   },
 })

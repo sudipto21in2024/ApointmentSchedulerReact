@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 
 interface User {
@@ -51,8 +51,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             role: 'customer'
           })
         }
-      } catch (error) {
-        console.error('Auth check failed:', error)
+      } catch (_error) {
+        console.error('Auth check failed')
       } finally {
         setIsLoading(false)
       }
@@ -73,7 +73,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
       setUser(mockUser)
       localStorage.setItem('authToken', 'mock-token')
-    } catch (error) {
+    } catch (_error) {
       throw new Error('Login failed')
     } finally {
       setIsLoading(false)
@@ -92,7 +92,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
       setUser(mockUser)
       localStorage.setItem('authToken', 'mock-token')
-    } catch (error) {
+    } catch (_error) {
       throw new Error('Registration failed')
     } finally {
       setIsLoading(false)
