@@ -1,0 +1,150 @@
+{
+  "task_id": "FE-011-02",
+  "title": "Create Customer Service Detail Page",
+  "description": "Develop the public-facing service detail page with comprehensive service information, reviews, and booking integration",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 8,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to view detailed service information so that I can make informed booking decisions",
+      "As a customer, I want to read reviews so that I can assess service quality"
+    ],
+    "business_rules": [
+      "Service detail page must show comprehensive service information",
+      "Service detail page must display reviews and ratings",
+      "Service detail page must integrate with booking flow",
+      "Service detail page must work for both logged-in and anonymous users"
+    ],
+    "edge_cases": [
+      "Handling services with no reviews",
+      "Managing loading states for detailed information",
+      "Displaying appropriate content for anonymous users",
+      "Handling service unavailability"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002",
+      "FE-005-01"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Service Management API",
+      "Review Management API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Service detail page displays comprehensive service information",
+    "Service detail page shows reviews and ratings",
+    "Service detail page integrates with booking flow",
+    "Service detail page displays provider information",
+    "Page works for both authenticated and anonymous users",
+    "Service detail page handles loading and error states"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "React Components",
+    "API Integration",
+    "Review System",
+    "Responsive Design"
+  ],
+  "related_files": {
+    "will_create": [
+      "src/pages/public/ServiceDetail.tsx",
+      "src/components/service/ServiceImageGallery.tsx",
+      "src/components/service/ServiceReviews.tsx",
+      "src/components/service/ServiceProviderInfo.tsx"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Architecture/UI/UiFlow/Customer_ServiceDetail_Flow.md",
+      "docs/API/OpenAPI/service-openapi.yaml"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Service",
+      "Review"
+    ],
+    "related": [
+      "User",
+      "Booking"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/services/{id}",
+        "description": "Get detailed service information"
+      },
+      {
+        "method": "GET",
+        "path": "/services/{id}/reviews",
+        "description": "Get reviews for a service"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Service detail page rendering",
+      "Review component functionality",
+      "Image gallery functionality",
+      "Booking integration"
+    ],
+    "integration_tests": [
+      "Service detail integration with backend APIs",
+      "Review system integration",
+      "Booking flow integration"
+    ],
+    "e2e_tests": [
+      "Complete service detail workflow",
+      "Review reading and writing",
+      "Booking initiation from service detail"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002",
+      "FE-005-01"
+    ],
+    "can_start_date": "After FE-002 and FE-005-01 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement service detail page following React best practices. Use React Router for parameterized routing. Implement image gallery with lightbox functionality. Integrate review system with ability to read and write reviews.",
+    "design_references": "docs/Architecture/UI/UiFlow/Customer_ServiceDetail_Flow.md",
+    "security_considerations": "Ensure proper authorization checks for service access. Validate service ID parameters to prevent injection attacks."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "src/pages/public/ServiceDetail.tsx",
+      "src/components/service/ServiceImageGallery.tsx",
+      "src/components/service/ServiceReviews.tsx",
+      "src/components/service/ServiceProviderInfo.tsx"
+    ]
+  },
+  "subtasks": []
+}

@@ -1,7 +1,7 @@
 {
   "task_id": "FE-001-01",
-  "title": "Setup Angular Project Structure",
-  "description": "Create the initial Angular project structure with proper folder organization and configuration files",
+  "title": "Setup React Project Structure",
+  "description": "Create the initial React project structure with proper folder organization and configuration files",
   "priority": "HIGH",
   "complexity": 2,
   "effort_estimate": {
@@ -16,10 +16,10 @@
   "completion_evidence": [],
   "business_logic": {
     "user_stories": [
-      "As a frontend developer, I want a properly structured Angular project so that I can efficiently develop features"
+      "As a frontend developer, I want a properly structured React project so that I can efficiently develop features"
     ],
     "business_rules": [
-      "Project must follow Angular best practices for folder structure",
+      "Project must follow React best practices for folder structure",
       "Configuration files must be properly set up for development and production"
     ],
     "edge_cases": [
@@ -35,23 +35,26 @@
     ]
   },
   "acceptance_criteria": [
-    "Angular project is created with proper structure",
+    "React project is created with proper structure",
     "Configuration files are set up correctly",
     "Project can be built and served successfully",
-    "Folder structure follows Angular best practices"
+    "Folder structure follows React best practices"
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular",
+    "React",
     "TypeScript",
+    "Vite",
     "npm"
   ],
  "related_files": {
     "will_create": [
-      "frontend/angular.json",
-      "frontend/package.json",
-      "frontend/tsconfig.json",
-      "frontend/src/app/app.module.ts"
+      "package.json",
+      "vite.config.ts",
+      "tsconfig.json",
+      "src/App.tsx",
+      "src/main.tsx",
+      "index.html"
     ],
     "will_modify": [],
     "dependencies": [
@@ -77,7 +80,7 @@
     "can_start_date": ""
   },
   "additional_context": {
-    "technical_notes": "Follow Angular CLI best practices for project setup. Ensure proper configuration for development and production environments.",
+    "technical_notes": "Follow Vite and React best practices for project setup. Ensure proper configuration for development and production environments.",
     "design_references": "docs/UI/Requirements.mmd",
     "security_considerations": "Ensure proper configuration for production builds with security best practices"
   },
@@ -94,10 +97,12 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/angular.json",
-      "frontend/package.json",
-      "frontend/tsconfig.json",
-      "frontend/src/app/app.module.ts"
+      "package.json",
+      "vite.config.ts",
+      "tsconfig.json",
+      "src/App.tsx",
+      "src/main.tsx",
+      "index.html"
     ]
   },
   "subtasks": []

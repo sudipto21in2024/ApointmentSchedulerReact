@@ -51,15 +51,15 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "Form Handling",
     "Security Best Practices"
   ],
   "related_files": {
     "will_create": [
-      "frontend/AppointmentSaas/src/app/components/auth/login/login.component.ts",
-      "frontend/AppointmentSaas/src/app/components/auth/register/register.component.ts",
-      "frontend/AppointmentSaas/src/app/components/auth/password-reset/password-reset.component.ts"
+      "src/components/auth/Login/Login.tsx",
+      "src/components/auth/Register/Register.tsx",
+      "src/components/auth/PasswordReset/PasswordReset.tsx"
     ],
     "will_modify": [],
     "dependencies": [
@@ -119,7 +119,7 @@
     "can_start_date": "After FE-002 completion"
   },
   "additional_context": {
-    "technical_notes": "Follow Angular best practices form handling. Implement proper validation and error handling. Ensure secure communication with authentication APIs.",
+    "technical_notes": "Follow React best practices for form handling with React Hook Form. Implement proper validation and error handling. Ensure secure communication with authentication APIs.",
     "design_references": "docs/UI/Requirements.mmd",
     "security_considerations": "Implement proper input validation, secure token storage, and protection against common authentication vulnerabilities"
   },
@@ -136,10 +136,10 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/AppointmentSaas/src/app/components/auth/login/login.component.ts",
-      "frontend/AppointmentSaas/src/app/components/auth/register/register.component.ts",
-      "frontend/AppointmentSaas/src/app/components/auth/password-reset/password-reset.component.ts",
-      "frontend/AppointmentSaas/src/app/components/auth/service-provider-register/service-provider-register.component.ts"
+      "src/components/auth/Login/Login.tsx",
+      "src/components/auth/Register/Register.tsx",
+      "src/components/auth/PasswordReset/PasswordReset.tsx",
+      "src/components/auth/ServiceProviderRegister/ServiceProviderRegister.tsx"
     ]
   },
   "subtasks": [

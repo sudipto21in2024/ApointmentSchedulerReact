@@ -51,16 +51,16 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "UI/UX Implementation",
     "Accessibility Standards"
   ],
  "related_files": {
     "will_create": [
-      "frontend/AppointmentSaas/src/app/components/button/button.component.ts",
-      "frontend/AppointmentSaas/src/app/components/input/input.component.ts",
-      "frontend/AppointmentSaas/src/app/components/card/card.component.ts",
-      "frontend/AppointmentSaas/src/app/components/modal/modal.component.ts"
+      "src/components/ui/Button/Button.tsx",
+      "src/components/ui/Input/Input.tsx",
+      "src/components/ui/Card/Card.tsx",
+      "src/components/ui/Modal/Modal.tsx"
     ],
     "will_modify": [],
     "dependencies": [
@@ -101,7 +101,7 @@
     "can_start_date": "After FE-002-01 completion"
   },
   "additional_context": {
-    "technical_notes": "Follow Angular best practices for component development. Ensure all components are accessible and responsive. Use design tokens for consistent styling.",
+    "technical_notes": "Follow React best practices for component development. Ensure all components are accessible and responsive. Use design tokens for consistent styling.",
     "design_references": "docs/UI/ComponentLibrary.mmd, docs/UI/Requirements.mmd",
     "security_considerations": "Ensure components properly sanitize inputs and prevent injection attacks"
   },
@@ -118,10 +118,10 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/AppointmentSaas/src/app/components/button/button.component.ts",
-      "frontend/AppointmentSaas/src/app/components/input/input.component.ts",
-      "frontend/AppointmentSaas/src/app/components/card/card.component.ts",
-      "frontend/AppointmentSaas/src/app/components/modal/modal.component.ts"
+      "src/components/ui/Button/Button.tsx",
+      "src/components/ui/Input/Input.tsx",
+      "src/components/ui/Card/Card.tsx",
+      "src/components/ui/Modal/Modal.tsx"
     ]
   },
   "subtasks": []

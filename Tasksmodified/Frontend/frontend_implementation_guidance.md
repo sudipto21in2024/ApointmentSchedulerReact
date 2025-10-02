@@ -4,13 +4,13 @@ This document provides implementation guidance for the frontend components of th
 
 ## Overview
 
-The frontend implementation follows a component-based architecture using Angular with TypeScript and Tailwind CSS for styling. The implementation is organized into logical modules that correspond to the main functional areas of the application.
+The frontend implementation follows a component-based architecture using React 18+ with TypeScript and Tailwind CSS for styling. The implementation is organized into logical feature folders that correspond to the main functional areas of the application.
 
 ## Component Structure
 
 ### Authentication Components (FE-003-01)
-- **Login Component**: Handles user authentication
-- **Registration Component**: Manages new user registration
+- **Login Component**: Handles user authentication with React Hook Form
+- **Registration Component**: Manages new user registration with validation
 - **Password Reset Component**: Facilitates password recovery
 
 ### Service Management Components (FE-003-02)
@@ -37,7 +37,7 @@ The frontend implementation follows a component-based architecture using Angular
 
 ## API Integration
 
-All components integrate with backend services through dedicated Angular services that handle HTTP requests. Each service corresponds to a backend module:
+All components integrate with backend services through custom React hooks and services that handle HTTP requests. Each service corresponds to a backend module:
 
 - **Auth Service**: Handles authentication API calls
 - **Service Service**: Manages service-related API interactions
@@ -58,9 +58,10 @@ The implementation follows a consistent design system with:
 
 State management is handled through:
 
-- **Component State**: Local state within individual components
-- **Service State**: Shared state managed by Angular services
-- **Route Parameters**: State passed through URL parameters
+- **Component State**: Local state within individual components using React hooks
+- **Global State**: Shared state managed by Redux Toolkit
+- **Server State**: API data managed by React Query/TanStack Query
+- **Route Parameters**: State passed through URL parameters using React Router
 - **Browser Storage**: Persistent state using localStorage/sessionStorage when appropriate
 
 ## Security Considerations
@@ -73,8 +74,8 @@ State management is handled through:
 
 ## Testing Strategy
 
-- **Unit Tests**: Component and service testing with Jasmine/Karma
-- **Integration Tests**: API integration testing
+- **Unit Tests**: Component testing with React Testing Library and Vitest
+- **Integration Tests**: API integration testing with React Testing Library
 - **End-to-End Tests**: User journey testing with Cypress
 - **Accessibility Tests**: Automated accessibility compliance checking
 
@@ -87,7 +88,7 @@ State management is handled through:
 
 ## Deployment
 
-- **Build Process**: Angular CLI production builds
+- **Build Process**: Vite production builds with optimized bundling
 - **Environment Configuration**: Environment-specific configuration files
 - **CI/CD**: Automated testing and deployment pipelines
 - **Monitoring**: Error tracking and performance monitoring

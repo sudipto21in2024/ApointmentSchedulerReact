@@ -1,0 +1,145 @@
+{
+  "task_id": "FE-011-10",
+  "title": "Create Review System Components",
+  "description": "Develop review system components for displaying and managing service reviews and ratings",
+  "priority": "MEDIUM",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 6,
+    "story_points": 5
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to read reviews so that I can make informed decisions",
+      "As a customer, I want to write reviews so that I can share my experience"
+    ],
+    "business_rules": [
+      "Review system must display reviews and ratings",
+      "Review system must allow authenticated users to write reviews",
+      "Review system must handle review moderation",
+      "Review system must follow the design system"
+    ],
+    "edge_cases": [
+      "Handling services with no reviews",
+      "Managing review submission validation",
+      "Processing review moderation workflow",
+      "Handling review updates and edits"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Review Management API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Review system displays reviews and ratings",
+    "Review system allows authenticated users to write reviews",
+    "Review system handles review moderation",
+    "Review system follows the design system",
+    "Review system handles validation and error states"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "React Components",
+    "Review System",
+    "Form Handling",
+    "API Integration"
+  ],
+  "related_files": {
+    "will_create": [
+      "src/components/reviews/ReviewList.tsx",
+      "src/components/reviews/ReviewForm.tsx",
+      "src/components/reviews/ReviewCard.tsx",
+      "src/components/reviews/ReviewSummary.tsx"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/review-openapi.yaml"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Review"
+    ],
+    "related": [
+      "Service",
+      "User"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/reviews",
+        "description": "Get reviews for a service"
+      },
+      {
+        "method": "POST",
+        "path": "/reviews",
+        "description": "Create a new review"
+      },
+      {
+        "method": "PUT",
+        "path": "/reviews/{id}",
+        "description": "Update a review"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/review-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Review list rendering",
+      "Review form validation",
+      "Review submission functionality"
+    ],
+    "integration_tests": [
+      "Review system integration with backend APIs"
+    ],
+    "e2e_tests": [
+      "Review reading and writing workflow",
+      "Review validation and submission"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "can_start_date": "After FE-002 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement review system following React best practices. Use React Hook Form for review submission. Implement rating system with stars. Handle review moderation workflow.",
+    "design_references": "",
+    "security_considerations": "Ensure proper authorization checks for review access. Validate all review inputs to prevent injection attacks."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "src/components/reviews/ReviewList.tsx",
+      "src/components/reviews/ReviewForm.tsx",
+      "src/components/reviews/ReviewCard.tsx",
+      "src/components/reviews/ReviewSummary.tsx"
+    ]
+  },
+  "subtasks": []
+}

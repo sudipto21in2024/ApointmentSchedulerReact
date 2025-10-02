@@ -49,19 +49,20 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Routing",
+    "React Router",
     "Navigation Design",
     "SPA Architecture"
   ],
   "related_files": {
     "will_create": [
-      "frontend/AppointmentSaas/src/app/app-routing.module.ts",
-      "frontend/AppointmentSaas/src/app/routes/auth.routes.ts",
-      "frontend/AppointmentSaas/src/app/routes/customer.routes.ts",
-      "frontend/AppointmentSaas/src/app/routes/provider.routes.ts",
-      "frontend/AppointmentSaas/src/app/routes/admin.routes.ts",
-      "frontend/AppointmentSaas/src/app/routes/system-admin.routes.ts",
-      "frontend/AppointmentSaas/src/app/routes/public.routes.ts"
+      "src/App.tsx",
+      "src/routes/index.tsx",
+      "src/routes/auth.tsx",
+      "src/routes/customer.tsx",
+      "src/routes/provider.tsx",
+      "src/routes/admin.tsx",
+      "src/routes/system-admin.tsx",
+      "src/routes/public.tsx"
     ],
     "will_modify": [],
     "dependencies": [
@@ -102,7 +103,7 @@
     "can_start_date": "After FE-001 completion"
   },
   "additional_context": {
-    "technical_notes": "Implement routing based on user personas and business requirements. Ensure proper separation of routes for different user types (customer, provider, admin, system-admin). Use Angular's lazy loading for better performance. Implement dynamic routing for tenant-specific URLs (e.g., [tenant_name].yourdomain.com).",
+    "technical_notes": "Implement routing based on user personas and business requirements. Ensure proper separation of routes for different user types (customer, provider, admin, system-admin). Use React Router's lazy loading for better performance. Implement dynamic routing for tenant-specific URLs (e.g., [tenant_name].yourdomain.com).",
     "design_references": "docs/UI/Requirements.mmd, docs/BusinessRequirements/BRD.mmd",
     "security_considerations": "Implement proper route organization to separate user role-specific functionality. Ensure tenant isolation is maintained through routing."
   },
@@ -119,13 +120,14 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/AppointmentSaas/src/app/app-routing.module.ts",
-      "frontend/AppointmentSaas/src/app/routes/auth.routes.ts",
-      "frontend/AppointmentSaas/src/app/routes/customer.routes.ts",
-      "frontend/AppointmentSaas/src/app/routes/provider.routes.ts",
-      "frontend/AppointmentSaas/src/app/routes/admin.routes.ts",
-      "frontend/AppointmentSaas/src/app/routes/system-admin.routes.ts",
-      "frontend/AppointmentSaas/src/app/routes/public.routes.ts"
+      "src/App.tsx",
+      "src/routes/index.tsx",
+      "src/routes/auth.tsx",
+      "src/routes/customer.tsx",
+      "src/routes/provider.tsx",
+      "src/routes/admin.tsx",
+      "src/routes/system-admin.tsx",
+      "src/routes/public.tsx"
     ]
   },
   "subtasks": []
