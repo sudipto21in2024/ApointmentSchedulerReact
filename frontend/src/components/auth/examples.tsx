@@ -325,16 +325,6 @@ export const AuthWorkflowExample: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<{ name: string; role: string } | null>(null);
 
-  const handleLogin = async (email: string, password: string) => {
-    // Mock authentication
-    if (email && password) {
-      setUser({
-        name: 'John Doe',
-        role: email.includes('admin') ? 'admin' : 'customer'
-      });
-      setIsAuthenticated(true);
-    }
-  };
 
   const handleLogout = () => {
     setUser(null);
@@ -450,17 +440,6 @@ export const AuthErrorHandling: React.FC = () => {
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
 
-  const handleLoginAttempt = () => {
-    setLoginAttempts(prev => prev + 1);
-
-    if (loginAttempts >= 3) {
-      setIsLocked(true);
-      setTimeout(() => {
-        setIsLocked(false);
-        setLoginAttempts(0);
-      }, 5000); // 5 second lockout
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">

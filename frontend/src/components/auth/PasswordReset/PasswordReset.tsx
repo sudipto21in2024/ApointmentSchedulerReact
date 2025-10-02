@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Input, Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui';
-import { cn } from '../../../utils/cn';
 
 /**
  * Interface for password reset form data structure

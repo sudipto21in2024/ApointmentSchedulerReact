@@ -532,7 +532,7 @@ export const asyncValidateField = async (
   delay: number = 300
 ): Promise<ValidationResult> => {
   return new Promise((resolve) => {
-    const timeoutId = window.setTimeout(async () => {
+    window.setTimeout(async () => {
       try {
         const result = await validateFn(value);
         resolve(result);

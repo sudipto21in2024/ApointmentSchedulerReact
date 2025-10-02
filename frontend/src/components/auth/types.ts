@@ -5,7 +5,7 @@
  * providing type safety and better developer experience for auth-related functionality.
  */
 
-import type { ReactNode, HTMLAttributes, FormHTMLAttributes } from 'react';
+import type { ReactNode } from 'react';
 
 /**
  * Base authentication component props that all auth components can extend

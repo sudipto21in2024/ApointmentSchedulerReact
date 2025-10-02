@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Button, Input, Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui';
-import { cn } from '../../../utils/cn';
 
 /**
  * Interface for login form data structure
