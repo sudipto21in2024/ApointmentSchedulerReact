@@ -1,0 +1,1 @@
+export { TenantAdminServiceApproval, default } from './TenantAdminServiceApproval';
