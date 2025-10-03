@@ -1,0 +1,128 @@
+{
+  "task_id": "FE-012-02",
+  "title": "Implement Master-Details Pattern Integration",
+  "description": "Integrate the three master-details interaction patterns (navigation, popup, slider) into booking management workflows",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 6,
+    "story_points": 5
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a user, I want to seamlessly navigate between booking list and details so that I can manage bookings efficiently",
+      "As a user, I want to create bookings without losing context so that I can complete tasks quickly"
+    ],
+    "business_rules": [
+      "Master-details pattern must support three interaction modes",
+      "Pattern must maintain user context during navigation",
+      "Pattern must handle form submission and validation properly",
+      "Pattern must follow the design system specifications"
+    ],
+    "edge_cases": [
+      "Handling form submission with validation errors",
+      "Managing navigation state during pattern transitions",
+      "Processing concurrent booking operations",
+      "Handling mobile-specific interaction patterns"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-003-03",
+      "FE-012-01"
+    ],
+    "blocked_by": [],
+    "external_dependencies": []
+  },
+  "acceptance_criteria": [
+    "Navigation pattern allows seamless transition between list and form",
+    "Popup pattern opens booking form in modal without losing context",
+    "Slider pattern provides side-by-side list and form view",
+    "All patterns handle form submission and validation correctly",
+    "Patterns work correctly on mobile devices"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "React Patterns",
+    "State Management",
+    "Form Handling"
+  ],
+  "related_files": {
+    "will_create": [
+      "src/components/booking/BookingMasterDetails.tsx",
+      "src/pages/bookings/BookingManagementPage.tsx"
+    ],
+    "will_modify": [
+      "src/components/layout/MasterDetailsView.tsx"
+    ],
+    "dependencies": [
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking"
+    ],
+    "related": [
+      "User",
+      "Service"
+    ]
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Master-details pattern rendering",
+      "Pattern interaction handling",
+      "Form submission within patterns"
+    ],
+    "integration_tests": [
+      "Pattern integration with booking components",
+      "State management across patterns"
+    ],
+    "e2e_tests": [
+      "Complete booking workflow with master-details patterns",
+      "Pattern switching functionality",
+      "Mobile pattern behavior"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-003-03",
+      "FE-012-01"
+    ],
+    "can_start_date": "After FE-003-03 and FE-012-01 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement master-details patterns following React best practices. Ensure proper state management and context preservation. Handle mobile-specific interaction patterns.",
+    "design_references": "docs/UI/Requirements.mmd",
+    "security_considerations": "Ensure proper authorization checks within master-details patterns"
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "src/components/booking/BookingMasterDetails.tsx",
+      "src/pages/bookings/BookingManagementPage.tsx"
+    ]
+  },
+  "subtasks": []
+}
