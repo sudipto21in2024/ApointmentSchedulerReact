@@ -6,6 +6,8 @@
  * fallback UI rendering, error recovery, and accessibility features.
  */
 
+import React from 'react';
+import { createPortal } from 'react-dom';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ErrorBoundary, AsyncErrorBoundary, withErrorBoundary } from '../../../components/ErrorBoundary/ErrorBoundary';
@@ -1476,7 +1478,7 @@ describe('ErrorBoundary Component', () => {
           };
         }, []);
 
-        return React.createPortal(
+        return createPortal(
           <ThrowError />,
           portalRoot
         );
@@ -1528,7 +1530,7 @@ describe('ErrorBoundary Component', () => {
     it('should work with components using React hooks', () => {
       const HookComponent: React.FC = () => {
         const [count, setCount] = React.useState(0);
-        const [data, setData] = React.useState(null);
+        const [data, setData] = React.useState<string | null>(null);
 
         React.useEffect(() => {
           if (count > 0) {
@@ -1539,7 +1541,7 @@ describe('ErrorBoundary Component', () => {
         return (
           <div>
             <button onClick={() => setCount(c => c + 1)}>Increment</button>
-            <button onClick={() => setData({ test: 'data' })}>Set Data</button>
+            <button onClick={() => setData('data')}>Set Data</button>
             <span data-testid="count">{count}</span>
           </div>
         );
@@ -2272,7 +2274,7 @@ describe('ErrorBoundary Component', () => {
     it('should handle errors from dynamic imports', async () => {
       const DynamicImportComponent: React.FC = () => {
         React.useEffect(() => {
-          import('./nonexistent-module')
+          import('react')
             .then(() => {
               throw new Error('Dynamic import error');
             })
@@ -3002,6 +3004,7 @@ describe('ErrorBoundary Component', () => {
       expect(screen.getByText('Something went wrong')).toBeInTheDocument();
     });
   });
+});
 
   describe('Error Boundary with Error Recovery Feedback', () => {
     it('should provide feedback during error recovery', async () => {

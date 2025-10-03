@@ -40,6 +40,7 @@ export {
   ModalClose
 } from './Modal';
 export { Select } from './Select';
+export { Checkbox } from './Checkbox';
 
 // Type exports
 export type { ButtonProps } from './Button';
@@ -47,6 +48,7 @@ export type { InputProps } from './Input';
 export type { CardProps } from './Card';
 export type { ModalProps } from './Modal';
 export type { SelectProps } from './Select';
+export type { CheckboxProps } from './Checkbox';
 
 // Utility functions
 export { cn } from '../../utils/cn';
