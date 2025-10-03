@@ -31,10 +31,8 @@ import type {
   PaymentWebhookData,
   PaymentRefund,
   RefundReason,
-  PaymentStatus,
   PaymentMethodType,
-  CurrencyCode,
-  PaymentGateway
+  CurrencyCode
 } from '../types/payment';
 
 /**

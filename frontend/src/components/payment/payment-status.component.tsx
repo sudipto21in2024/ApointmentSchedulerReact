@@ -113,13 +113,29 @@ export const PaymentStatusTracker: React.FC<PaymentStatusTrackerProps> = ({
   className = '',
   'data-testid': testId = 'payment-status'
 }) => {
+  /**
+   * Calculate progress percentage based on payment status
+   */
+  const calculateProgress = useCallback((status: PaymentStatusType): number => {
+    const progressMap = {
+      pending: 10,
+      processing: 50,
+      completed: 100,
+      failed: 0,
+      cancelled: 0,
+      refunded: 100,
+      partially_refunded: 75
+    };
+    return progressMap[status] || 0;
+  }, []);
+
   // Initialize component state
   const [state, setState] = useState<PaymentStatusTrackerState>({
     payment: initialPayment || null,
     status: initialPayment?.status || 'pending',
     loading: false,
     error: null,
-    progress: 0,
+    progress: initialPayment ? calculateProgress(initialPayment.status) : 0,
     statusSteps: [],
     timeRemaining: undefined,
     gatewayStatus: undefined
@@ -150,6 +166,32 @@ export const PaymentStatusTracker: React.FC<PaymentStatusTrackerProps> = ({
    * Load payment status from API
    */
   const loadPaymentStatus = useCallback(async () => {
+    // If we have initial payment data, use it to set the state
+    if (initialPayment && !paymentId && !paymentIntent) {
+      const newStatus = initialPayment.status;
+      const statusSteps = initializeStatusSteps(newStatus);
+
+      setState(prev => ({
+        ...prev,
+        payment: initialPayment,
+        status: newStatus,
+        loading: false,
+        statusSteps,
+        progress: calculateProgress(newStatus)
+      }));
+
+      // Notify status change
+      onStatusChange?.(newStatus);
+
+      // Handle success/error states
+      if (newStatus === 'completed' && onPaymentSuccess) {
+        onPaymentSuccess(initialPayment);
+      } else if (['failed', 'cancelled'].includes(newStatus) && onPaymentError) {
+        onPaymentError(`Payment ${newStatus}`);
+      }
+      return;
+    }
+
     if (!paymentId && !paymentIntent) return;
 
     setState(prev => ({ ...prev, loading: true, error: null }));
@@ -213,21 +255,6 @@ export const PaymentStatusTracker: React.FC<PaymentStatusTrackerProps> = ({
     }
   }, [paymentId, paymentIntent, initialPayment, initializeStatusSteps, onStatusChange, onPaymentSuccess, onPaymentError]);
 
-  /**
-   * Calculate progress percentage based on payment status
-   */
-  const calculateProgress = useCallback((status: PaymentStatusType): number => {
-    const progressMap = {
-      pending: 10,
-      processing: 50,
-      completed: 100,
-      failed: 0,
-      cancelled: 0,
-      refunded: 100,
-      partially_refunded: 75
-    };
-    return progressMap[status] || 0;
-  }, []);
 
   /**
    * Handle retry action
@@ -356,62 +383,12 @@ export const PaymentStatusTracker: React.FC<PaymentStatusTrackerProps> = ({
     );
   };
 
-  /**
-   * Render status steps indicator
-   */
-  const renderStatusSteps = () => (
-    <div className="flex items-center justify-between mb-6" data-testid="status-steps">
-      {state.statusSteps.map((step, index) => {
-        const config = getStatusConfig(step.status);
-
-        return (
-          <div key={step.status} className="flex items-center">
-            <div className="flex flex-col items-center">
-              <div
-                className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium mb-2 transition-all",
-                  step.completed || step.current
-                    ? `bg-${config.color}-500 text-white`
-                    : "bg-gray-200 text-gray-500"
-                )}
-                data-testid={`status-step-${step.status}`}
-              >
-                {step.completed ? '✓' : index + 1}
-              </div>
-              <div className={cn(
-                "text-xs text-center max-w-20",
-                step.current ? `text-${config.color}-600 font-medium` : "text-gray-500"
-              )}>
-                {step.label}
-              </div>
-              {step.timestamp && (
-                <div className="text-xs text-gray-400 mt-1">
-                  {formatDate(step.timestamp)}
-                </div>
-              )}
-            </div>
-            {index < state.statusSteps.length - 1 && (
-              <div
-                className={cn(
-                  "flex-1 h-0.5 mx-4 transition-all",
-                  step.completed ? `bg-${config.color}-500` : "bg-gray-200"
-                )}
-                data-testid={`status-connector-${index}`}
-              />
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
 
   /**
    * Render payment details section
    */
   const renderPaymentDetails = () => {
     if (!state.payment || !showDetails) return null;
-
-    const config = getStatusConfig(state.status);
 
     return (
       <div className="space-y-4" data-testid="payment-details">
@@ -578,8 +555,9 @@ export const PaymentStatusTracker: React.FC<PaymentStatusTrackerProps> = ({
               {config.label}
             </h3>
             <p className="text-sm text-gray-600 mb-4">
-              Your payment has been processed successfully!
+              Payment Successful!
             </p>
+            {showProgress && renderProgressBar()}
             {state.payment && showAmount && (
               <div className="bg-white bg-opacity-50 rounded-lg p-3 inline-block">
                 <div className="text-2xl font-bold text-green-600">
@@ -590,6 +568,57 @@ export const PaymentStatusTracker: React.FC<PaymentStatusTrackerProps> = ({
           </div>
         </CardContent>
       </Card>
+    );
+  };
+
+  /**
+   * Render status steps
+   */
+  const renderStatusSteps = () => {
+    if (!state.statusSteps.length) return null;
+
+    return (
+      <div className="mb-6" data-testid="status-steps">
+        <div className="flex items-center justify-between">
+          {state.statusSteps.map((step, index) => (
+            <div
+              key={step.status}
+              className="flex items-center"
+              data-testid={`status-step-${step.status}`}
+            >
+              <div className={cn(
+                "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
+                step.completed ? "bg-green-500 text-white" :
+                step.current ? "bg-blue-500 text-white" :
+                "bg-gray-200 text-gray-500"
+              )}>
+                {step.completed ? "✓" : index + 1}
+              </div>
+              <div className="ml-3">
+                <div className={cn(
+                  "text-sm font-medium",
+                  step.completed ? "text-green-700" :
+                  step.current ? "text-blue-700" :
+                  "text-gray-500"
+                )}>
+                  {step.label}
+                </div>
+                {step.timestamp && (
+                  <div className="text-xs text-gray-400">
+                    {formatDate(step.timestamp)}
+                  </div>
+                )}
+              </div>
+              {index < state.statusSteps.length - 1 && (
+                <div className={cn(
+                  "flex-1 h-0.5 mx-4",
+                  step.completed ? "bg-green-500" : "bg-gray-200"
+                )} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
     );
   };
 
@@ -613,6 +642,7 @@ export const PaymentStatusTracker: React.FC<PaymentStatusTrackerProps> = ({
             <p className="text-sm text-gray-600 mb-4">
               Please wait while we process your payment...
             </p>
+            {renderStatusSteps()}
             {showProgress && renderProgressBar()}
             {state.timeRemaining && (
               <p className="text-xs text-gray-500">
@@ -667,7 +697,7 @@ export const PaymentStatusTracker: React.FC<PaymentStatusTrackerProps> = ({
               <Button
                 variant="primary"
                 onClick={handleRetry}
-                data-testid="status-retry-button"
+                data-testid="retry-button"
               >
                 Retry Payment
               </Button>

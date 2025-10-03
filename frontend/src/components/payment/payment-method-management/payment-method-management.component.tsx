@@ -32,8 +32,7 @@ import type {
   PaymentMethod,
   PaymentMethodType,
   PaymentMethodCreateData,
-  PaymentMethodUpdateData,
-  Address
+  PaymentMethodUpdateData
 } from '../../../types/payment';
 import { paymentApi } from '../../../services/payment-api.service';
 
@@ -100,7 +99,7 @@ export interface PaymentMethodManagementState {
  */
 export const PaymentMethodManagement: React.FC<PaymentMethodManagementProps> = ({
   customerId,
-  isTenantAdmin = false,
+  isTenantAdmin: _isTenantAdmin = false,
   showAddForm = true,
   allowEdit = true,
   allowDelete = true,

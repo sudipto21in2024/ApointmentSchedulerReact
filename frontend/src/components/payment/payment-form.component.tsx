@@ -117,7 +117,7 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
   amount,
   currency,
   bookingId,
-  customerId,
+  customerId: _customerId, // Renamed to indicate it's intentionally unused
   availablePaymentMethods = [],
   defaultPaymentMethodId,
   showSavePaymentMethod = true,
@@ -238,22 +238,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
     }));
   }, []);
 
-  /**
-   * Handle form data changes for basic fields
-   */
-  const handleFormDataChange = useCallback((field: keyof PaymentCreateData, value: any) => {
-    setState(prev => ({
-      ...prev,
-      formData: {
-        ...prev.formData,
-        [field]: value
-      },
-      errors: {
-        ...prev.errors,
-        [field]: undefined // Clear field error
-      }
-    }));
-  }, []);
 
   /**
    * Handle save payment method toggle

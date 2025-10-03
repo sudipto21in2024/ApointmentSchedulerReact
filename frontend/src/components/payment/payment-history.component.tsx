@@ -61,8 +61,6 @@ export interface PaymentHistoryProps {
   defaultPageSize?: number;
   /** Available actions for each payment */
   availableActions?: Array<'view' | 'refund' | 'details'>;
-  /** Custom payment card renderer */
-  renderPaymentCard?: (payment: Payment) => React.ReactNode;
   /** Custom filter component */
   renderFilters?: () => React.ReactNode;
   /** Loading state */
@@ -71,8 +69,6 @@ export interface PaymentHistoryProps {
   error?: Error | null;
   /** Empty state message */
   emptyMessage?: string;
-  /** Callback when payment is selected */
-  onPaymentSelect?: (payment: Payment) => void;
   /** Callback when filters change */
   onFiltersChange?: (filters: PaymentFilters) => void;
   /** Callback when payment action is performed */
@@ -130,11 +126,9 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
   showPagination = true,
   defaultPageSize = 10,
   availableActions = ['view', 'details'],
-  renderPaymentCard,
   loading: externalLoading = false,
   error: externalError = null,
   emptyMessage = 'No payments found',
-  onPaymentSelect,
   onFiltersChange,
   onPaymentAction,
   className = '',
@@ -305,8 +299,6 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
    * Handle bulk actions
    */
   const handleBulkAction = useCallback(async (action: string) => {
-    const selectedPayments = state.payments.filter(p => state.selectedPayments.has(p.id));
-
     try {
       switch (action) {
         case 'export':
@@ -456,88 +448,6 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
   };
 
   /**
-   * Render payment card for grid view
-   */
-  const renderPaymentCardDefault = (payment: Payment) => (
-    <Card key={payment.id} className="hover:shadow-md transition-shadow cursor-pointer" data-testid={`payment-card-${payment.id}`}>
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <CardTitle className="text-lg">{formatAmount(payment.amount, payment.currency)}</CardTitle>
-            <p className="text-sm text-gray-600 mt-1">
-              {formatDate(payment.createdAt)}
-            </p>
-          </div>
-          {getStatusBadge(payment.status)}
-        </div>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <span className="flex items-center gap-1">
-              💳 {getPaymentMethodDisplayName(payment)}
-            </span>
-            <span className="flex items-center gap-1">
-              🌐 {payment.gateway}
-            </span>
-          </div>
-          {payment.description && (
-            <p className="text-sm text-gray-600 truncate" title={payment.description}>
-              {payment.description}
-            </p>
-          )}
-          {payment.reference && (
-            <p className="text-xs text-gray-500">
-              Ref: {payment.reference}
-            </p>
-          )}
-          <div className="flex gap-2 pt-2">
-            {availableActions.includes('view') && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePaymentAction('view', payment);
-                }}
-                data-testid={`view-payment-${payment.id}`}
-              >
-                👁️
-              </Button>
-            )}
-            {availableActions.includes('details') && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePaymentAction('details', payment);
-                }}
-                data-testid={`details-payment-${payment.id}`}
-              >
-                📋
-              </Button>
-            )}
-            {availableActions.includes('refund') && payment.status === 'completed' && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePaymentAction('refund', payment);
-                }}
-                data-testid={`refund-payment-${payment.id}`}
-              >
-                💰
-              </Button>
-            )}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-
-  /**
    * Render payment list item for list view
    */
   const renderPaymentListItem = (payment: Payment) => (
@@ -609,7 +519,6 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
       </div>
     </div>
   );
-
   /**
    * Render filters panel
    */
@@ -637,7 +546,6 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
               data-testid="status-filter"
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Payment Method
@@ -657,7 +565,6 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
               data-testid="payment-method-filter"
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Date From
@@ -675,7 +582,6 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
               data-testid="date-from-filter"
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Date To
@@ -765,7 +671,6 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
           >
             ← Previous
           </Button>
-
           <div className="flex items-center gap-1">
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
               const pageNumber = Math.max(1, Math.min(totalPages - 4, state.currentPage - 2)) + i;
@@ -784,7 +689,6 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
               );
             })}
           </div>
-
           <Button
             variant="secondary"
             size="sm"

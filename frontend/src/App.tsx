@@ -37,6 +37,8 @@ import { Toaster } from 'react-hot-toast'
 import PublicLayout from './layouts/PublicLayout'      // Public-facing layout with marketing header/footer
 import AuthLayout from './layouts/AuthLayout'          // Authentication layout with centered forms
 import DashboardLayout from './layouts/DashboardLayout' // Dashboard layout with sidebar navigation
+import { NotificationList } from './components/notification/NotificationList/NotificationList' // Notification List Component
+import { NotificationPreferences } from './components/notification/NotificationPreferences/NotificationPreferences' // Notification Preferences Component
 
 // ==================== PUBLIC PAGES ====================
 /**
@@ -176,6 +178,24 @@ function App() {
                   <Route path="profile" element={<ProfilePage />} />
                   <Route path="bookings" element={<BookingHistoryPage />} />
                   <Route path="bookings/:id/confirmation" element={<BookingConfirmationPage />} />
+                  <Route path="notifications" element={<NotificationList />} />
+                  <Route
+                    path="notifications/preferences"
+                    element={
+                      <NotificationPreferences
+                        preferences={{
+                          id: 'dummy',
+                          userId: 'dummy',
+                          emailEnabled: true,
+                          smsEnabled: false,
+                          pushEnabled: true,
+                        }}
+                        onPreferencesUpdate={() => {
+                          console.log('Dummy onPreferencesUpdate called');
+                        }}
+                      />
+                    }
+                  />
                 </Route>
 
                 {/* Service Provider Dashboard Routes */}
@@ -189,6 +209,24 @@ function App() {
                   <Route path="services" element={<ServiceManagementPage />} />
                   <Route path="bookings" element={<BookingManagementPage />} />
                   <Route path="earnings" element={<EarningsPage />} />
+                  <Route path="notifications" element={<NotificationList />} />
+                  <Route
+                    path="notifications/preferences"
+                    element={
+                      <NotificationPreferences
+                        preferences={{
+                          id: 'dummy',
+                          userId: 'dummy',
+                          emailEnabled: true,
+                          smsEnabled: false,
+                          pushEnabled: true,
+                        }}
+                        onPreferencesUpdate={() => {
+                          console.log('Dummy onPreferencesUpdate called');
+                        }}
+                      />
+                    }
+                  />
                 </Route>
 
                 {/* Admin Dashboard Routes */}
@@ -202,6 +240,24 @@ function App() {
                   <Route path="users" element={<UserManagementPage />} />
                   <Route path="settings" element={<SystemSettingsPage />} />
                   <Route path="analytics" element={<AnalyticsPage />} />
+                  <Route path="notifications" element={<NotificationList />} />
+                  <Route
+                    path="notifications/preferences"
+                    element={
+                      <NotificationPreferences
+                        preferences={{
+                          id: 'dummy',
+                          userId: 'dummy',
+                          emailEnabled: true,
+                          smsEnabled: false,
+                          pushEnabled: true,
+                        }}
+                        onPreferencesUpdate={() => {
+                          console.log('Dummy onPreferencesUpdate called');
+                        }}
+                      />
+                    }
+                  />
                 </Route>
 
                 {/* Error Routes */}
