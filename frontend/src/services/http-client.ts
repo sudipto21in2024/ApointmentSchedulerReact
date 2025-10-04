@@ -326,7 +326,7 @@ function getHttpClient(): HttpClient {
 
 // Export as a getter to avoid instantiation at module load
 export const httpClient = new Proxy({}, {
-  get(target, prop) {
+  get(_target, prop) {
     const client = getHttpClient();
     return (client as any)[prop];
   }
