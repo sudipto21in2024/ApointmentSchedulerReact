@@ -51,15 +51,15 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "UI/UX Design",
     "API Integration"
   ],
   "related_files": {
     "will_create": [
-      "frontend/src/app/components/service/service-list.component.ts",
-      "frontend/src/app/components/service/service-list.component.html",
-      "frontend/src/app/components/service/service-list.component.css"
+      "src/components/service/service-list.tsx",
+      "src/components/service/service-list.tsx",
+      "src/components/service/service-list.component.css"
     ],
     "will_modify": [],
     "dependencies": [
@@ -130,9 +130,9 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/src/app/components/service/service-list.component.ts",
-      "frontend/src/app/components/service/service-list.component.html",
-      "frontend/src/app/components/service/service-list.component.css"
+      "src/components/service/service-list.tsx",
+      "src/components/service/service-list.tsx",
+      "src/components/service/service-list.component.css"
     ]
   },
   "subtasks": []

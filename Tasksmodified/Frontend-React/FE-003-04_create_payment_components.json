@@ -51,17 +51,17 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "Secure Form Handling",
     "API Integration",
     "Payment Processing UI"
   ],
   "related_files": {
     "will_create": [
-      "frontend/AppointmentSaas/src/app/components/payment/payment-form.component.ts",
-      "frontend/AppointmentSaas/src/app/components/payment/payment-history.component.ts",
-      "frontend/AppointmentSaas/src/app/components/payment/payment-status.component.ts",
-      "frontend/AppointmentSaas/src/app/components/payment/payment-method-management/payment-method-management.component.ts"
+      "src/components/payment/payment-form.tsx",
+      "src/components/payment/payment-history.tsx",
+      "src/components/payment/payment-status.tsx",
+      "src/components/payment/payment-method-management/payment-method-management.tsx"
     ],
     "will_modify": [],
     "dependencies": [
@@ -130,7 +130,7 @@
     "can_start_date": "After FE-002 completion"
   },
   "additional_context": {
-    "technical_notes": "Follow Angular best practices for component development. Implement proper form handling and validation. Ensure secure handling of payment information.",
+    "technical_notes": "Follow React best practices for component development. Implement proper form handling and validation. Ensure secure handling of payment information.",
     "design_references": "docs/UI/Requirements.mmd",
     "security_considerations": "Ensure PCI compliance for payment information handling. Implement proper authorization checks for payment management actions. Validate all user inputs to prevent injection attacks."
   },
@@ -147,9 +147,9 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/src/app/components/payment/payment-form.component.ts",
-      "frontend/src/app/components/payment/payment-history.component.ts",
-      "frontend/src/app/components/payment/payment-status.component.ts"
+      "src/components/payment/payment-form.tsx",
+      "src/components/payment/payment-history.tsx",
+      "src/components/payment/payment-status.tsx"
     ]
   },
   "subtasks": [
@@ -172,9 +172,9 @@
       },
       "related_files": {
         "will_create": [
-          "frontend/AppointmentSaas/src/app/components/payment/payment-method-management/payment-method-management.component.ts",
-          "frontend/AppointmentSaas/src/app/components/payment/payment-method-management/payment-method-management.component.html",
-          "frontend/AppointmentSaas/src/app/components/payment/payment-method-management/payment-method-management.component.scss"
+          "src/components/payment/payment-method-management/payment-method-management.tsx",
+          "src/components/payment/payment-method-management/payment-method-management.tsx",
+          "src/components/payment/payment-method-management/payment-method-management.tsx"
         ],
         "dependencies": [
           "docs/UI/Requirements.mmd",

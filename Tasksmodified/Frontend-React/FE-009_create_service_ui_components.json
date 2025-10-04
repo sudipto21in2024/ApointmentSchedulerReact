@@ -58,14 +58,14 @@
     "TypeScript",
     "Tailwind CSS",
     "RxJS",
-    "Angular Reactive Forms"
+    "React Hook Form"
   ],
   "related_files": {
     "will_create": [
-      "frontend/src/app/components/service/service-list",
-      "frontend/src/app/components/service/service-create",
-      "frontend/src/app/components/service/service-edit",
-      "frontend/src/app/components/service/service-category"
+      "src/components/service/service-list",
+      "src/components/service/service-create",
+      "src/components/service/service-edit",
+      "src/components/service/service-category"
     ],
     "will_modify": [],
     "dependencies": [
@@ -136,7 +136,7 @@
     "can_start_date": "After FE-005 completion"
   },
   "additional_context": {
-    "technical_notes": "Follow Angular best practices for component design. Use reactive forms for validation. Implement proper error handling and loading states. Use Angular Material components for consistent UI.",
+    "technical_notes": "Follow React best practices for component design. Use reactive forms for validation. Implement proper error handling and loading states. Use Angular Material components for consistent UI.",
     "design_references": "docs/UI/Requirements.mmd",
     "security_considerations": "Validate all user input. Implement proper authentication checks for service management actions. Prevent unauthorized access to service management features."
   },
@@ -153,9 +153,9 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/src/app/components/payment/payment-form",
-      "frontend/src/app/components/payment/payment-history",
-      "frontend/src/app/components/payment/payment-status"
+      "src/components/payment/payment-form",
+      "src/components/payment/payment-history",
+      "src/components/payment/payment-status"
     ]
   },
   "subtasks": []

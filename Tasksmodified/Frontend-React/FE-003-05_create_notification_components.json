@@ -51,16 +51,16 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "Real-time Updates",
     "API Integration",
     "UI/UX Design"
   ],
   "related_files": {
     "will_create": [
-      "frontend/AppointmentSaas/src/app/components/notification/notification-list.component.ts",
-      "frontend/AppointmentSaas/src/app/components/notification/notification-detail.component.ts",
-      "frontend/AppointmentSaas/src/app/components/notification/notification-preferences.component.ts"
+      "src/components/notification/notification-list.tsx",
+      "src/components/notification/notification-detail.tsx",
+      "src/components/notification/notification-preferences.tsx"
     ],
     "will_modify": [],
     "dependencies": [
@@ -121,7 +121,7 @@
     "can_start_date": "After FE-002 completion"
   },
   "additional_context": {
-    "technical_notes": "Follow Angular best practices for component development. Implement proper real-time update handling. Ensure components integrate well with notification management APIs.",
+    "technical_notes": "Follow React best practices for component development. Implement proper real-time update handling. Ensure components integrate well with notification management APIs.",
     "design_references": "docs/UI/Requirements.mmd",
     "security_considerations": "Ensure proper authorization checks for notification management actions. Validate all user inputs to prevent injection attacks. Protect sensitive notification information."
   },
@@ -138,9 +138,9 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/src/app/components/notification/notification-list.component.ts",
-      "frontend/src/app/components/notification/notification-detail.component.ts",
-      "frontend/src/app/components/notification/notification-preferences.component.ts"
+      "src/components/notification/notification-list.tsx",
+      "src/components/notification/notification-detail.tsx",
+      "src/components/notification/notification-preferences.tsx"
     ]
   },
   "subtasks": [
@@ -163,9 +163,9 @@
       },
       "related_files": {
         "will_create": [
-          "frontend/AppointmentSaas/src/app/components/notification/notification-preferences/notification-preferences.component.ts",
-          "frontend/AppointmentSaas/src/app/components/notification/notification-preferences/notification-preferences.component.html",
-          "frontend/AppointmentSaas/src/app/components/notification/notification-preferences/notification-preferences.component.scss"
+          "src/components/notification/notification-preferences/notification-preferences.tsx",
+          "src/components/notification/notification-preferences/notification-preferences.tsx",
+          "src/components/notification/notification-preferences/notification-preferences.tsx"
         ],
         "dependencies": [
           "docs/UI/Requirements.mmd",

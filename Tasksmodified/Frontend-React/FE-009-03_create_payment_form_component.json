@@ -51,7 +51,7 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "Secure Form Handling",
     "UI/UX Design",
     "API Integration",
@@ -59,9 +59,9 @@
   ],
   "related_files": {
     "will_create": [
-      "frontend/src/app/components/payment/payment-form.component.ts",
-      "frontend/src/app/components/payment/payment-form.component.html",
-      "frontend/src/app/components/payment/payment-form.component.css"
+      "src/components/payment/payment-form.tsx",
+      "src/components/payment/payment-form.tsx",
+      "src/components/payment/payment-form.component.css"
     ],
     "will_modify": [],
     "dependencies": [
@@ -134,9 +134,9 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/src/app/components/payment/payment-form.component.ts",
-      "frontend/src/app/components/payment/payment-form.component.html",
-      "frontend/src/app/components/payment/payment-form.component.css"
+      "src/components/payment/payment-form.tsx",
+      "src/components/payment/payment-form.tsx",
+      "src/components/payment/payment-form.component.css"
     ]
   },
   "subtasks": []

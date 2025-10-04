@@ -155,9 +155,9 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/AppointmentSaas/src/app/components/dashboard/customer-dashboard/customer-dashboard.component.ts",
-      "frontend/AppointmentSaas/src/app/components/dashboard/tenant-admin-dashboard/tenant-admin-dashboard.component.ts",
-      "frontend/AppointmentSaas/src/app/components/dashboard/system-admin-dashboard/system-admin-dashboard.component.ts"
+      "src/components/dashboard/customer-dashboard/customer-dashboard.tsx",
+      "src/components/dashboard/tenant-admin-dashboard/tenant-admin-dashboard.tsx",
+      "src/components/dashboard/system-admin-dashboard/system-admin-dashboard.tsx"
     ]
   },
   "subtasks": [
@@ -180,9 +180,9 @@
       },
       "related_files": {
         "will_create": [
-          "frontend/AppointmentSaas/src/app/components/dashboard/customer-dashboard/customer-dashboard.component.ts",
-          "frontend/AppointmentSaas/src/app/components/dashboard/customer-dashboard/customer-dashboard.component.html",
-          "frontend/AppointmentSaas/src/app/components/dashboard/customer-dashboard/customer-dashboard.component.scss"
+          "src/components/dashboard/customer-dashboard/customer-dashboard.tsx",
+          "src/components/dashboard/customer-dashboard/customer-dashboard.tsx",
+          "src/components/dashboard/customer-dashboard/customer-dashboard.tsx"
         ],
         "dependencies": [
           "docs/UI/Requirements.mmd",
@@ -231,9 +231,9 @@
       },
       "related_files": {
         "will_create": [
-          "frontend/AppointmentSaas/src/app/components/dashboard/tenant-admin-dashboard/tenant-admin-dashboard.component.ts",
-          "frontend/AppointmentSaas/src/app/components/dashboard/tenant-admin-dashboard/tenant-admin-dashboard.component.html",
-          "frontend/AppointmentSaas/src/app/components/dashboard/tenant-admin-dashboard/tenant-admin-dashboard.component.scss"
+          "src/components/dashboard/tenant-admin-dashboard/tenant-admin-dashboard.tsx",
+          "src/components/dashboard/tenant-admin-dashboard/tenant-admin-dashboard.tsx",
+          "src/components/dashboard/tenant-admin-dashboard/tenant-admin-dashboard.tsx"
         ],
         "dependencies": [
           "docs/UI/Requirements.mmd",
@@ -282,9 +282,9 @@
       },
       "related_files": {
         "will_create": [
-          "frontend/AppointmentSaas/src/app/components/dashboard/system-admin-dashboard/system-admin-dashboard.component.ts",
-          "frontend/AppointmentSaas/src/app/components/dashboard/system-admin-dashboard/system-admin-dashboard.component.html",
-          "frontend/AppointmentSaas/src/app/components/dashboard/system-admin-dashboard/system-admin-dashboard.component.scss"
+          "src/components/dashboard/system-admin-dashboard/system-admin-dashboard.tsx",
+          "src/components/dashboard/system-admin-dashboard/system-admin-dashboard.tsx",
+          "src/components/dashboard/system-admin-dashboard/system-admin-dashboard.tsx"
         ],
         "dependencies": [
           "docs/UI/Requirements.mmd",

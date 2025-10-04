@@ -50,17 +50,17 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "Form Handling",
     "API Integration"
   ],
   "related_files": {
     "will_create": [
-      "frontend/AppointmentSaas/src/app/components/service/service-list.component.ts",
-      "frontend/AppointmentSaas/src/app/components/service/service-create.component.ts",
-      "frontend/AppointmentSaas/src/app/components/service/service-edit.component.ts",
-      "frontend/AppointmentSaas/src/app/components/service/service-card.component.ts",
-      "frontend/AppointmentSaas/src/app/components/service/tenant-admin-service-approval/tenant-admin-service-approval.component.ts"
+      "src/components/service/ServiceList/ServiceList.tsx",
+      "src/components/service/ServiceCreate/ServiceCreate.tsx",
+      "src/components/service/ServiceEdit/ServiceEdit.tsx",
+      "src/components/service/ServiceCard/ServiceCard.tsx",
+      "src/components/service/TenantAdminServiceApproval/TenantAdminServiceApproval.tsx"
     ],
     "will_modify": [],
     "dependencies": [
@@ -128,7 +128,7 @@
     "can_start_date": "After FE-002 completion"
   },
   "additional_context": {
-    "technical_notes": "Follow Angular best practices for component development. Implement proper form handling and validation. Ensure components integrate well with service management APIs.",
+    "technical_notes": "Follow React best practices for component development. Implement proper form handling and validation. Ensure components integrate well with service management APIs.",
     "design_references": "docs/UI/Requirements.mmd",
     "security_considerations": "Ensure proper authorization checks for service management actions. Validate all user inputs to prevent injection attacks."
   },
@@ -145,10 +145,10 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/src/app/components/service/service-list.component.ts",
-      "frontend/src/app/components/service/service-create.component.ts",
-      "frontend/src/app/components/service/service-edit.component.ts",
-      "frontend/src/app/components/service/service-card.component.ts"
+      "src/components/service/ServiceList/ServiceList.tsx",
+      "src/components/service/ServiceCreate/ServiceCreate.tsx",
+      "src/components/service/ServiceEdit/ServiceEdit.tsx",
+      "src/components/service/ServiceCard/ServiceCard.tsx"
     ]
   },
   "subtasks": [
@@ -171,9 +171,7 @@
       },
       "related_files": {
         "will_create": [
-          "frontend/AppointmentSaas/src/app/components/service/tenant-admin-service-approval/tenant-admin-service-approval.component.ts",
-          "frontend/AppointmentSaas/src/app/components/service/tenant-admin-service-approval/tenant-admin-service-approval.component.html",
-          "frontend/AppointmentSaas/src/app/components/service/tenant-admin-service-approval/tenant-admin-service-approval.component.scss"
+          "src/components/service/TenantAdminServiceApproval/TenantAdminServiceApproval.tsx"
         ],
         "dependencies": [
           "docs/UI/Requirements.mmd",

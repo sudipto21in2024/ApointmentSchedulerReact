@@ -51,17 +51,17 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "Form Handling",
     "UI/UX Design",
     "API Integration"
   ],
   "related_files": {
     "will_create": [
-      "frontend/src/app/components/category/category-list.component.ts",
-      "frontend/src/app/components/category/category-list.component.html",
-      "frontend/src/app/components/category/category-form.component.ts",
-      "frontend/src/app/components/category/category-form.component.html"
+      "src/components/category/category-list.tsx",
+      "src/components/category/category-list.tsx",
+      "src/components/category/category-form.tsx",
+      "src/components/category/category-form.tsx"
     ],
     "will_modify": [],
     "dependencies": [
@@ -136,10 +136,10 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/src/app/components/category/category-list.component.ts",
-      "frontend/src/app/components/category/category-list.component.html",
-      "frontend/src/app/components/category/category-form.component.ts",
-      "frontend/src/app/components/category/category-form.component.html"
+      "src/components/category/category-list.tsx",
+      "src/components/category/category-list.tsx",
+      "src/components/category/category-form.tsx",
+      "src/components/category/category-form.tsx"
     ]
   },
   "subtasks": []

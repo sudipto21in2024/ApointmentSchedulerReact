@@ -51,16 +51,16 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "UI/UX Design",
     "API Integration",
     "Calendar/Scheduling UI"
   ],
   "related_files": {
     "will_create": [
-      "frontend/src/app/components/booking/slot-selection.component.ts",
-      "frontend/src/app/components/booking/slot-selection.component.html",
-      "frontend/src/app/components/booking/slot-selection.component.css"
+      "src/components/booking/slot-selection.tsx",
+      "src/components/booking/slot-selection.tsx",
+      "src/components/booking/slot-selection.component.css"
     ],
     "will_modify": [],
     "dependencies": [
@@ -131,9 +131,9 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/src/app/components/booking/slot-selection.component.ts",
-      "frontend/src/app/components/booking/slot-selection.component.html",
-      "frontend/src/app/components/booking/slot-selection.component.css"
+      "src/components/booking/slot-selection.tsx",
+      "src/components/booking/slot-selection.tsx",
+      "src/components/booking/slot-selection.component.css"
     ]
   },
   "subtasks": []

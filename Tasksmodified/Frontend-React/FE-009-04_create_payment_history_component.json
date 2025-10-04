@@ -51,16 +51,16 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "UI/UX Design",
     "API Integration",
     "Data Visualization"
   ],
   "related_files": {
     "will_create": [
-      "frontend/src/app/components/payment/payment-history.component.ts",
-      "frontend/src/app/components/payment/payment-history.component.html",
-      "frontend/src/app/components/payment/payment-history.component.css"
+      "src/components/payment/payment-history.tsx",
+      "src/components/payment/payment-history.tsx",
+      "src/components/payment/payment-history.component.css"
     ],
     "will_modify": [],
     "dependencies": [
@@ -131,9 +131,9 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/src/app/components/payment/payment-history.component.ts",
-      "frontend/src/app/components/payment/payment-history.component.html",
-      "frontend/src/app/components/payment/payment-history.component.css"
+      "src/components/payment/payment-history.tsx",
+      "src/components/payment/payment-history.tsx",
+      "src/components/payment/payment-history.component.css"
     ]
   },
   "subtasks": []

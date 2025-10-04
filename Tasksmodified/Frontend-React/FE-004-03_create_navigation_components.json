@@ -51,19 +51,19 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "UI/UX Design",
     "Responsive Design"
   ],
   "related_files": {
     "will_create": [
-      "frontend/AppointmentSaas/src/app/components/layout/header.component.ts",
-      "frontend/AppointmentSaas/src/app/components/layout/sidebar.component.ts",
-      "frontend/AppointmentSaas/src/app/components/layout/footer.component.ts",
-      "frontend/AppointmentSaas/src/app/components/navigation/main-nav.component.ts",
-      "frontend/AppointmentSaas/src/app/components/layout/customer-sidebar.component.ts",
-      "frontend/AppointmentSaas/src/app/components/layout/tenant-admin-sidebar.component.ts",
-      "frontend/AppointmentSaas/src/app/components/layout/system-admin-sidebar.component.ts"
+      "src/components/layout/Header/Header.tsx",
+      "src/components/layout/Sidebar/Sidebar.tsx",
+      "src/components/layout/Footer/Footer.tsx",
+      "src/components/navigation/MainNav/MainNav.tsx",
+      "src/components/layout/CustomerSidebar/CustomerSidebar.tsx",
+      "src/components/layout/TenantAdminSidebar/TenantAdminSidebar.tsx",
+      "src/components/layout/SystemAdminSidebar/SystemAdminSidebar.tsx"
     ],
     "will_modify": [],
     "dependencies": [
@@ -108,7 +108,7 @@
     "can_start_date": "After FE-002 and FE-004-01 completion"
   },
   "additional_context": {
-    "technical_notes": "Follow Angular best practices for component development. Ensure responsive design for all navigation components. Implement proper state management for navigation elements. Create distinct sidebar components for Customer, Tenant Admin, and System Admin roles, or a single smart component that renders based on user role.",
+    "technical_notes": "Follow React best practices for component development. Ensure responsive design for all navigation components. Implement proper state management for navigation elements. Create distinct sidebar components for Customer, Tenant Admin, and System Admin roles, or a single smart component that renders based on user role.",
     "design_references": "docs/UI/Requirements.mmd, docs/UI/ComponentLibrary.mmd",
     "security_considerations": "Ensure navigation components don't expose sensitive information about user roles or system structure. Implement proper authorization for displayed navigation items."
   },
@@ -125,13 +125,13 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/AppointmentSaas/src/app/components/layout/header.component.ts",
-      "frontend/AppointmentSaas/src/app/components/layout/sidebar.component.ts",
-      "frontend/AppointmentSaas/src/app/components/layout/footer.component.ts",
-      "frontend/AppointmentSaas/src/app/components/navigation/main-nav.component.ts",
-      "frontend/AppointmentSaas/src/app/components/layout/customer-sidebar.component.ts",
-      "frontend/AppointmentSaas/src/app/components/layout/tenant-admin-sidebar.component.ts",
-      "frontend/AppointmentSaas/src/app/components/layout/system-admin-sidebar.component.ts"
+      "src/components/layout/Header/Header.tsx",
+      "src/components/layout/Sidebar/Sidebar.tsx",
+      "src/components/layout/Footer/Footer.tsx",
+      "src/components/navigation/MainNav/MainNav.tsx",
+      "src/components/layout/CustomerSidebar/CustomerSidebar.tsx",
+      "src/components/layout/TenantAdminSidebar/TenantAdminSidebar.tsx",
+      "src/components/layout/SystemAdminSidebar/SystemAdminSidebar.tsx"
     ]
   },
   "subtasks": []

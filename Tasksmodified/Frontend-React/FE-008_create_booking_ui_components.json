@@ -58,14 +58,14 @@
     "TypeScript",
     "Tailwind CSS",
     "RxJS",
-    "Angular Reactive Forms"
+    "React Hook Form"
   ],
   "related_files": {
     "will_create": [
-      "frontend/src/app/components/booking/service-discovery",
-      "frontend/src/app/components/booking/slot-selection",
-      "frontend/src/app/components/booking/booking-form",
-      "frontend/src/app/components/booking/confirmation"
+      "src/components/booking/service-discovery",
+      "src/components/booking/slot-selection",
+      "src/components/booking/booking-form",
+      "src/components/booking/confirmation"
     ],
     "will_modify": [],
     "dependencies": [
@@ -130,7 +130,7 @@
     "can_start_date": "After FE-005 completion"
   },
   "additional_context": {
-    "technical_notes": "Follow Angular best practices for component design. Use reactive forms for validation. Implement proper error handling and loading states.",
+    "technical_notes": "Follow React best practices for component design. Use reactive forms for validation. Implement proper error handling and loading states.",
     "design_references": "docs/UI/Requirements.mmd",
     "security_considerations": "Validate all user input. Implement proper authentication checks for booking actions."
   },
@@ -147,10 +147,10 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/src/app/components/booking/service-discovery",
-      "frontend/src/app/components/booking/slot-selection",
-      "frontend/src/app/components/booking/booking-form",
-      "frontend/src/app/components/booking/confirmation"
+      "src/components/booking/service-discovery",
+      "src/components/booking/slot-selection",
+      "src/components/booking/booking-form",
+      "src/components/booking/confirmation"
     ]
   },
   "subtasks": []

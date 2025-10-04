@@ -51,17 +51,17 @@
   ],
   "assigned_team": "Frontend",
   "required_skills": [
-    "Angular Components",
+    "React Components",
     "Form Handling",
     "API Integration",
     "Calendar/Scheduling UI"
   ],
   "related_files": {
     "will_create": [
-      "frontend/src/app/components/booking/booking-list.component.ts",
-      "frontend/src/app/components/booking/booking-create.component.ts",
-      "frontend/src/app/components/booking/booking-details.component.ts",
-      "frontend/src/app/components/booking/slot-selector.component.ts"
+      "src/components/booking/BookingList/BookingList.tsx",
+      "src/components/booking/BookingCreate/BookingCreate.tsx",
+      "src/components/booking/BookingDetails/BookingDetails.tsx",
+      "src/components/booking/SlotSelector/SlotSelector.tsx"
     ],
     "will_modify": [],
     "dependencies": [
@@ -132,7 +132,7 @@
     "can_start_date": "After FE-002 completion"
   },
   "additional_context": {
-    "technical_notes": "Follow Angular best practices for component development. Implement proper form handling and validation. Create intuitive slot selection UI for booking process.",
+    "technical_notes": "Follow React best practices for component development. Implement proper form handling and validation. Create intuitive slot selection UI for booking process.",
     "design_references": "docs/UI/Requirements.mmd",
     "security_considerations": "Ensure proper authorization checks for booking management actions. Validate all user inputs to prevent injection attacks. Protect sensitive booking information."
   },
@@ -149,10 +149,10 @@
     "optional_subtasks": [],
     "minimum_completion_percentage": 100,
     "required_deliverables": [
-      "frontend/src/app/components/booking/booking-list.component.ts",
-      "frontend/src/app/components/booking/booking-create.component.ts",
-      "frontend/src/app/components/booking/booking-details.component.ts",
-      "frontend/src/app/components/booking/slot-selector.component.ts"
+      "src/components/booking/BookingList/BookingList.tsx",
+      "src/components/booking/BookingCreate/BookingCreate.tsx",
+      "src/components/booking/BookingDetails/BookingDetails.tsx",
+      "src/components/booking/SlotSelector/SlotSelector.tsx"
     ]
   },
   "subtasks": []
