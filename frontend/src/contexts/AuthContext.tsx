@@ -1,18 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 
-interface User {
-  id: string
-  email: string
-  name: string
-  role: 'customer' | 'service_provider' | 'tenant_admin' | 'system_admin'
-  tenantId?: string
-}
+// Import API service and types
+import { userApi } from '../services'
+import type { User, UserLoginData, UserCreateData } from '../types/user'
 
 interface AuthContextType {
   user: User | null
   login: (email: string, password: string) => Promise<void>
-  register: (email: string, password: string, name: string, role: string) => Promise<void>
+  register: (email: string, password: string, firstName: string, lastName: string, role?: string) => Promise<void>
   logout: () => void
   isLoading: boolean
   isAuthenticated: boolean
@@ -35,6 +31,43 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [refreshTokenTimeout, setRefreshTokenTimeout] = useState<NodeJS.Timeout | null>(null)
+
+  // Function to schedule token refresh
+  const scheduleTokenRefresh = (expiresInMinutes: number = 14) => {
+    // Clear existing timeout
+    if (refreshTokenTimeout) {
+      clearTimeout(refreshTokenTimeout)
+    }
+
+    // Schedule refresh 1 minute before expiration
+    const refreshTime = (expiresInMinutes - 1) * 60 * 1000
+    const timeout = setTimeout(async () => {
+      try {
+        await refreshAccessToken()
+      } catch (error) {
+        console.error('Token refresh failed:', error)
+        // If refresh fails, logout user
+        logout()
+      }
+    }, refreshTime)
+
+    setRefreshTokenTimeout(timeout)
+  }
+
+  // Function to refresh access token
+  const refreshAccessToken = async () => {
+    try {
+      const response = await userApi.refreshToken()
+      localStorage.setItem('authToken', response.token)
+
+      // Schedule next refresh (assuming 15-minute token expiry)
+      scheduleTokenRefresh(15)
+    } catch (error) {
+      console.error('Token refresh failed:', error)
+      throw error
+    }
+  }
 
   useEffect(() => {
     // Check for existing session on mount
@@ -42,64 +75,86 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         const token = localStorage.getItem('authToken')
         if (token) {
-          // Verify token with backend and get user info
-          // For now, we'll use a mock user
-          setUser({
-            id: '1',
-            email: 'user@example.com',
-            name: 'John Doe',
-            role: 'customer'
-          })
+          // Verify token with backend and get current user info
+          const userData = await userApi.getCurrentUser()
+          setUser(userData)
+
+          // Schedule token refresh
+          scheduleTokenRefresh(15) // Assuming 15-minute token expiry
         }
-      } catch (_error) {
-        console.error('Auth check failed')
+      } catch (error) {
+        console.error('Auth check failed:', error)
+        // Clear invalid token
+        localStorage.removeItem('authToken')
       } finally {
         setIsLoading(false)
       }
     }
 
     checkAuth()
+
+    // Cleanup timeout on unmount
+    return () => {
+      if (refreshTokenTimeout) {
+        clearTimeout(refreshTokenTimeout)
+      }
+    }
   }, [])
 
-  const login = async (email: string, _password: string) => {
+  const login = async (email: string, password: string) => {
     setIsLoading(true)
     try {
-      // Mock login - replace with actual API call
-      const mockUser: User = {
-        id: '1',
-        email,
-        name: 'John Doe',
-        role: 'customer'
-      }
-      setUser(mockUser)
-      localStorage.setItem('authToken', 'mock-token')
-    } catch (_error) {
-      throw new Error('Login failed')
+      const loginData: UserLoginData = { email, password }
+      const response = await userApi.login(loginData)
+
+      // Store the token and set user data
+      localStorage.setItem('authToken', response.token)
+      setUser(response.user)
+
+      // Schedule automatic token refresh
+      scheduleTokenRefresh(15) // Assuming 15-minute token expiry
+    } catch (error) {
+      console.error('Login failed:', error)
+      throw error
     } finally {
       setIsLoading(false)
     }
   }
 
-  const register = async (email: string, _password: string, name: string, role: string) => {
+  const register = async (email: string, password: string, firstName: string, lastName: string, role: string = 'customer') => {
     setIsLoading(true)
     try {
-      // Mock registration - replace with actual API call
-      const mockUser: User = {
-        id: '1',
+      const registerData: UserCreateData = {
         email,
-        name,
-        role: role as User['role']
+        password,
+        firstName,
+        lastName,
+        role: role as User['role'],
+        acceptedTerms: new Date().toISOString(),
+        marketingConsent: false
       }
-      setUser(mockUser)
-      localStorage.setItem('authToken', 'mock-token')
-    } catch (_error) {
-      throw new Error('Registration failed')
+
+      const userData = await userApi.register(registerData)
+
+      // For registration, we typically need to login after successful registration
+      // or the API might return a token. For now, we'll assume registration doesn't auto-login
+      // and the user needs to login separately.
+      console.log('Registration successful for user:', userData.email)
+    } catch (error) {
+      console.error('Registration failed:', error)
+      throw error
     } finally {
       setIsLoading(false)
     }
   }
 
   const logout = () => {
+    // Clear refresh token timeout
+    if (refreshTokenTimeout) {
+      clearTimeout(refreshTokenTimeout)
+      setRefreshTokenTimeout(null)
+    }
+
     setUser(null)
     localStorage.removeItem('authToken')
   }
