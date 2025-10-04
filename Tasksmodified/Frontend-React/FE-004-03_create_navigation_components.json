@@ -8,10 +8,10 @@
     "hours": 6,
     "story_points": 5
   },
-  "status": "NOT_STARTED",
-  "progress": 0,
-  "started_date": "",
-  "completed_date": "",
+  "status": "COMPLETED",
+  "progress": 100,
+  "started_date": "2025-10-04",
+  "completed_date": "2025-10-04",
   "blocked_reason": "",
   "completion_evidence": [],
   "business_logic": {
