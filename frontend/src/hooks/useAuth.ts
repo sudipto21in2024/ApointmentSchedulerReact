@@ -1,119 +1,139 @@
-import { useState, useEffect } from 'react';
+import { useAuthContext } from '../contexts/AuthContext';
+import { login as authLogin, register, registerProvider, logout as authLogout, refreshToken } from '../services/auth';
+import type { LoginRequest, RegisterRequest, RegisterProviderRequest, LoginResponse, UserResponse, RegistrationResult, AuthError } from '../services/auth';
 
 /**
- * User interface for authentication
+ * Custom hook for authentication operations
+ * Provides convenient methods for login, registration, logout, and token management
+ * Must be used within an AuthProvider
  */
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: 'CUSTOMER' | 'TENANT_ADMIN' | 'SYSTEM_ADMIN';
-}
-
-/**
- * Authentication context interface
- */
-export interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-  loading: boolean;
-}
-
-/**
- * Custom hook for authentication management
- * Provides user authentication state and methods
- *
- * @returns {AuthContextType} Authentication context
- */
-export const useAuth = (): AuthContextType => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  // Check for existing authentication on mount
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // TODO: Implement actual authentication check
-        // For now, return mock authenticated user
-        const mockUser: User = {
-          id: '1',
-          firstName: 'John',
-          lastName: 'Doe',
-          email: 'john.doe@example.com',
-          role: 'CUSTOMER'
-        };
-        setUser(mockUser);
-      } catch (error) {
-        console.error('Auth check failed:', error);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
+export const useAuth = () => {
+  // Get auth context
+  const { user, isAuthenticated, isLoading, login, logout, updateUser, error, clearError } = useAuthContext();
 
   /**
-   * Authenticate user with email and password
-   * @param {string} email - User email
-   * @param {string} password - User password
+   * Performs user login
+   * @param email - User email
+   * @param password - User password
+   * @returns Promise resolving to login response
    */
-  const login = async (email: string, password: string): Promise<void> => {
-    setLoading(true);
+  const handleLogin = async (email: string, password: string): Promise<LoginResponse> => {
     try {
-      // TODO: Implement actual login API call
-      console.log('Login attempt:', { email, password });
-
-      // Mock successful login
-      const mockUser: User = {
-        id: '1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: email,
-        role: 'CUSTOMER'
-      };
-      setUser(mockUser);
-
-      // Store auth token (mock)
-      localStorage.setItem('auth_token', 'mock_token');
-    } catch (error) {
-      console.error('Login failed:', error);
-      throw error;
-    } finally {
-      setLoading(false);
+      clearError();
+      const credentials: LoginRequest = { username: email, password };
+      const response = await authLogin(credentials);
+      login(response); // Update context state
+      return response;
+    } catch (err) {
+      const authError = err as AuthError;
+      // Error is handled in context, but we can re-throw for component handling
+      throw authError;
     }
   };
 
   /**
-   * Logout current user
-   * Clears authentication state and removes stored tokens
+   * Performs user registration
+   * @param email - User email
+   * @param password - User password
+   * @param fullName - User's full name
+   * @param role - User role
+   * @returns Promise resolving to user response
    */
-  const logout = async (): Promise<void> => {
-    setLoading(true);
+  const handleRegister = async (email: string, password: string, fullName: string, role: string): Promise<UserResponse> => {
     try {
-      // TODO: Implement actual logout API call
-      console.log('Logout');
+      clearError();
+      const [firstName, ...lastNameParts] = fullName.split(' ');
+      const lastName = lastNameParts.join(' ');
 
-      // Clear stored auth data
-      localStorage.removeItem('auth_token');
-      setUser(null);
-    } catch (error) {
-      console.error('Logout failed:', error);
-      throw error;
-    } finally {
-      setLoading(false);
+      const userData: RegisterRequest = {
+        email,
+        password,
+        firstName,
+        lastName,
+        userType: role,
+        tenantId: 'default-tenant', // TODO: Get from context or config
+      };
+
+      const response = await register(userData);
+      // Note: Registration doesn't automatically log in the user
+      // The user would need to login separately after registration
+      return response;
+    } catch (err) {
+      const authError = err as AuthError;
+      throw authError;
+    }
+  };
+
+  /**
+   * Performs service provider registration
+   * @param providerData - Provider registration data
+   * @returns Promise resolving to registration result
+   */
+  const handleRegisterProvider = async (providerData: RegisterProviderRequest): Promise<RegistrationResult> => {
+    try {
+      clearError();
+      const response = await registerProvider(providerData);
+      // If tokens are provided, update context
+      if (response.accessToken && response.user) {
+        login({
+          accessToken: response.accessToken,
+          refreshToken: response.refreshToken || '',
+          user: response.user,
+        });
+      }
+      return response;
+    } catch (err) {
+      const authError = err as AuthError;
+      throw authError;
+    }
+  };
+
+  /**
+   * Performs user logout
+   * @returns Promise resolving when logout is complete
+   */
+  const handleLogout = async (): Promise<void> => {
+    try {
+      clearError();
+      await authLogout();
+      logout(); // Update context state
+    } catch (err) {
+      const authError = err as AuthError;
+      // Even if logout API fails, we clear local state
+      logout();
+      throw authError;
+    }
+  };
+
+  /**
+   * Refreshes the authentication token
+   * @returns Promise resolving to refresh response
+   */
+  const handleRefreshToken = async (): Promise<void> => {
+    try {
+      clearError();
+      await refreshToken();
+      // Note: Token refresh doesn't change user data, just updates stored tokens
+    } catch (err) {
+      const authError = err as AuthError;
+      throw authError;
     }
   };
 
   return {
+    // State
     user,
-    isAuthenticated: !!user,
-    login,
-    logout,
-    loading
+    isAuthenticated,
+    isLoading,
+    error,
+
+    // Actions
+    login: handleLogin,
+    register: handleRegister,
+    registerProvider: handleRegisterProvider,
+    logout: handleLogout,
+    refreshToken: handleRefreshToken,
+    updateUser,
+    clearError,
   };
 };

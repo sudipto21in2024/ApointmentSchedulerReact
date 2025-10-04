@@ -1,172 +1,178 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import type { ReactNode } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import type { User, LoginResponse, AuthError } from '../services/auth';
+import { hasAccessToken, getAccessToken } from '../services/token';
 
-// Import API service and types
-import { userApi } from '../services'
-import type { User, UserLoginData, UserCreateData } from '../types/user'
-
+// Auth context interface
 interface AuthContextType {
-  user: User | null
-  login: (email: string, password: string) => Promise<void>
-  register: (email: string, password: string, firstName: string, lastName: string, role?: string) => Promise<void>
-  logout: () => void
-  isLoading: boolean
-  isAuthenticated: boolean
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (response: LoginResponse) => void;
+  logout: () => void;
+  updateUser: (user: User) => void;
+  error: AuthError | null;
+  clearError: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+// Create the context
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
-  }
-  return context
-}
-
+// Auth provider props
 interface AuthProviderProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
+/**
+ * AuthProvider component that manages authentication state
+ * Provides authentication context to child components
+ */
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [refreshTokenTimeout, setRefreshTokenTimeout] = useState<NodeJS.Timeout | null>(null)
+  // State for user data
+  const [user, setUser] = useState<User | null>(null);
 
-  // Function to schedule token refresh
-  const scheduleTokenRefresh = (expiresInMinutes: number = 14) => {
-    // Clear existing timeout
-    if (refreshTokenTimeout) {
-      clearTimeout(refreshTokenTimeout)
-    }
+  // State for authentication status
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-    // Schedule refresh 1 minute before expiration
-    const refreshTime = (expiresInMinutes - 1) * 60 * 1000
-    const timeout = setTimeout(async () => {
-      try {
-        await refreshAccessToken()
-      } catch (error) {
-        console.error('Token refresh failed:', error)
-        // If refresh fails, logout user
-        logout()
-      }
-    }, refreshTime)
+  // State for loading status
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    setRefreshTokenTimeout(timeout)
-  }
+  // State for error handling
+  const [error, setError] = useState<AuthError | null>(null);
 
-  // Function to refresh access token
-  const refreshAccessToken = async () => {
-    try {
-      const response = await userApi.refreshToken()
-      localStorage.setItem('authToken', response.token)
-
-      // Schedule next refresh (assuming 15-minute token expiry)
-      scheduleTokenRefresh(15)
-    } catch (error) {
-      console.error('Token refresh failed:', error)
-      throw error
-    }
-  }
-
+  /**
+   * Effect to check authentication status on mount
+   * This runs once when the component mounts to check if user is already logged in
+   */
   useEffect(() => {
-    // Check for existing session on mount
-    const checkAuth = async () => {
+    const checkAuthStatus = () => {
       try {
-        const token = localStorage.getItem('authToken')
-        if (token) {
-          // Verify token with backend and get current user info
-          const userData = await userApi.getCurrentUser()
-          setUser(userData)
+        // Check if access token exists
+        const hasToken = hasAccessToken();
 
-          // Schedule token refresh
-          scheduleTokenRefresh(15) // Assuming 15-minute token expiry
+        if (hasToken) {
+          // TODO: In a real implementation, you might want to validate the token
+          // or fetch user details from the token or API
+          // For now, we assume the user is authenticated if token exists
+          setIsAuthenticated(true);
+
+          // TODO: Decode user info from JWT token or fetch from API
+          // For this implementation, we'll set a placeholder user
+          // In production, you'd decode the JWT or call an API to get user details
+          const token = getAccessToken();
+          if (token) {
+            // Basic JWT decode (without validation for demo purposes)
+            try {
+              const payload = JSON.parse(atob(token.split('.')[1]));
+              // Assuming the token contains user info
+              if (payload.user) {
+                setUser(payload.user);
+              }
+            } catch (decodeError) {
+              console.warn('Failed to decode token payload:', decodeError);
+            }
+          }
+        } else {
+          setIsAuthenticated(false);
+          setUser(null);
         }
-      } catch (error) {
-        console.error('Auth check failed:', error)
-        // Clear invalid token
-        localStorage.removeItem('authToken')
+      } catch (err) {
+        console.error('Error checking auth status:', err);
+        setIsAuthenticated(false);
+        setUser(null);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    checkAuth()
+    checkAuthStatus();
+  }, []);
 
-    // Cleanup timeout on unmount
-    return () => {
-      if (refreshTokenTimeout) {
-        clearTimeout(refreshTokenTimeout)
-      }
-    }
-  }, [])
-
-  const login = async (email: string, password: string) => {
-    setIsLoading(true)
+  /**
+   * Logs in the user with the provided login response
+   * Updates authentication state and user data
+   * @param response - The login response containing user data and tokens
+   */
+  const login = (response: LoginResponse) => {
     try {
-      const loginData: UserLoginData = { email, password }
-      const response = await userApi.login(loginData)
-
-      // Store the token and set user data
-      localStorage.setItem('authToken', response.token)
-      setUser(response.user)
-
-      // Schedule automatic token refresh
-      scheduleTokenRefresh(15) // Assuming 15-minute token expiry
-    } catch (error) {
-      console.error('Login failed:', error)
-      throw error
-    } finally {
-      setIsLoading(false)
+      setUser(response.user);
+      setIsAuthenticated(true);
+      setError(null);
+      setIsLoading(false);
+    } catch (err) {
+      console.error('Error during login state update:', err);
+      setError({ message: 'Failed to update authentication state' });
     }
-  }
+  };
 
-  const register = async (email: string, password: string, firstName: string, lastName: string, role: string = 'customer') => {
-    setIsLoading(true)
-    try {
-      const registerData: UserCreateData = {
-        email,
-        password,
-        firstName,
-        lastName,
-        role: role as User['role'],
-        acceptedTerms: new Date().toISOString(),
-        marketingConsent: false
-      }
-
-      const userData = await userApi.register(registerData)
-
-      // For registration, we typically need to login after successful registration
-      // or the API might return a token. For now, we'll assume registration doesn't auto-login
-      // and the user needs to login separately.
-      console.log('Registration successful for user:', userData.email)
-    } catch (error) {
-      console.error('Registration failed:', error)
-      throw error
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
+  /**
+   * Logs out the current user
+   * Clears user data and authentication status
+   */
   const logout = () => {
-    // Clear refresh token timeout
-    if (refreshTokenTimeout) {
-      clearTimeout(refreshTokenTimeout)
-      setRefreshTokenTimeout(null)
+    try {
+      setUser(null);
+      setIsAuthenticated(false);
+      setError(null);
+      // Note: Token removal is handled in the auth service
+    } catch (err) {
+      console.error('Error during logout state update:', err);
     }
+  };
 
-    setUser(null)
-    localStorage.removeItem('authToken')
-  }
+  /**
+   * Updates the current user data
+   * Useful for profile updates or when user data changes
+   * @param updatedUser - The updated user object
+   */
+  const updateUser = (updatedUser: User) => {
+    try {
+      setUser(updatedUser);
+    } catch (err) {
+      console.error('Error updating user data:', err);
+      setError({ message: 'Failed to update user data' });
+    }
+  };
 
+  /**
+   * Clears any authentication errors
+   */
+  const clearError = () => {
+    setError(null);
+  };
+
+  // Context value
   const value: AuthContextType = {
     user,
-    login,
-    register,
-    logout,
+    isAuthenticated,
     isLoading,
-    isAuthenticated: !!user
-  }
+    login,
+    logout,
+    updateUser,
+    error,
+    clearError,
+  };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-}
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+/**
+ * Custom hook to use the authentication context
+ * Must be used within an AuthProvider
+ * @returns AuthContextType
+ * @throws Error if used outside AuthProvider
+ */
+export const useAuthContext = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuthContext must be used within an AuthProvider');
+  }
+  return context;
+};
+
+// Re-export useAuth from hooks for backward compatibility
+export { useAuth } from '../hooks/useAuth';
