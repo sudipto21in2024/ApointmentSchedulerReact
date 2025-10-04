@@ -1,0 +1,132 @@
+{
+  "task_id": "FE-012-03",
+  "title": "Implement Multi-Step Form Architecture",
+  "description": "Implement proper multi-step form architecture with entity grouping and design system compliance for booking creation",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 12,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a user, I want guided form steps so that I can complete bookings easily",
+      "As a developer, I need reusable form step components so that I can build complex forms quickly"
+    ],
+    "business_rules": [
+      "Multi-step forms must group entities into separate cards with section headers",
+      "Each step must group different entities (no mixing entities within single step)",
+      "Form layout must use maximum two-column design",
+      "Larger text fields must merge two columns to create single column",
+      "Form must follow design system validation message placement"
+    ],
+    "edge_cases": [
+      "Handling form validation across multiple steps",
+      "Managing form state during step navigation",
+      "Processing partial form completion and auto-save",
+      "Handling step navigation with validation errors"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-003-03"
+    ],
+    "blocked_by": [],
+    "external_dependencies": []
+  },
+  "acceptance_criteria": [
+    "Multi-step form groups entities into separate cards with section headers",
+    "Each step groups different entities without mixing",
+    "Form uses maximum two-column design with merged columns for larger fields",
+    "Validation messages display directly under field elements",
+    "Form handles step navigation with proper validation",
+    "Form follows design system specifications"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "React Advanced Patterns",
+    "Form Architecture",
+    "State Management"
+  ],
+  "related_files": {
+    "will_create": [
+      "src/components/forms/MultiStepForm.tsx",
+      "src/components/forms/FormStep.tsx",
+      "src/components/booking/BookingMultiStepForm.tsx",
+      "src/components/forms/hooks/useMultiStepForm.ts"
+    ],
+    "will_modify": [
+      "src/components/booking/booking-create.component.tsx"
+    ],
+    "dependencies": [
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking"
+    ],
+    "related": [
+      "Service",
+      "Slot"
+    ]
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Multi-step form navigation",
+      "Form validation across steps",
+      "Entity grouping functionality",
+      "Step state management"
+    ],
+    "integration_tests": [
+      "Multi-step form integration with booking workflow",
+      "Form state persistence across steps"
+    ],
+    "e2e_tests": [
+      "Complete multi-step booking creation workflow",
+      "Form validation and error handling",
+      "Step navigation and state management"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-003-03"
+    ],
+    "can_start_date": "After FE-003-03 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement multi-step form architecture following design system specifications. Create reusable form step components and proper state management. Ensure entity grouping and column layout compliance.",
+    "design_references": "docs/UI/Requirements.mmd",
+    "security_considerations": "Ensure proper input validation across all form steps"
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "src/components/forms/MultiStepForm.tsx",
+      "src/components/forms/FormStep.tsx",
+      "src/components/booking/BookingMultiStepForm.tsx"
+    ]
+  },
+  "subtasks": []
+}

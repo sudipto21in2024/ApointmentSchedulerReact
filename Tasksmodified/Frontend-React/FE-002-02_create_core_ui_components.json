@@ -1,0 +1,128 @@
+{
+  "task_id": "FE-002-02",
+  "title": "Create Core UI Components",
+  "description": "Develop core UI components including buttons, inputs, cards, and modals that follow the design system",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 6,
+    "story_points": 5
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a developer, I need reusable core components so that I can build UIs faster",
+      "As a designer, I want components that follow design guidelines so that the UI is cohesive"
+    ],
+    "business_rules": [
+      "Core components must follow the established design system",
+      "Components must be accessible and WCAG compliant",
+      "Components must be responsive and mobile-friendly",
+      "Components must be well-documented with usage examples"
+    ],
+    "edge_cases": [
+      "Handling different states (hover, focus, disabled) for components",
+      "Ensuring accessibility compliance for all components",
+      "Managing responsive behavior across different screen sizes",
+      "Implementing proper error handling and validation"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002-01"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Design system documentation",
+      "Component library specifications"
+    ]
+  },
+  "acceptance_criteria": [
+    "Core UI components are created and documented",
+    "Components follow accessibility standards",
+    "Components are responsive and mobile-friendly",
+    "Components are properly tested for functionality and appearance",
+    "Component documentation includes usage examples"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "React Components",
+    "UI/UX Implementation",
+    "Accessibility Standards"
+  ],
+  "related_files": {
+    "will_create": [
+      "src/components/ui/Button/Button.tsx",
+      "src/components/ui/Input/Input.tsx",
+      "src/components/ui/Card/Card.tsx",
+      "src/components/ui/Modal/Modal.tsx"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/UI/ComponentLibrary.mmd",
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [],
+    "related": []
+  },
+  "api_information": {
+    "endpoints": [],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Component rendering and behavior",
+      "Accessibility compliance",
+      "Responsive behavior"
+    ],
+    "integration_tests": [
+      "Component integration in pages",
+      "State management",
+      "Event handling"
+    ],
+    "e2e_tests": [
+      "Component usage in real scenarios",
+      "Accessibility testing",
+      "Cross-browser compatibility"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002-01"
+    ],
+    "can_start_date": "After FE-002-01 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Follow React best practices for component development. Ensure all components are accessible and responsive. Use design tokens for consistent styling.",
+    "design_references": "docs/UI/ComponentLibrary.mmd, docs/UI/Requirements.mmd",
+    "security_considerations": "Ensure components properly sanitize inputs and prevent injection attacks"
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "src/components/ui/Button/Button.tsx",
+      "src/components/ui/Input/Input.tsx",
+      "src/components/ui/Card/Card.tsx",
+      "src/components/ui/Modal/Modal.tsx"
+    ]
+  },
+  "subtasks": []
+}

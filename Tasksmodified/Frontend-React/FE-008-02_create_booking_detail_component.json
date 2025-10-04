@@ -1,0 +1,139 @@
+{
+  "task_id": "FE-008-02",
+ "title": "Create Booking Detail Component",
+ "description": "Develop UI component for displaying detailed booking information including service, slot, and status details",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 5,
+    "story_points": 3
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to view detailed booking information so that I can verify appointment details",
+      "As a service provider, I want to see booking details so that I can prepare for appointments"
+    ],
+    "business_rules": [
+      "Booking detail view must show complete booking information including service and slot details",
+      "Booking detail view must follow the design system",
+      "Booking detail view must handle loading states and error messages",
+      "Booking detail view must display status information clearly"
+    ],
+    "edge_cases": [
+      "Handling loading states for booking details",
+      "Managing error conditions when booking data is not available",
+      "Displaying booking information with proper status indicators",
+      "Handling bookings with missing or incomplete information"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002",
+      "FE-005-01"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Appointment Management API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Booking detail component shows complete booking information",
+    "Booking detail component follows the design system",
+    "Booking detail component handles loading states and error conditions properly",
+    "Booking detail component integrates with Appointment Management API endpoints",
+    "Booking detail component displays service and slot information"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "Angular Components",
+    "UI/UX Design",
+    "API Integration"
+  ],
+  "related_files": {
+    "will_create": [
+      "frontend/src/app/components/booking/booking-detail.component.ts",
+      "frontend/src/app/components/booking/booking-detail.component.html",
+      "frontend/src/app/components/booking/booking-detail.component.css"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/appointment-openapi.yaml",
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking",
+      "Slot"
+    ],
+    "related": [
+      "User",
+      "Service"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/bookings/{id}",
+        "description": "Get booking by ID"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/appointment-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Booking detail component rendering",
+      "Loading and error state handling",
+      "Status information display"
+    ],
+    "integration_tests": [
+      "Booking detail integration with backend APIs",
+      "Booking data display accuracy",
+      "Service and slot information display"
+    ],
+    "e2e_tests": [
+      "Booking detail viewing",
+      "Status information display",
+      "Service and slot information display"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002",
+      "FE-005-01"
+    ],
+    "can_start_date": "After FE-002 and FE-005-01 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement booking detail component following Angular best practices. Ensure proper integration with appointment management API. Display related information like service and slot details.",
+    "design_references": "docs/UI/Requirements.mmd",
+    "security_considerations": "Ensure proper authorization checks for booking detail access. Protect sensitive booking information. Validate data before display."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "frontend/src/app/components/booking/booking-detail.component.ts",
+      "frontend/src/app/components/booking/booking-detail.component.html",
+      "frontend/src/app/components/booking/booking-detail.component.css"
+    ]
+  },
+  "subtasks": []
+}

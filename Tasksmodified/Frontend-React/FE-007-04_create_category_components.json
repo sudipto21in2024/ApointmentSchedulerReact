@@ -1,0 +1,146 @@
+{
+  "task_id": "FE-007-04",
+  "title": "Create Service Category Components",
+  "description": "Develop UI components for managing service categories including listing and creation forms",
+  "priority": "MEDIUM",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 6,
+    "story_points": 5
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a service provider, I want to categorize my services so customers can find them easily",
+      "As an administrator, I want to manage service categories so that the system stays organized"
+    ],
+    "business_rules": [
+      "Category listing must support hierarchical navigation",
+      "Category creation form must validate required fields",
+      "Category components must follow the design system",
+      "Category components must handle loading states and error messages"
+    ],
+    "edge_cases": [
+      "Handling hierarchical category structures",
+      "Managing category creation with validation errors",
+      "Processing category updates with existing services",
+      "Displaying category information with proper hierarchy"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002",
+      "FE-005-01"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Service Management API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Category list component displays categories with hierarchy",
+    "Category creation form validates required fields and displays errors",
+    "Category components follow the design system",
+    "Category components handle loading states and error conditions properly",
+    "Category components integrate with Service Management API endpoints"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "Angular Components",
+    "Form Handling",
+    "UI/UX Design",
+    "API Integration"
+  ],
+  "related_files": {
+    "will_create": [
+      "frontend/src/app/components/category/category-list.component.ts",
+      "frontend/src/app/components/category/category-list.component.html",
+      "frontend/src/app/components/category/category-form.component.ts",
+      "frontend/src/app/components/category/category-form.component.html"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/service-openapi.yaml",
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "ServiceCategory"
+    ],
+    "related": [
+      "Service"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/categories",
+        "description": "Get all service categories"
+      },
+      {
+        "method": "POST",
+        "path": "/categories",
+        "description": "Create a new category"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Category list component rendering",
+      "Category form validation",
+      "Hierarchical category display",
+      "Loading and error state handling"
+    ],
+    "integration_tests": [
+      "Category components integration with backend APIs",
+      "Category form submission and validation",
+      "Hierarchical category navigation"
+    ],
+    "e2e_tests": [
+      "Category management workflow",
+      "Category creation with validation errors",
+      "Hierarchical category navigation"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002",
+      "FE-005-01"
+    ],
+    "can_start_date": "After FE-002 and FE-005-01 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement category components following Angular best practices. Ensure proper integration with service management API. Implement hierarchical category display and management.",
+    "design_references": "docs/UI/Requirements.mmd",
+    "security_considerations": "Ensure proper authorization checks for category management operations. Implement appropriate validation for category input. Protect sensitive category information."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "frontend/src/app/components/category/category-list.component.ts",
+      "frontend/src/app/components/category/category-list.component.html",
+      "frontend/src/app/components/category/category-form.component.ts",
+      "frontend/src/app/components/category/category-form.component.html"
+    ]
+  },
+  "subtasks": []
+}

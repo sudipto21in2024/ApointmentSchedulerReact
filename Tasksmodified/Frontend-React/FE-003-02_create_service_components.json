@@ -1,0 +1,212 @@
+{
+  "task_id": "FE-003-02",
+  "title": "Create Service Management UI Components",
+ "description": "Develop UI components for service management including service listing, creation, and editing forms for service providers, and service approval/rejection for tenant administrators.",
+  "priority": "HIGH",
+  "complexity": 3,
+  "effort_estimate": {
+    "hours": 8,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a service provider, I want to manage my services so that I can offer them to customers",
+      "As a customer, I need to browse services so that I can find what I need"
+    ],
+    "business_rules": [
+      "Service components must display service information clearly",
+      "Service creation form must validate all required fields",
+      "Service editing must preserve existing relationships",
+      "Service components must follow the design system"
+    ],
+    "edge_cases": [
+      "Handling large service lists with pagination",
+      "Managing service creation with validation errors",
+      "Handling service editing with concurrent users",
+      "Displaying service categories and filtering options"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Service Management API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Service listing component displays services with filtering and sorting",
+    "Service creation form validates all required fields",
+    "Service editing updates information correctly",
+    "Service components follow the design system",
+    "Service components handle error states properly"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "Angular Components",
+    "Form Handling",
+    "API Integration"
+  ],
+  "related_files": {
+    "will_create": [
+      "frontend/AppointmentSaas/src/app/components/service/service-list.component.ts",
+      "frontend/AppointmentSaas/src/app/components/service/service-create.component.ts",
+      "frontend/AppointmentSaas/src/app/components/service/service-edit.component.ts",
+      "frontend/AppointmentSaas/src/app/components/service/service-card.component.ts",
+      "frontend/AppointmentSaas/src/app/components/service/tenant-admin-service-approval/tenant-admin-service-approval.component.ts"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/service-openapi.yaml",
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Service",
+      "ServiceCategory"
+    ],
+    "related": [
+      "User"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/services",
+        "description": "Get all services with optional filtering"
+      },
+      {
+        "method": "POST",
+        "path": "/services",
+        "description": "Create a new service"
+      },
+      {
+        "method": "PUT",
+        "path": "/services/{id}",
+        "description": "Update an existing service"
+      },
+      {
+        "method": "GET",
+        "path": "/categories",
+        "description": "Get all service categories"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Service list component rendering",
+      "Service creation form validation",
+      "Service editing form validation",
+      "Service card component display"
+    ],
+    "integration_tests": [
+      "Service management workflow with backend APIs",
+      "Form submission and validation",
+      "Service listing with filtering and sorting"
+    ],
+    "e2e_tests": [
+      "Complete service management workflow",
+      "Service creation with validation errors",
+      "Service editing and updating"
+    ]
+  },
+ "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "can_start_date": "After FE-002 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Follow Angular best practices for component development. Implement proper form handling and validation. Ensure components integrate well with service management APIs.",
+    "design_references": "docs/UI/Requirements.mmd",
+    "security_considerations": "Ensure proper authorization checks for service management actions. Validate all user inputs to prevent injection attacks."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "frontend/src/app/components/service/service-list.component.ts",
+      "frontend/src/app/components/service/service-create.component.ts",
+      "frontend/src/app/components/service/service-edit.component.ts",
+      "frontend/src/app/components/service/service-card.component.ts"
+    ]
+  },
+  "subtasks": [
+    {
+      "task_id": "FE-003-02.1",
+      "title": "Create Tenant Admin Service Approval Component",
+      "description": "Develop UI component for tenant administrators to review and approve/reject service listings.",
+      "priority": "HIGH",
+      "complexity": 3,
+      "effort_estimate": {
+        "hours": 12,
+        "story_points": 5
+      },
+      "status": "NOT_STARTED",
+      "progress": 0,
+      "blocking_information": {
+        "is_blocked": true,
+        "blocking_tasks": ["FE-002", "FE-005-01", "BE-XXX-02"],
+        "can_start_date": "After FE-002, FE-005-01, and BE-XXX-02 completion"
+      },
+      "related_files": {
+        "will_create": [
+          "frontend/AppointmentSaas/src/app/components/service/tenant-admin-service-approval/tenant-admin-service-approval.component.ts",
+          "frontend/AppointmentSaas/src/app/components/service/tenant-admin-service-approval/tenant-admin-service-approval.component.html",
+          "frontend/AppointmentSaas/src/app/components/service/tenant-admin-service-approval/tenant-admin-service-approval.component.scss"
+        ],
+        "dependencies": [
+          "docs/UI/Requirements.mmd",
+          "docs/knowledgebase/UiFlow/TenantAdmin_ServiceApprovalManagement_Flow.md"
+        ]
+      },
+      "api_information": {
+        "endpoints": [
+          {
+            "method": "PUT",
+            "path": "/services/{id}/approve",
+            "description": "Approve a service listing."
+          },
+          {
+            "method": "PUT",
+            "path": "/services/{id}/reject",
+            "description": "Reject a service listing."
+          }
+        ],
+        "data_contracts": "docs/API/OpenAPI/service-openapi.yaml"
+      },
+      "acceptance_criteria": [
+        "Component displays a list of services with pending approval status.",
+        "Allows tenant admin to view service details.",
+        "Provides buttons to approve or reject services.",
+        "Integrates with backend API for approval/rejection actions.",
+        "Component follows design system and is responsive."
+      ],
+      "additional_context": {
+        "technical_notes": "Use AG Grid for service listing if applicable. Implement modal or new page for detail view and approval/rejection reasons. Ensure proper status updates after actions.",
+        "design_references": "docs/knowledgebase/UiFlow/TenantAdmin_ServiceApprovalManagement_Flow.md",
+        "security_considerations": "Ensure only authorized tenant admins can approve/reject services. Validate input for rejection reasons."
+      }
+    }
+  ]
+}

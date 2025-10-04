@@ -1,0 +1,158 @@
+{
+  "task_id": "FE-005-04",
+ "title": "Implement Booking Management Service",
+  "description": "Create service for handling booking and slot management API interactions",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 8,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to book services so that I can receive appointments",
+      "As a service provider, I need to manage bookings so that I can schedule appointments",
+      "As a user, I want to view my booking history so that I can track my appointments"
+    ],
+    "business_rules": [
+      "Booking service must handle booking CRUD operations",
+      "Booking service must handle slot availability checking",
+      "Booking service must provide real-time status updates",
+      "Booking service must integrate with appointment API endpoints"
+    ],
+    "edge_cases": [
+      "Handling slot availability validation in real-time",
+      "Managing booking conflicts and double bookings",
+      "Dealing with booking modifications and cancellations",
+      "Handling large booking histories with pagination"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-005-01"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Appointment Management API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Booking service handles booking CRUD operations",
+    "Booking service handles slot availability checking",
+    "Booking service provides real-time status updates",
+    "Booking service integrates properly with appointment API",
+    "Service handles error cases appropriately"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "API Integration",
+    "Real-time Data Handling",
+    "CRUD Operations"
+  ],
+  "related_files": {
+    "will_create": [
+      "frontend/src/app/services/booking.service.ts",
+      "frontend/src/app/services/slot.service.ts"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/appointment-openapi.yaml"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking",
+      "Slot"
+    ],
+    "related": [
+      "User",
+      "Service"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/bookings",
+        "description": "Get all bookings with optional filtering"
+      },
+      {
+        "method": "POST",
+        "path": "/bookings",
+        "description": "Create a new booking"
+      },
+      {
+        "method": "PUT",
+        "path": "/bookings/{id}",
+        "description": "Update an existing booking"
+      },
+      {
+        "method": "DELETE",
+        "path": "/bookings/{id}",
+        "description": "Cancel a booking"
+      },
+      {
+        "method": "GET",
+        "path": "/slots",
+        "description": "Get available time slots for a service"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/appointment-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Booking service CRUD operations",
+      "Slot service availability checking",
+      "Real-time status update functionality",
+      "Error handling for booking operations"
+    ],
+    "integration_tests": [
+      "Booking management integration with backend APIs",
+      "Slot availability checking",
+      "Real-time booking status updates",
+      "Pagination handling for large datasets"
+    ],
+    "e2e_tests": [
+      "Complete booking workflow from creation to completion",
+      "Slot availability checking and selection",
+      "Booking modification and cancellation",
+      "Booking history viewing"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-005-01"
+    ],
+    "can_start_date": "After FE-005-01 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Follow best practices for API service implementation. Implement real-time updates for booking status. Ensure proper error handling and data transformation.",
+    "design_references": "docs/API/OpenAPI/appointment-openapi.yaml",
+    "security_considerations": "Ensure proper authorization checks for booking management operations. Validate all user inputs to prevent injection attacks. Protect sensitive booking information."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "frontend/src/app/services/booking.service.ts",
+      "frontend/src/app/services/slot.service.ts"
+    ]
+  },
+  "subtasks": []
+}

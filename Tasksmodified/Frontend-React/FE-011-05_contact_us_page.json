@@ -1,0 +1,127 @@
+{
+  "task_id": "FE-011-05",
+  "title": "Create Contact Us Page",
+  "description": "Develop the public-facing contact us page with contact form and company information",
+  "priority": "MEDIUM",
+  "complexity": 2,
+  "effort_estimate": {
+    "hours": 4,
+    "story_points": 3
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a potential customer, I want to contact the company so that I can get more information",
+      "As a user, I want to find company contact information so that I can reach out when needed"
+    ],
+    "business_rules": [
+      "Contact us page must display company information",
+      "Contact us page must provide a functional contact form",
+      "Contact us page must follow the design system",
+      "Contact us page must work for anonymous users"
+    ],
+    "edge_cases": [
+      "Handling contact form submissions",
+      "Managing contact form validation errors",
+      "Displaying company information appropriately",
+      "Handling contact form success and error states"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Contact Management API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Contact us page displays company information",
+    "Contact us page provides functional contact form",
+    "Contact us page follows the design system",
+    "Contact us page handles form validation and submission",
+    "Contact us page works for anonymous users"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "React Components",
+    "Form Handling",
+    "Responsive Design"
+  ],
+  "related_files": {
+    "will_create": [
+      "src/pages/public/ContactUs.tsx",
+      "src/components/public/ContactForm.tsx",
+      "src/components/public/CompanyInfo.tsx"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/Architecture/UI/UiFlow/ContactUsPage_Flow.md"
+    ]
+  },
+  "entities": {
+    "primary": [],
+    "related": []
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/contact",
+        "description": "Submit contact form"
+      }
+    ],
+    "data_contracts": ""
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Contact form validation",
+      "Contact form submission",
+      "Company information display"
+    ],
+    "integration_tests": [
+      "Contact form integration with backend API"
+    ],
+    "e2e_tests": [
+      "Contact form submission workflow",
+      "Contact form validation errors"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002"
+    ],
+    "can_start_date": "After FE-002 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement contact us page following React best practices. Use React Hook Form for form handling. Display company information and provide contact form functionality.",
+    "design_references": "docs/Architecture/UI/UiFlow/ContactUsPage_Flow.md",
+    "security_considerations": "Ensure proper input validation for contact form. Implement CAPTCHA or similar for bot protection."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "src/pages/public/ContactUs.tsx",
+      "src/components/public/ContactForm.tsx",
+      "src/components/public/CompanyInfo.tsx"
+    ]
+  },
+  "subtasks": []
+}

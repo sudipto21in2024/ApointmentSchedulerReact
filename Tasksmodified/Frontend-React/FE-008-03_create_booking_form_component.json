@@ -1,0 +1,155 @@
+{
+  "task_id": "FE-008-03",
+  "title": "Create Booking Form Component",
+  "description": "Develop UI component for creating and editing booking information with form validation and slot selection",
+  "priority": "HIGH",
+  "complexity": 4,
+  "effort_estimate": {
+    "hours": 8,
+    "story_points": 8
+  },
+  "status": "NOT_STARTED",
+  "progress": 0,
+  "started_date": "",
+  "completed_date": "",
+  "blocked_reason": "",
+  "completion_evidence": [],
+  "business_logic": {
+    "user_stories": [
+      "As a customer, I want to book services so that I can receive appointments",
+      "As a service provider, I want to modify bookings so that I can accommodate customer needs"
+    ],
+    "business_rules": [
+      "Booking creation form must validate slot availability and required fields",
+      "Booking editing must preserve existing relationships",
+      "Booking forms must follow the design system",
+      "Booking forms must handle validation errors and success messages"
+    ],
+    "edge_cases": [
+      "Managing form validation errors for booking creation",
+      "Processing booking updates with validation",
+      "Handling slot availability validation in real-time",
+      "Managing booking creation with conflicts detection"
+    ]
+  },
+  "dependencies": {
+    "blocking_tasks": [
+      "FE-002",
+      "FE-005-01"
+    ],
+    "blocked_by": [],
+    "external_dependencies": [
+      "Appointment Management API"
+    ]
+  },
+  "acceptance_criteria": [
+    "Booking creation form validates slot availability and required fields and displays errors",
+    "Booking update form allows editing of appropriate fields",
+    "Booking forms follow the design system",
+    "Booking forms handle validation errors and success messages properly",
+    "Booking forms integrate with Appointment Management API endpoints"
+  ],
+  "assigned_team": "Frontend",
+  "required_skills": [
+    "Angular Components",
+    "Form Handling",
+    "UI/UX Design",
+    "API Integration",
+    "Calendar/Scheduling UI"
+  ],
+  "related_files": {
+    "will_create": [
+      "frontend/src/app/components/booking/booking-form.component.ts",
+      "frontend/src/app/components/booking/booking-form.component.html",
+      "frontend/src/app/components/booking/booking-form.component.css"
+    ],
+    "will_modify": [],
+    "dependencies": [
+      "docs/API/OpenAPI/appointment-openapi.yaml",
+      "docs/UI/Requirements.mmd"
+    ]
+  },
+  "entities": {
+    "primary": [
+      "Booking",
+      "Slot"
+    ],
+    "related": [
+      "User",
+      "Service"
+    ]
+  },
+  "api_information": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/bookings",
+        "description": "Create a new booking"
+      },
+      {
+        "method": "PUT",
+        "path": "/bookings/{id}",
+        "description": "Update booking"
+      },
+      {
+        "method": "GET",
+        "path": "/slots",
+        "description": "Get available time slots for a service"
+      }
+    ],
+    "data_contracts": "docs/API/OpenAPI/appointment-openapi.yaml"
+  },
+  "test_requirements": {
+    "unit_tests": [
+      "Booking form validation",
+      "Form submission handling",
+      "Slot availability validation",
+      "Error message display",
+      "Success message display"
+    ],
+    "integration_tests": [
+      "Booking form integration with backend APIs",
+      "Form submission and validation with API responses",
+      "Slot availability checking",
+      "Conflict detection functionality"
+    ],
+    "e2e_tests": [
+      "Booking creation and management",
+      "Booking update with validation errors",
+      "Slot selection and availability checking",
+      "Form submission success workflows"
+    ]
+  },
+  "blocking_information": {
+    "is_blocked": true,
+    "blocking_tasks": [
+      "FE-002",
+      "FE-005-01"
+    ],
+    "can_start_date": "After FE-002 and FE-005-01 completion"
+  },
+  "additional_context": {
+    "technical_notes": "Implement booking form component following Angular best practices for form handling. Ensure proper validation and error handling. Implement slot selection functionality with real-time availability checking.",
+    "design_references": "docs/UI/Requirements.mmd",
+    "security_considerations": "Ensure proper authorization checks for booking creation and update operations. Implement appropriate validation for booking input. Protect sensitive booking information during form submission."
+  },
+  "implementation_guidance": {
+    "method_signatures": [],
+    "implementation_logic": [],
+    "file_structure": [],
+    "dependencies": [],
+    "error_handling": [],
+    "testing_guidance": []
+  },
+  "completion_criteria": {
+    "required_subtasks": [],
+    "optional_subtasks": [],
+    "minimum_completion_percentage": 100,
+    "required_deliverables": [
+      "frontend/src/app/components/booking/booking-form.component.ts",
+      "frontend/src/app/components/booking/booking-form.component.html",
+      "frontend/src/app/components/booking/booking-form.component.css"
+    ]
+  },
+  "subtasks": []
+}
