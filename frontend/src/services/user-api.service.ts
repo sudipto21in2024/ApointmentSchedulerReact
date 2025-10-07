@@ -99,12 +99,16 @@ export class UserApiService {
   /**
    * User administration (admin only)
    */
-  async getAllUsers(filters?: {
+  async getAllUsers(params?: {
     role?: string;
     status?: string;
     search?: string;
+    page?: number;
+    pageSize?: number;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
   }): Promise<{ users: User[]; total: number }> {
-    return this.client.get<{ users: User[]; total: number }>('/admin/users', filters);
+    return this.client.get<{ users: User[]; total: number }>('/admin/users', params);
   }
 
   async updateUserStatus(userId: string, status: User['status']): Promise<User> {

@@ -41,6 +41,14 @@ export {
 } from './Modal';
 export { Select } from './Select';
 export { Checkbox } from './Checkbox';
+export {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableHeader,
+  TableCell
+} from './Table';
 
 // Type exports
 export type { ButtonProps } from './Button';
@@ -49,6 +57,14 @@ export type { CardProps } from './Card';
 export type { ModalProps } from './Modal';
 export type { SelectProps } from './Select';
 export type { CheckboxProps } from './Checkbox';
+export type {
+  TableProps,
+  TableHeadProps,
+  TableBodyProps,
+  TableRowProps,
+  TableHeaderProps,
+  TableCellProps
+} from './Table';
 
 // Utility functions
 export { cn } from '../../utils/cn';

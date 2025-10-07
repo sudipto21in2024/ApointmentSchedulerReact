@@ -12,7 +12,7 @@ import type { User } from '../../types/user';
 vi.mock('../../hooks/useUsers');
 vi.mock('../../hooks/useAuth');
 
-// Mock the user API service
+// Mock the user API service****************************
 vi.mock('../../services/user-api.service', () => ({
   userApi: {
     getUser: vi.fn()
